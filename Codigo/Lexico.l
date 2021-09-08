@@ -72,50 +72,50 @@ GET "GET"
 
 {COMMENT} {printf("\nCOMMENT: %s", yytext);}
 
-{GET} {printf("\nGET: %s", yytext);}
-{IN} {printf("\nIN: %s", yytext);}
-{DO} {printf("\nDO: %s", yytext);}
-{ENDWHILE} {printf("\nENDWHILE: %s", yytext);}
-{FOR} {printf("\nFOR: %s", yytext);}
-{NEXT} {printf("\nNEXT: %s", yytext);}
-{TO} {printf("\nTO: %s", yytext);}
-{DISPLAY} {printf("\nDISPLAY: %s", yytext);}
-{OP_ASIG} {printf("\nOP_ASIG: %s", yytext);}
-{OP_GT} {printf("\nOP_GT: %s", yytext);}
-{OP_LT} {printf("\nOP_LT: %s", yytext);}
-{OP_GE} {printf("\nOP_GE: %s", yytext);}
-{OP_LE} {printf("\nOP_LE: %s", yytext);}
-{OP_EQ} {printf("\nOP_EQ: %s", yytext);}
-{OP_SUM} {printf("\nOP_SUM: %s", yytext);}
-{OP_MULT} {printf("\nOP_MULT: %s", yytext);}
-{OP_MEN} {printf("\nOP_MEN: %s", yytext);}
-{OP_DIV} {printf("\nOP_DIV: %s", yytext);}
-{OP_DIST} {printf("\nOP_DIST: %s", yytext);}
-{OP_OR} {printf("\nOP_OR: %s", yytext);}
-{OP_AND} {printf("\nOP_AND: %s", yytext);}
-{NOT} {printf("\nNOT: %s", yytext);}
-{OP_ENDLINE} {printf("\nOP_ENDLINE: %s", yytext);}
-{OP_COMA} {printf("\nOP_COMA: %s", yytext);}
-{OP_PAR} {printf("\nOP_PAR: %s", yytext);}
-{CL_PAR} {printf("\nCL_PAR: %s", yytext);}
-{OP_KEY} {printf("\nOP_KEY: %s", yytext);}
-{CL_KEY} {printf("\nCL_KEY: %s", yytext);}
-{OP_CORC} {printf("\nOP_CORC: %s", yytext);}
-{CL_COR} {printf("\nCL_COR: %s", yytext);}
-{WHILE} {printf("\nWHILE: %s", yytext);}
-{IF} {printf("\nIF: %s", yytext);}
-{ENDIF} {printf("\nENDIF: %s", yytext);}
-{ELSE} {printf("\nELSE: %s", yytext);}
-{DIM} {printf("\nDIM: %s", yytext);}
-{AS} {printf("\nAS: %s", yytext);}
-{INT_TYPE} {printf("\nINT_TYPE: %s", yytext);}
-{REAL_TYPE} {printf("\nREAL_TYPE: %s", yytext);}
-{STRING_TYPE} {printf("\nSTRING_TYPE: %s", yytext);}
+{GET} {printf("\nGET: %s", yytext); return GET;}
+{IN} {printf("\nIN: %s", yytext); return IN;}
+{DO} {printf("\nDO: %s", yytext); return DO;}
+{ENDWHILE} {printf("\nENDWHILE: %s", yytext); return ENDWHILE;}
+{FOR} {printf("\nFOR: %s", yytext); return FOR;}
+{NEXT} {printf("\nNEXT: %s", yytext); return NEXT;}
+{TO} {printf("\nTO: %s", yytext); return TO;}
+{DISPLAY} {printf("\nDISPLAY: %s", yytext); return DISPLAY;}
+{OP_ASIG} {printf("\nOP_ASIG: %s", yytext); return OP_ASIG;}
+{OP_GT} {printf("\nOP_GT: %s", yytext); return OP_GT;}
+{OP_LT} {printf("\nOP_LT: %s", yytext); return OP_LT;}
+{OP_GE} {printf("\nOP_GE: %s", yytext); return OP_GE;}
+{OP_LE} {printf("\nOP_LE: %s", yytext); return OP_LE;}
+{OP_EQ} {printf("\nOP_EQ: %s", yytext); return OP_EQ;}
+{OP_SUM} {printf("\nOP_SUM: %s", yytext); return OP_SUM;}
+{OP_MULT} {printf("\nOP_MULT: %s", yytext); return OP_MULT;}
+{OP_MEN} {printf("\nOP_MEN: %s", yytext); return OP_MEN;}
+{OP_DIV} {printf("\nOP_DIV: %s", yytext); return OP_DIV;}
+{OP_DIST} {printf("\nOP_DIST: %s", yytext); return OP_DIST;}
+{OP_OR} {printf("\nOP_OR: %s", yytext); return OP_OR;}
+{OP_AND} {printf("\nOP_AND: %s", yytext); return OP_AND;}
+{NOT} {printf("\nNOT: %s", yytext); return NOT;}
+{OP_ENDLINE} {printf("\nOP_ENDLINE: %s", yytext); return OP_ENDLINE;}
+{OP_COMA} {printf("\nOP_COMA: %s", yytext); return OP_COMA;}
+{OP_PAR} {printf("\nOP_PAR: %s", yytext); return OP_PAR;}
+{CL_PAR} {printf("\nCL_PAR: %s", yytext); return CL_PAR;}
+{OP_KEY} {printf("\nOP_KEY: %s", yytext); return OP_KEY;}
+{CL_KEY} {printf("\nCL_KEY: %s", yytext); return CL_KEY;}
+{OP_CORC} {printf("\nOP_CORC: %s", yytext); return OP_CORC;}
+{CL_COR} {printf("\nCL_COR: %s", yytext); return CL_COR;}
+{WHILE} {printf("\nWHILE: %s", yytext); return WHILE;}
+{IF} {printf("\nIF: %s", yytext); return IF;}
+{ENDIF} {printf("\nENDIF: %s", yytext); return ENDIF;}
+{ELSE} {printf("\nELSE: %s", yytext); return ELSE;}
+{DIM} {printf("\nDIM: %s", yytext); return DIM;}
+{AS} {printf("\nAS: %s", yytext); return AS;}
+{INT_TYPE} {printf("\nINT_TYPE: %s", yytext); return INT_TYPE;}
+{REAL_TYPE} {printf("\nREAL_TYPE: %s", yytext); return REAL_TYPE;}
+{STRING_TYPE} {printf("\nSTRING_TYPE: %s", yytext); return STRING_TYPE;}
 
-{ID}    {printf("\nID: %s", yytext);}
-{STRING_DEC}  {printf("\nSTRING_DEC: %s", yytext);}
-{INT_NUM} {printf("\nINT_NUM: %s", yytext);}
-{FLOAT_NUM} {printf("\nFLOAT_NUM: %s", yytext);}
+{ID}    {printf("\nID: %s", yytext); return ID;}
+{STRING_DEC}  {printf("\nSTRING_DEC: %s", yytext); return STRING_DEC;}
+{INT_NUM} {printf("\nINT_NUM: %s", yytext); return INT_NUM;}
+{FLOAT_NUM} {printf("\nFLOAT_NUM: %s", yytext); return FLOAT_NUM;}
 
 
 %%
@@ -133,6 +133,10 @@ int main(int argc,char *argv[])
     }
     fclose(yyin);
 
+}
+int yylex (void)
+{
+    estado = 0
 }
 int yyerror(void)
 {
