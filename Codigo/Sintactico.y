@@ -70,7 +70,7 @@ list_types: type_var | list_types OP_COMA type_var;
 
 resto_programa: sentencia | resto_programa sentencia;
 
-sentencia: while | if | for;
+sentencia: while | if | for | asignacion;
 
 while: WHILE ID IN list_exp DO sentencia ENDWHILE;
 
@@ -85,18 +85,18 @@ expresion: termino | expresion OP_SUM termino | expresion OP_MEN termino;
 termino: asig_val | termino OP_MULT asig_val | termino OP_DIV asig_val;
 
 for: FOR ID OP_ASIG asig_val TO asig_val pasos_for sentencia NEXT ID | FOR ID OP_ASIG asig_val TO asig_val sentencia NEXT ID;
-pasos_for: OP_CORC expresion CL_COR
+pasos_for: OP_CORC expresion CL_COR;
 
 asig_val: ID|INT_NUM|FLOAT_NUM|STRING_DEC;
 
-asignacion: ID OP_ASIG asig_val;
+asignacion: ID OP_ASIG expresion;
 
 display: DISPLAY asig_val;
 get_action: GET ID;
 
 op_comparacion: OP_EQ | OP_GE | OP_GT | OP_LE | OP_LT | OP_DIST; 
 
-condicion_anidada: comparacion OP_AND comparacion | comparacion OP_OR comparacion; 
+//condicion_anidada: comparacion OP_AND comparacion | comparacion OP_OR comparacion; 
 
 %%
 

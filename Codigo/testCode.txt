@@ -19,7 +19,7 @@ FOR a := 1 TO 6 [2]
 	b++;
 NEXT a
 
-IF( b >= 5){
+IF (b >= 5){
 	c:=b;
 } ELSE {
 	c:=a;
