@@ -1,4 +1,4 @@
-DIM [ a, b, beta ] AS [ integer, real, string];
+DIM [ a, b, beta] AS [ integer, real, string];
 DIM [ c ] AS [ real];
 a := 32764;
 e := -654654;
@@ -7,10 +7,10 @@ beta := "String de prueba";
 string1 := "String de pruebaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 c := 99.9999;
 d := -899.9999;
-/* Esto es un coo men ta rioo */
+/* Esto es    un coo men ta rioo */
 
 WHILE
-a IN [Exp1, Exp2, Exp3]
+a IN [Exp1,    Exp2, Exp3]
 DO
 	a--;
 ENDWHILE

@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "y.tab.h"
 FILE *yyin;
 
 %}
@@ -67,6 +68,8 @@ FLOAT_NUM -?[1-9]?.([0-9]*{5}).[.].([0-9]*{6})
 DISPLAY "DISPLAY"
 GET "GET"
 
+SALTO_LINEA [\t\r\f]
+
 
 %%
 
@@ -117,30 +120,31 @@ GET "GET"
 {INT_NUM} {printf("\nINT_NUM: %s", yytext); return INT_NUM;}
 {FLOAT_NUM} {printf("\nFLOAT_NUM: %s", yytext); return FLOAT_NUM;}
 
+{SALTO_LINEA} {printf("\nSALTO_LINEA: %s", yytext)};
 
 %%
 
 
-int main(int argc,char *argv[])
-{
-    if ((yyin = fopen(argv[1], "rt")) == NULL)
-    {
-        printf("No se puede abrir el archivo: %s n", argv[1]);
-    }
-    else
-    {
-        yylex();
-    }
-    fclose(yyin);
+// int main(int argc,char *argv[])
+// {
+//     if ((yyin = fopen(argv[1], "rt")) == NULL)
+//     {
+//         printf("No se puede abrir el archivo: %s n", argv[1]);
+//     }
+//     else
+//     {
+//         yylex();
+//     }
+//     fclose(yyin);
 
-}
-int yylex (void)
-{
-    estado = 0
-}
-int yyerror(void)
-{
-    printf("Error léxico: Caracter inválido: %s\n", yytext);
-    exit (1);
-}
+// }
+// int yylex (void)
+// {
+//     estado = 0
+// }
+// int yyerror(void)
+// {
+//     printf("Error léxico: Caracter inválido: %s\n", yytext);
+//     exit (1);
+// }
 
