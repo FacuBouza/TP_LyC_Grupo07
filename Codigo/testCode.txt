@@ -1,30 +1,30 @@
 DIM [ a, b, beta] AS [ integer, real, string];
 DIM [ c ] AS [ real];
-a := 32764;
-e := -654654;
+/*a := 3276466;*/
+e := -6546;
 b := 10.55;
 beta := "String de prueba";
-string1 := "String de pruebaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-c := 99.9999;
-d := -899.9999;
+string1 := "String de prueba";
+c := -89999.9999;
+d := -8999.9999;
 /* Esto es    un coo men ta rioo */
 
 WHILE
-a IN [Exp1,    Exp2, Exp3]
+a IN [a, b, c]
 DO
-	a--;
+	a;
 ENDWHILE
 
-FOR a := 1 TO 6 [2]
-	b++;
+FOR a := 1 TO 6
+	b := b + 1;
 NEXT a
 
-IF (b >= 5){
+IF (b >= 5)
 	c:=b;
-} ELSE {
+ELSE
 	c:=a;
-}
+ENDIF
 
-DISPLAY "hola"
-DISPLAY beta
-GET b
+DISPLAY "hola";
+DISPLAY beta;
+GET b;

@@ -544,10 +544,24 @@ char *yytext;
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "y.tab.h"
+
+#define MIN_INT -32768
+#define MAX_INT 32767
+#define MAX_LEN_STRING 30
+#define MIN_FLOAT -100000
+#define MAX_FLOAT 100000
+
 FILE *yyin;
 
-#line 551 "lex.yy.c"
+void procesarID();
+void procesarInt();
+void procesarFloat();
+void procesarString();
+void agregarSimbolo(char* lexema, char* tipoDato, char* valor, int longitud, char* token);
+
+#line 565 "lex.yy.c"
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -698,10 +712,10 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
 
-#line 74 "Lexico.l"
+#line 88 "Lexico.l"
 
 
-#line 705 "lex.yy.c"
+#line 719 "lex.yy.c"
 
 	if ( yy_init )
 		{
@@ -794,235 +808,235 @@ do_action:	/* This label is used only to access EOF actions. */
 	{ /* beginning of action switch */
 case 1:
 YY_RULE_SETUP
-#line 76 "Lexico.l"
+#line 90 "Lexico.l"
 {printf("\nCOMMENT: %s", yytext);}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 78 "Lexico.l"
+#line 92 "Lexico.l"
 {printf("\nGET: %s", yytext); return GET;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 79 "Lexico.l"
+#line 93 "Lexico.l"
 {printf("\nIN: %s", yytext); return IN;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 80 "Lexico.l"
+#line 94 "Lexico.l"
 {printf("\nDO: %s", yytext); return DO;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 81 "Lexico.l"
+#line 95 "Lexico.l"
 {printf("\nENDWHILE: %s", yytext); return ENDWHILE;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 82 "Lexico.l"
+#line 96 "Lexico.l"
 {printf("\nFOR: %s", yytext); return FOR;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 83 "Lexico.l"
+#line 97 "Lexico.l"
 {printf("\nNEXT: %s", yytext); return NEXT;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 84 "Lexico.l"
+#line 98 "Lexico.l"
 {printf("\nTO: %s", yytext); return TO;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 85 "Lexico.l"
+#line 99 "Lexico.l"
 {printf("\nDISPLAY: %s", yytext); return DISPLAY;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 86 "Lexico.l"
+#line 100 "Lexico.l"
 {printf("\nOP_ASIG: %s", yytext); return OP_ASIG;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 87 "Lexico.l"
+#line 101 "Lexico.l"
 {printf("\nOP_GT: %s", yytext); return OP_GT;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 88 "Lexico.l"
+#line 102 "Lexico.l"
 {printf("\nOP_LT: %s", yytext); return OP_LT;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 89 "Lexico.l"
+#line 103 "Lexico.l"
 {printf("\nOP_GE: %s", yytext); return OP_GE;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 90 "Lexico.l"
+#line 104 "Lexico.l"
 {printf("\nOP_LE: %s", yytext); return OP_LE;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 91 "Lexico.l"
+#line 105 "Lexico.l"
 {printf("\nOP_EQ: %s", yytext); return OP_EQ;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 92 "Lexico.l"
+#line 106 "Lexico.l"
 {printf("\nOP_SUM: %s", yytext); return OP_SUM;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 93 "Lexico.l"
+#line 107 "Lexico.l"
 {printf("\nOP_MULT: %s", yytext); return OP_MULT;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 94 "Lexico.l"
+#line 108 "Lexico.l"
 {printf("\nOP_MEN: %s", yytext); return OP_MEN;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 95 "Lexico.l"
+#line 109 "Lexico.l"
 {printf("\nOP_DIV: %s", yytext); return OP_DIV;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 96 "Lexico.l"
+#line 110 "Lexico.l"
 {printf("\nOP_DIST: %s", yytext); return OP_DIST;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 97 "Lexico.l"
+#line 111 "Lexico.l"
 {printf("\nOP_OR: %s", yytext); return OP_OR;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 98 "Lexico.l"
+#line 112 "Lexico.l"
 {printf("\nOP_AND: %s", yytext); return OP_AND;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 99 "Lexico.l"
+#line 113 "Lexico.l"
 {printf("\nNOT: %s", yytext); return NOT;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 100 "Lexico.l"
+#line 114 "Lexico.l"
 {printf("\nOP_ENDLINE: %s", yytext); return OP_ENDLINE;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 101 "Lexico.l"
+#line 115 "Lexico.l"
 {printf("\nOP_COMA: %s", yytext); return OP_COMA;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 102 "Lexico.l"
+#line 116 "Lexico.l"
 {printf("\nOP_PAR: %s", yytext); return OP_PAR;}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 103 "Lexico.l"
+#line 117 "Lexico.l"
 {printf("\nCL_PAR: %s", yytext); return CL_PAR;}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 104 "Lexico.l"
+#line 118 "Lexico.l"
 {printf("\nOP_KEY: %s", yytext); return OP_KEY;}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 105 "Lexico.l"
+#line 119 "Lexico.l"
 {printf("\nCL_KEY: %s", yytext); return CL_KEY;}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 106 "Lexico.l"
+#line 120 "Lexico.l"
 {printf("\nOP_CORC: %s", yytext); return OP_CORC;}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 107 "Lexico.l"
+#line 121 "Lexico.l"
 {printf("\nCL_COR: %s", yytext); return CL_COR;}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 108 "Lexico.l"
+#line 122 "Lexico.l"
 {printf("\nWHILE: %s", yytext); return WHILE;}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 109 "Lexico.l"
+#line 123 "Lexico.l"
 {printf("\nIF: %s", yytext); return IF;}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 110 "Lexico.l"
+#line 124 "Lexico.l"
 {printf("\nENDIF: %s", yytext); return ENDIF;}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 111 "Lexico.l"
+#line 125 "Lexico.l"
 {printf("\nELSE: %s", yytext); return ELSE;}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 112 "Lexico.l"
+#line 126 "Lexico.l"
 {printf("\nDIM: %s", yytext); return DIM;}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 113 "Lexico.l"
+#line 127 "Lexico.l"
 {printf("\nAS: %s", yytext); return AS;}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 114 "Lexico.l"
+#line 128 "Lexico.l"
 {printf("\nINT_TYPE: %s", yytext); return INT_TYPE;}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 115 "Lexico.l"
+#line 129 "Lexico.l"
 {printf("\nREAL_TYPE: %s", yytext); return REAL_TYPE;}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 116 "Lexico.l"
+#line 130 "Lexico.l"
 {printf("\nSTRING_TYPE: %s", yytext); return STRING_TYPE;}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 118 "Lexico.l"
-{printf("\nID: %s", yytext); return ID;}
+#line 132 "Lexico.l"
+{procesarID(); return ID;}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 119 "Lexico.l"
-{printf("\nSTRING_DEC: %s", yytext); return STRING_DEC;}
+#line 133 "Lexico.l"
+{procesarString(); return STRING_DEC;}
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 120 "Lexico.l"
-{printf("\nINT_NUM: %s", yytext); return INT_NUM;}
+#line 134 "Lexico.l"
+{procesarInt(); return INT_NUM;}
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 121 "Lexico.l"
-{printf("\nFLOAT_NUM: %s", yytext); return FLOAT_NUM;}
+#line 135 "Lexico.l"
+{procesarFloat(); return FLOAT_NUM;}
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 123 "Lexico.l"
-{printf("\nSALTO_LINEA: %s", yytext)};
+#line 137 "Lexico.l"
+{printf("\nSALTO_LINEA: %s", yytext);};
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 125 "Lexico.l"
+#line 139 "Lexico.l"
 ECHO;
 	YY_BREAK
-#line 1026 "lex.yy.c"
+#line 1040 "lex.yy.c"
 			case YY_STATE_EOF(INITIAL):
 				yyterminate();
 
@@ -1906,7 +1920,7 @@ int main()
 	return 0;
 	}
 #endif
-#line 125 "Lexico.l"
+#line 139 "Lexico.l"
 
 
 
@@ -1933,3 +1947,40 @@ int main()
 //     exit (1);
 // }
 
+void procesarID(){
+    printf("\nID: %s", yytext);
+    agregarSimbolo(yytext, "Entero", yytext, strlen(yytext), "ID");
+}
+
+void procesarInt(){
+    int num_int = atoi(yytext);
+    if(num_int > MAX_INT || num_int < MIN_INT){
+        printf("\nError, el numero %s excede el rango entero", yytext);
+        exit(-1);
+    }else{
+        printf("\nINT_NUM: %s", yytext);
+        agregarSimbolo(yytext, "Entero", yytext, strlen(yytext), "INT_NUM");
+    }
+}
+
+void procesarFloat(){
+    int num_float = atof(yytext);
+    if(num_float > MAX_FLOAT || num_float < MIN_FLOAT){
+        printf("\nError, el numero %s excede el rango float", yytext);
+        exit(-1);
+    }else{
+        printf("\nFLOAT_NUM: %s", yytext);
+        agregarSimbolo(yytext, "Float", yytext, strlen(yytext), "FLOAT_NUM");
+    }
+}
+
+void procesarString(){
+    int long_string = strlen(yytext);
+    if(long_string > MAX_LEN_STRING){
+        printf("\nError, el string %s excede el tamanio maximo de %d caracteres", yytext, MAX_LEN_STRING);
+        exit(-1);
+    }else{
+        printf("\nSTRING_TYPE: %s", yytext);
+        agregarSimbolo(yytext, "String", yytext, strlen(yytext), "STRING_DEC");
+    }
+}

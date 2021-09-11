@@ -1,29 +1,10 @@
-Nonterminals useless in grammar
-
-   exp_while
-   display
-   get_action
-
-
 Terminals unused in grammar
 
-   OP_ENDLINE
    OP_KEY
    CL_KEY
    DIGITO
    CARACTER
    COMMENT
-   DISPLAY
-   GET
-
-
-Rules useless in grammar
-
-   51 exp_while: OP_CORC list_exp CL_COR
-
-   52 display: DISPLAY asig_val
-
-   53 get_action: GET ID
 
 
 Gramática
@@ -40,119 +21,128 @@ Gramática
     5 sentencia: while
     6          | if
     7          | for
-    8          | asignacion
-    9          | declaracion_var
+    8          | asignacion OP_ENDLINE
+    9          | declaracion_var OP_ENDLINE
+   10          | expresion OP_ENDLINE
+   11          | display OP_ENDLINE
+   12          | get_action OP_ENDLINE
 
-   10 declaracion_var: DIM OP_CORC list_var CL_COR AS OP_CORC list_types CL_COR
+   13 declaracion_var: DIM OP_CORC list_var CL_COR AS OP_CORC list_types CL_COR
 
-   11 list_var: ID
-   12         | ID OP_COMA list_var
+   14 list_var: ID
+   15         | ID OP_COMA list_var
 
-   13 type_var: INT_TYPE
-   14         | REAL_TYPE
-   15         | STRING_TYPE
+   16 type_var: INT_TYPE
+   17         | REAL_TYPE
+   18         | STRING_TYPE
 
-   16 list_types: type_var
-   17           | list_types OP_COMA type_var
+   19 list_types: type_var
+   20           | list_types OP_COMA type_var
 
-   18 while: WHILE ID IN list_exp DO sentencia ENDWHILE
+   21 while: WHILE ID IN exp_while DO sentencia ENDWHILE
 
-   19 list_exp: expresion
-   20         | list_exp OP_COMA expresion
+   22 exp_while: OP_CORC list_exp CL_COR
 
-   21 if: IF OP_PAR condicion CL_PAR sentencia ENDIF
-   22   | IF OP_PAR condicion CL_PAR sentencia ELSE sentencia ENDIF
+   23 list_exp: ID
+   24         | ID OP_COMA list_exp
 
-   23 condicion: comparacion
-   24          | condicion_anidada
-   25          | NOT comparacion
+   25 if: IF OP_PAR condicion CL_PAR sentencia ENDIF
+   26   | IF OP_PAR condicion CL_PAR sentencia ELSE sentencia ENDIF
 
-   26 condicion_anidada: comparacion OP_AND comparacion
-   27                  | comparacion OP_OR comparacion
+   27 condicion: comparacion
+   28          | condicion_anidada
+   29          | NOT comparacion
 
-   28 comparacion: expresion op_comparacion expresion
+   30 condicion_anidada: comparacion OP_AND comparacion
+   31                  | comparacion OP_OR comparacion
 
-   29 expresion: termino
-   30          | expresion OP_SUM termino
-   31          | expresion OP_MEN termino
+   32 comparacion: expresion op_comparacion expresion
 
-   32 termino: termino_par
-   33        | termino OP_MULT termino_par
-   34        | termino OP_DIV termino_par
+   33 expresion: termino
+   34          | expresion OP_SUM termino
+   35          | expresion OP_MEN termino
 
-   35 termino_par: asig_val
-   36            | OP_PAR expresion CL_PAR
+   36 termino: termino_par
+   37        | termino OP_MULT termino_par
+   38        | termino OP_DIV termino_par
 
-   37 for: FOR ID OP_ASIG asig_val TO asig_val pasos_for sentencia NEXT ID
-   38    | FOR ID OP_ASIG asig_val TO asig_val sentencia NEXT ID
+   39 termino_par: asig_val
+   40            | OP_PAR expresion CL_PAR
 
-   39 pasos_for: OP_CORC expresion CL_COR
+   41 for: FOR ID OP_ASIG asig_val TO asig_val pasos_for sentencia NEXT ID
+   42    | FOR ID OP_ASIG asig_val TO asig_val sentencia NEXT ID
 
-   40 asig_val: ID
-   41         | INT_NUM
-   42         | FLOAT_NUM
-   43         | STRING_DEC
+   43 pasos_for: OP_CORC expresion CL_COR
 
-   44 asignacion: ID OP_ASIG expresion
+   44 asig_val: ID
+   45         | INT_NUM
+   46         | FLOAT_NUM
+   47         | STRING_DEC
 
-   45 op_comparacion: OP_EQ
-   46               | OP_GE
-   47               | OP_GT
-   48               | OP_LE
-   49               | OP_LT
-   50               | OP_DIST
+   48 asignacion: ID OP_ASIG expresion
+
+   49 display: DISPLAY asig_val
+
+   50 get_action: GET ID
+
+   51 op_comparacion: OP_EQ
+   52               | OP_GE
+   53               | OP_GT
+   54               | OP_LE
+   55               | OP_LT
+   56               | OP_DIST
 
 
 Terminales con las reglas donde aparecen
 
 $end (0) 0
 error (256)
-OP_ASIG (258) 37 38 44
-OP_GT (259) 47
-OP_LT (260) 49
-OP_GE (261) 46
-OP_LE (262) 48
-OP_EQ (263) 45
-OP_SUM (264) 30
-OP_MULT (265) 33
-OP_MEN (266) 31
-OP_DIV (267) 34
-OP_OR (268) 27
-OP_AND (269) 26
-NOT (270) 25
-OP_DIST (271) 50
-OP_ENDLINE (272)
-OP_COMA (273) 12 17 20
-OP_PAR (274) 21 22 36
-CL_PAR (275) 21 22 36
+OP_ASIG (258) 41 42 48
+OP_GT (259) 53
+OP_LT (260) 55
+OP_GE (261) 52
+OP_LE (262) 54
+OP_EQ (263) 51
+OP_SUM (264) 34
+OP_MULT (265) 37
+OP_MEN (266) 35
+OP_DIV (267) 38
+OP_OR (268) 31
+OP_AND (269) 30
+NOT (270) 29
+OP_DIST (271) 56
+OP_ENDLINE (272) 8 9 10 11 12
+OP_COMA (273) 15 20 24
+OP_PAR (274) 25 26 40
+CL_PAR (275) 25 26 40
 OP_KEY (276)
 CL_KEY (277)
-OP_CORC (278) 10 39
-CL_COR (279) 10 39
-WHILE (280) 18
-IF (281) 21 22
-ENDIF (282) 21 22
-ELSE (283) 22
-DIM (284) 10
-AS (285) 10
-IN (286) 18
-DO (287) 18
-ENDWHILE (288) 18
-FOR (289) 37 38
-TO (290) 37 38
-NEXT (291) 37 38
-INT_TYPE (292) 13
-REAL_TYPE (293) 14
-STRING_TYPE (294) 15
+OP_CORC (278) 13 22 43
+CL_COR (279) 13 22 43
+WHILE (280) 21
+IF (281) 25 26
+ENDIF (282) 25 26
+ELSE (283) 26
+DIM (284) 13
+AS (285) 13
+IN (286) 21
+DO (287) 21
+ENDWHILE (288) 21
+FOR (289) 41 42
+TO (290) 41 42
+NEXT (291) 41 42
+INT_TYPE (292) 16
+REAL_TYPE (293) 17
+STRING_TYPE (294) 18
 DIGITO (295)
 CARACTER (296)
 COMMENT (297)
-STRING_DEC (298) 43
-INT_NUM (299) 41
-FLOAT_NUM (300) 42
-DISPLAY (301)
-GET (302)
-ID (303) 11 12 18 37 38 40 44
+STRING_DEC (298) 47
+INT_NUM (299) 45
+FLOAT_NUM (300) 46
+DISPLAY (301) 49
+GET (302) 50
+ID (303) 14 15 21 23 24 41 42 44 48 50
 
 
 No terminales con las reglas donde aparecen
@@ -166,1069 +156,1254 @@ main (51)
 resto_programa (52)
     en la izquierda: 3 4, en la derecha: 2 4
 sentencia (53)
-    en la izquierda: 5 6 7 8 9, en la derecha: 3 4 18 21 22 37 38
+    en la izquierda: 5 6 7 8 9 10 11 12, en la derecha: 3 4 21 25 26
+    41 42
 declaracion_var (54)
-    en la izquierda: 10, en la derecha: 9
+    en la izquierda: 13, en la derecha: 9
 list_var (55)
-    en la izquierda: 11 12, en la derecha: 10 12
+    en la izquierda: 14 15, en la derecha: 13 15
 type_var (56)
-    en la izquierda: 13 14 15, en la derecha: 16 17
+    en la izquierda: 16 17 18, en la derecha: 19 20
 list_types (57)
-    en la izquierda: 16 17, en la derecha: 10 17
+    en la izquierda: 19 20, en la derecha: 13 20
 while (58)
-    en la izquierda: 18, en la derecha: 5
-list_exp (59)
-    en la izquierda: 19 20, en la derecha: 18 20
-if (60)
-    en la izquierda: 21 22, en la derecha: 6
-condicion (61)
-    en la izquierda: 23 24 25, en la derecha: 21 22
-condicion_anidada (62)
-    en la izquierda: 26 27, en la derecha: 24
-comparacion (63)
-    en la izquierda: 28, en la derecha: 23 25 26 27
-expresion (64)
-    en la izquierda: 29 30 31, en la derecha: 19 20 28 30 31 36 39
-    44
-termino (65)
-    en la izquierda: 32 33 34, en la derecha: 29 30 31 33 34
-termino_par (66)
-    en la izquierda: 35 36, en la derecha: 32 33 34
-for (67)
-    en la izquierda: 37 38, en la derecha: 7
-pasos_for (68)
-    en la izquierda: 39, en la derecha: 37
-asig_val (69)
-    en la izquierda: 40 41 42 43, en la derecha: 35 37 38
-asignacion (70)
-    en la izquierda: 44, en la derecha: 8
-op_comparacion (71)
-    en la izquierda: 45 46 47 48 49 50, en la derecha: 28
+    en la izquierda: 21, en la derecha: 5
+exp_while (59)
+    en la izquierda: 22, en la derecha: 21
+list_exp (60)
+    en la izquierda: 23 24, en la derecha: 22 24
+if (61)
+    en la izquierda: 25 26, en la derecha: 6
+condicion (62)
+    en la izquierda: 27 28 29, en la derecha: 25 26
+condicion_anidada (63)
+    en la izquierda: 30 31, en la derecha: 28
+comparacion (64)
+    en la izquierda: 32, en la derecha: 27 29 30 31
+expresion (65)
+    en la izquierda: 33 34 35, en la derecha: 10 32 34 35 40 43 48
+termino (66)
+    en la izquierda: 36 37 38, en la derecha: 33 34 35 37 38
+termino_par (67)
+    en la izquierda: 39 40, en la derecha: 36 37 38
+for (68)
+    en la izquierda: 41 42, en la derecha: 7
+pasos_for (69)
+    en la izquierda: 43, en la derecha: 41
+asig_val (70)
+    en la izquierda: 44 45 46 47, en la derecha: 39 41 42 49
+asignacion (71)
+    en la izquierda: 48, en la derecha: 8
+display (72)
+    en la izquierda: 49, en la derecha: 11
+get_action (73)
+    en la izquierda: 50, en la derecha: 12
+op_comparacion (74)
+    en la izquierda: 51 52 53 54 55 56, en la derecha: 32
 
 
 estado 0
 
     0 $accept: . programa $end
 
-    WHILE  desplazar e ir al estado 1
-    IF     desplazar e ir al estado 2
-    DIM    desplazar e ir al estado 3
-    FOR    desplazar e ir al estado 4
-    ID     desplazar e ir al estado 5
+    OP_PAR      desplazar e ir al estado 1
+    WHILE       desplazar e ir al estado 2
+    IF          desplazar e ir al estado 3
+    DIM         desplazar e ir al estado 4
+    FOR         desplazar e ir al estado 5
+    STRING_DEC  desplazar e ir al estado 6
+    INT_NUM     desplazar e ir al estado 7
+    FLOAT_NUM   desplazar e ir al estado 8
+    DISPLAY     desplazar e ir al estado 9
+    GET         desplazar e ir al estado 10
+    ID          desplazar e ir al estado 11
 
-    programa         ir al estado 6
-    main             ir al estado 7
-    resto_programa   ir al estado 8
-    sentencia        ir al estado 9
-    declaracion_var  ir al estado 10
-    while            ir al estado 11
-    if               ir al estado 12
-    for              ir al estado 13
-    asignacion       ir al estado 14
+    programa         ir al estado 12
+    main             ir al estado 13
+    resto_programa   ir al estado 14
+    sentencia        ir al estado 15
+    declaracion_var  ir al estado 16
+    while            ir al estado 17
+    if               ir al estado 18
+    expresion        ir al estado 19
+    termino          ir al estado 20
+    termino_par      ir al estado 21
+    for              ir al estado 22
+    asig_val         ir al estado 23
+    asignacion       ir al estado 24
+    display          ir al estado 25
+    get_action       ir al estado 26
 
 
 estado 1
 
-   18 while: WHILE . ID IN list_exp DO sentencia ENDWHILE
+   40 termino_par: OP_PAR . expresion CL_PAR
 
-    ID  desplazar e ir al estado 15
+    OP_PAR      desplazar e ir al estado 1
+    STRING_DEC  desplazar e ir al estado 6
+    INT_NUM     desplazar e ir al estado 7
+    FLOAT_NUM   desplazar e ir al estado 8
+    ID          desplazar e ir al estado 27
+
+    expresion    ir al estado 28
+    termino      ir al estado 20
+    termino_par  ir al estado 21
+    asig_val     ir al estado 23
 
 
 estado 2
 
-   21 if: IF . OP_PAR condicion CL_PAR sentencia ENDIF
-   22   | IF . OP_PAR condicion CL_PAR sentencia ELSE sentencia ENDIF
+   21 while: WHILE . ID IN exp_while DO sentencia ENDWHILE
 
-    OP_PAR  desplazar e ir al estado 16
+    ID  desplazar e ir al estado 29
 
 
 estado 3
 
-   10 declaracion_var: DIM . OP_CORC list_var CL_COR AS OP_CORC list_types CL_COR
+   25 if: IF . OP_PAR condicion CL_PAR sentencia ENDIF
+   26   | IF . OP_PAR condicion CL_PAR sentencia ELSE sentencia ENDIF
 
-    OP_CORC  desplazar e ir al estado 17
+    OP_PAR  desplazar e ir al estado 30
 
 
 estado 4
 
-   37 for: FOR . ID OP_ASIG asig_val TO asig_val pasos_for sentencia NEXT ID
-   38    | FOR . ID OP_ASIG asig_val TO asig_val sentencia NEXT ID
+   13 declaracion_var: DIM . OP_CORC list_var CL_COR AS OP_CORC list_types CL_COR
 
-    ID  desplazar e ir al estado 18
+    OP_CORC  desplazar e ir al estado 31
 
 
 estado 5
 
-   44 asignacion: ID . OP_ASIG expresion
+   41 for: FOR . ID OP_ASIG asig_val TO asig_val pasos_for sentencia NEXT ID
+   42    | FOR . ID OP_ASIG asig_val TO asig_val sentencia NEXT ID
 
-    OP_ASIG  desplazar e ir al estado 19
+    ID  desplazar e ir al estado 32
 
 
 estado 6
 
-    0 $accept: programa . $end
+   47 asig_val: STRING_DEC .
 
-    $end  desplazar e ir al estado 20
+    $default  reduce usando la regla 47 (asig_val)
 
 
 estado 7
+
+   45 asig_val: INT_NUM .
+
+    $default  reduce usando la regla 45 (asig_val)
+
+
+estado 8
+
+   46 asig_val: FLOAT_NUM .
+
+    $default  reduce usando la regla 46 (asig_val)
+
+
+estado 9
+
+   49 display: DISPLAY . asig_val
+
+    STRING_DEC  desplazar e ir al estado 6
+    INT_NUM     desplazar e ir al estado 7
+    FLOAT_NUM   desplazar e ir al estado 8
+    ID          desplazar e ir al estado 27
+
+    asig_val  ir al estado 33
+
+
+estado 10
+
+   50 get_action: GET . ID
+
+    ID  desplazar e ir al estado 34
+
+
+estado 11
+
+   44 asig_val: ID .
+   48 asignacion: ID . OP_ASIG expresion
+
+    OP_ASIG  desplazar e ir al estado 35
+
+    $default  reduce usando la regla 44 (asig_val)
+
+
+estado 12
+
+    0 $accept: programa . $end
+
+    $end  desplazar e ir al estado 36
+
+
+estado 13
 
     1 programa: main .
 
     $default  reduce usando la regla 1 (programa)
 
 
-estado 8
+estado 14
 
     2 main: resto_programa .
     4 resto_programa: resto_programa . sentencia
 
-    WHILE  desplazar e ir al estado 1
-    IF     desplazar e ir al estado 2
-    DIM    desplazar e ir al estado 3
-    FOR    desplazar e ir al estado 4
-    ID     desplazar e ir al estado 5
+    OP_PAR      desplazar e ir al estado 1
+    WHILE       desplazar e ir al estado 2
+    IF          desplazar e ir al estado 3
+    DIM         desplazar e ir al estado 4
+    FOR         desplazar e ir al estado 5
+    STRING_DEC  desplazar e ir al estado 6
+    INT_NUM     desplazar e ir al estado 7
+    FLOAT_NUM   desplazar e ir al estado 8
+    DISPLAY     desplazar e ir al estado 9
+    GET         desplazar e ir al estado 10
+    ID          desplazar e ir al estado 11
 
     $default  reduce usando la regla 2 (main)
 
-    sentencia        ir al estado 21
-    declaracion_var  ir al estado 10
-    while            ir al estado 11
-    if               ir al estado 12
-    for              ir al estado 13
-    asignacion       ir al estado 14
+    sentencia        ir al estado 37
+    declaracion_var  ir al estado 16
+    while            ir al estado 17
+    if               ir al estado 18
+    expresion        ir al estado 19
+    termino          ir al estado 20
+    termino_par      ir al estado 21
+    for              ir al estado 22
+    asig_val         ir al estado 23
+    asignacion       ir al estado 24
+    display          ir al estado 25
+    get_action       ir al estado 26
 
 
-estado 9
+estado 15
 
     3 resto_programa: sentencia .
 
     $default  reduce usando la regla 3 (resto_programa)
 
 
-estado 10
+estado 16
 
-    9 sentencia: declaracion_var .
+    9 sentencia: declaracion_var . OP_ENDLINE
 
-    $default  reduce usando la regla 9 (sentencia)
+    OP_ENDLINE  desplazar e ir al estado 38
 
 
-estado 11
+estado 17
 
     5 sentencia: while .
 
     $default  reduce usando la regla 5 (sentencia)
 
 
-estado 12
+estado 18
 
     6 sentencia: if .
 
     $default  reduce usando la regla 6 (sentencia)
 
 
-estado 13
+estado 19
+
+   10 sentencia: expresion . OP_ENDLINE
+   34 expresion: expresion . OP_SUM termino
+   35          | expresion . OP_MEN termino
+
+    OP_SUM      desplazar e ir al estado 39
+    OP_MEN      desplazar e ir al estado 40
+    OP_ENDLINE  desplazar e ir al estado 41
+
+
+estado 20
+
+   33 expresion: termino .
+   37 termino: termino . OP_MULT termino_par
+   38        | termino . OP_DIV termino_par
+
+    OP_MULT  desplazar e ir al estado 42
+    OP_DIV   desplazar e ir al estado 43
+
+    $default  reduce usando la regla 33 (expresion)
+
+
+estado 21
+
+   36 termino: termino_par .
+
+    $default  reduce usando la regla 36 (termino)
+
+
+estado 22
 
     7 sentencia: for .
 
     $default  reduce usando la regla 7 (sentencia)
 
 
-estado 14
+estado 23
 
-    8 sentencia: asignacion .
+   39 termino_par: asig_val .
 
-    $default  reduce usando la regla 8 (sentencia)
-
-
-estado 15
-
-   18 while: WHILE ID . IN list_exp DO sentencia ENDWHILE
-
-    IN  desplazar e ir al estado 22
+    $default  reduce usando la regla 39 (termino_par)
 
 
-estado 16
+estado 24
 
-   21 if: IF OP_PAR . condicion CL_PAR sentencia ENDIF
-   22   | IF OP_PAR . condicion CL_PAR sentencia ELSE sentencia ENDIF
+    8 sentencia: asignacion . OP_ENDLINE
 
-    NOT         desplazar e ir al estado 23
-    OP_PAR      desplazar e ir al estado 24
-    STRING_DEC  desplazar e ir al estado 25
-    INT_NUM     desplazar e ir al estado 26
-    FLOAT_NUM   desplazar e ir al estado 27
-    ID          desplazar e ir al estado 28
-
-    condicion          ir al estado 29
-    condicion_anidada  ir al estado 30
-    comparacion        ir al estado 31
-    expresion          ir al estado 32
-    termino            ir al estado 33
-    termino_par        ir al estado 34
-    asig_val           ir al estado 35
+    OP_ENDLINE  desplazar e ir al estado 44
 
 
-estado 17
+estado 25
 
-   10 declaracion_var: DIM OP_CORC . list_var CL_COR AS OP_CORC list_types CL_COR
+   11 sentencia: display . OP_ENDLINE
 
-    ID  desplazar e ir al estado 36
-
-    list_var  ir al estado 37
+    OP_ENDLINE  desplazar e ir al estado 45
 
 
-estado 18
+estado 26
 
-   37 for: FOR ID . OP_ASIG asig_val TO asig_val pasos_for sentencia NEXT ID
-   38    | FOR ID . OP_ASIG asig_val TO asig_val sentencia NEXT ID
+   12 sentencia: get_action . OP_ENDLINE
 
-    OP_ASIG  desplazar e ir al estado 38
-
-
-estado 19
-
-   44 asignacion: ID OP_ASIG . expresion
-
-    OP_PAR      desplazar e ir al estado 24
-    STRING_DEC  desplazar e ir al estado 25
-    INT_NUM     desplazar e ir al estado 26
-    FLOAT_NUM   desplazar e ir al estado 27
-    ID          desplazar e ir al estado 28
-
-    expresion    ir al estado 39
-    termino      ir al estado 33
-    termino_par  ir al estado 34
-    asig_val     ir al estado 35
+    OP_ENDLINE  desplazar e ir al estado 46
 
 
-estado 20
+estado 27
+
+   44 asig_val: ID .
+
+    $default  reduce usando la regla 44 (asig_val)
+
+
+estado 28
+
+   34 expresion: expresion . OP_SUM termino
+   35          | expresion . OP_MEN termino
+   40 termino_par: OP_PAR expresion . CL_PAR
+
+    OP_SUM  desplazar e ir al estado 39
+    OP_MEN  desplazar e ir al estado 40
+    CL_PAR  desplazar e ir al estado 47
+
+
+estado 29
+
+   21 while: WHILE ID . IN exp_while DO sentencia ENDWHILE
+
+    IN  desplazar e ir al estado 48
+
+
+estado 30
+
+   25 if: IF OP_PAR . condicion CL_PAR sentencia ENDIF
+   26   | IF OP_PAR . condicion CL_PAR sentencia ELSE sentencia ENDIF
+
+    NOT         desplazar e ir al estado 49
+    OP_PAR      desplazar e ir al estado 1
+    STRING_DEC  desplazar e ir al estado 6
+    INT_NUM     desplazar e ir al estado 7
+    FLOAT_NUM   desplazar e ir al estado 8
+    ID          desplazar e ir al estado 27
+
+    condicion          ir al estado 50
+    condicion_anidada  ir al estado 51
+    comparacion        ir al estado 52
+    expresion          ir al estado 53
+    termino            ir al estado 20
+    termino_par        ir al estado 21
+    asig_val           ir al estado 23
+
+
+estado 31
+
+   13 declaracion_var: DIM OP_CORC . list_var CL_COR AS OP_CORC list_types CL_COR
+
+    ID  desplazar e ir al estado 54
+
+    list_var  ir al estado 55
+
+
+estado 32
+
+   41 for: FOR ID . OP_ASIG asig_val TO asig_val pasos_for sentencia NEXT ID
+   42    | FOR ID . OP_ASIG asig_val TO asig_val sentencia NEXT ID
+
+    OP_ASIG  desplazar e ir al estado 56
+
+
+estado 33
+
+   49 display: DISPLAY asig_val .
+
+    $default  reduce usando la regla 49 (display)
+
+
+estado 34
+
+   50 get_action: GET ID .
+
+    $default  reduce usando la regla 50 (get_action)
+
+
+estado 35
+
+   48 asignacion: ID OP_ASIG . expresion
+
+    OP_PAR      desplazar e ir al estado 1
+    STRING_DEC  desplazar e ir al estado 6
+    INT_NUM     desplazar e ir al estado 7
+    FLOAT_NUM   desplazar e ir al estado 8
+    ID          desplazar e ir al estado 27
+
+    expresion    ir al estado 57
+    termino      ir al estado 20
+    termino_par  ir al estado 21
+    asig_val     ir al estado 23
+
+
+estado 36
 
     0 $accept: programa $end .
 
     $default  aceptar
 
 
-estado 21
+estado 37
 
     4 resto_programa: resto_programa sentencia .
 
     $default  reduce usando la regla 4 (resto_programa)
 
 
-estado 22
-
-   18 while: WHILE ID IN . list_exp DO sentencia ENDWHILE
-
-    OP_PAR      desplazar e ir al estado 24
-    STRING_DEC  desplazar e ir al estado 25
-    INT_NUM     desplazar e ir al estado 26
-    FLOAT_NUM   desplazar e ir al estado 27
-    ID          desplazar e ir al estado 28
-
-    list_exp     ir al estado 40
-    expresion    ir al estado 41
-    termino      ir al estado 33
-    termino_par  ir al estado 34
-    asig_val     ir al estado 35
-
-
-estado 23
-
-   25 condicion: NOT . comparacion
-
-    OP_PAR      desplazar e ir al estado 24
-    STRING_DEC  desplazar e ir al estado 25
-    INT_NUM     desplazar e ir al estado 26
-    FLOAT_NUM   desplazar e ir al estado 27
-    ID          desplazar e ir al estado 28
-
-    comparacion  ir al estado 42
-    expresion    ir al estado 32
-    termino      ir al estado 33
-    termino_par  ir al estado 34
-    asig_val     ir al estado 35
-
-
-estado 24
-
-   36 termino_par: OP_PAR . expresion CL_PAR
-
-    OP_PAR      desplazar e ir al estado 24
-    STRING_DEC  desplazar e ir al estado 25
-    INT_NUM     desplazar e ir al estado 26
-    FLOAT_NUM   desplazar e ir al estado 27
-    ID          desplazar e ir al estado 28
-
-    expresion    ir al estado 43
-    termino      ir al estado 33
-    termino_par  ir al estado 34
-    asig_val     ir al estado 35
-
-
-estado 25
-
-   43 asig_val: STRING_DEC .
-
-    $default  reduce usando la regla 43 (asig_val)
-
-
-estado 26
-
-   41 asig_val: INT_NUM .
-
-    $default  reduce usando la regla 41 (asig_val)
-
-
-estado 27
-
-   42 asig_val: FLOAT_NUM .
-
-    $default  reduce usando la regla 42 (asig_val)
-
-
-estado 28
-
-   40 asig_val: ID .
-
-    $default  reduce usando la regla 40 (asig_val)
-
-
-estado 29
-
-   21 if: IF OP_PAR condicion . CL_PAR sentencia ENDIF
-   22   | IF OP_PAR condicion . CL_PAR sentencia ELSE sentencia ENDIF
-
-    CL_PAR  desplazar e ir al estado 44
-
-
-estado 30
-
-   24 condicion: condicion_anidada .
-
-    $default  reduce usando la regla 24 (condicion)
-
-
-estado 31
-
-   23 condicion: comparacion .
-   26 condicion_anidada: comparacion . OP_AND comparacion
-   27                  | comparacion . OP_OR comparacion
-
-    OP_OR   desplazar e ir al estado 45
-    OP_AND  desplazar e ir al estado 46
-
-    $default  reduce usando la regla 23 (condicion)
-
-
-estado 32
-
-   28 comparacion: expresion . op_comparacion expresion
-   30 expresion: expresion . OP_SUM termino
-   31          | expresion . OP_MEN termino
-
-    OP_GT    desplazar e ir al estado 47
-    OP_LT    desplazar e ir al estado 48
-    OP_GE    desplazar e ir al estado 49
-    OP_LE    desplazar e ir al estado 50
-    OP_EQ    desplazar e ir al estado 51
-    OP_SUM   desplazar e ir al estado 52
-    OP_MEN   desplazar e ir al estado 53
-    OP_DIST  desplazar e ir al estado 54
-
-    op_comparacion  ir al estado 55
-
-
-estado 33
-
-   29 expresion: termino .
-   33 termino: termino . OP_MULT termino_par
-   34        | termino . OP_DIV termino_par
-
-    OP_MULT  desplazar e ir al estado 56
-    OP_DIV   desplazar e ir al estado 57
-
-    $default  reduce usando la regla 29 (expresion)
-
-
-estado 34
-
-   32 termino: termino_par .
-
-    $default  reduce usando la regla 32 (termino)
-
-
-estado 35
-
-   35 termino_par: asig_val .
-
-    $default  reduce usando la regla 35 (termino_par)
-
-
-estado 36
-
-   11 list_var: ID .
-   12         | ID . OP_COMA list_var
-
-    OP_COMA  desplazar e ir al estado 58
-
-    $default  reduce usando la regla 11 (list_var)
-
-
-estado 37
-
-   10 declaracion_var: DIM OP_CORC list_var . CL_COR AS OP_CORC list_types CL_COR
-
-    CL_COR  desplazar e ir al estado 59
-
-
 estado 38
 
-   37 for: FOR ID OP_ASIG . asig_val TO asig_val pasos_for sentencia NEXT ID
-   38    | FOR ID OP_ASIG . asig_val TO asig_val sentencia NEXT ID
+    9 sentencia: declaracion_var OP_ENDLINE .
 
-    STRING_DEC  desplazar e ir al estado 25
-    INT_NUM     desplazar e ir al estado 26
-    FLOAT_NUM   desplazar e ir al estado 27
-    ID          desplazar e ir al estado 28
-
-    asig_val  ir al estado 60
+    $default  reduce usando la regla 9 (sentencia)
 
 
 estado 39
 
-   30 expresion: expresion . OP_SUM termino
-   31          | expresion . OP_MEN termino
-   44 asignacion: ID OP_ASIG expresion .
+   34 expresion: expresion OP_SUM . termino
 
-    OP_SUM  desplazar e ir al estado 52
-    OP_MEN  desplazar e ir al estado 53
+    OP_PAR      desplazar e ir al estado 1
+    STRING_DEC  desplazar e ir al estado 6
+    INT_NUM     desplazar e ir al estado 7
+    FLOAT_NUM   desplazar e ir al estado 8
+    ID          desplazar e ir al estado 27
 
-    $default  reduce usando la regla 44 (asignacion)
+    termino      ir al estado 58
+    termino_par  ir al estado 21
+    asig_val     ir al estado 23
 
 
 estado 40
 
-   18 while: WHILE ID IN list_exp . DO sentencia ENDWHILE
-   20 list_exp: list_exp . OP_COMA expresion
+   35 expresion: expresion OP_MEN . termino
 
-    OP_COMA  desplazar e ir al estado 61
-    DO       desplazar e ir al estado 62
+    OP_PAR      desplazar e ir al estado 1
+    STRING_DEC  desplazar e ir al estado 6
+    INT_NUM     desplazar e ir al estado 7
+    FLOAT_NUM   desplazar e ir al estado 8
+    ID          desplazar e ir al estado 27
+
+    termino      ir al estado 59
+    termino_par  ir al estado 21
+    asig_val     ir al estado 23
 
 
 estado 41
 
-   19 list_exp: expresion .
-   30 expresion: expresion . OP_SUM termino
-   31          | expresion . OP_MEN termino
+   10 sentencia: expresion OP_ENDLINE .
 
-    OP_SUM  desplazar e ir al estado 52
-    OP_MEN  desplazar e ir al estado 53
-
-    $default  reduce usando la regla 19 (list_exp)
+    $default  reduce usando la regla 10 (sentencia)
 
 
 estado 42
 
-   25 condicion: NOT comparacion .
+   37 termino: termino OP_MULT . termino_par
 
-    $default  reduce usando la regla 25 (condicion)
+    OP_PAR      desplazar e ir al estado 1
+    STRING_DEC  desplazar e ir al estado 6
+    INT_NUM     desplazar e ir al estado 7
+    FLOAT_NUM   desplazar e ir al estado 8
+    ID          desplazar e ir al estado 27
+
+    termino_par  ir al estado 60
+    asig_val     ir al estado 23
 
 
 estado 43
 
-   30 expresion: expresion . OP_SUM termino
-   31          | expresion . OP_MEN termino
-   36 termino_par: OP_PAR expresion . CL_PAR
+   38 termino: termino OP_DIV . termino_par
 
-    OP_SUM  desplazar e ir al estado 52
-    OP_MEN  desplazar e ir al estado 53
-    CL_PAR  desplazar e ir al estado 63
+    OP_PAR      desplazar e ir al estado 1
+    STRING_DEC  desplazar e ir al estado 6
+    INT_NUM     desplazar e ir al estado 7
+    FLOAT_NUM   desplazar e ir al estado 8
+    ID          desplazar e ir al estado 27
+
+    termino_par  ir al estado 61
+    asig_val     ir al estado 23
 
 
 estado 44
 
-   21 if: IF OP_PAR condicion CL_PAR . sentencia ENDIF
-   22   | IF OP_PAR condicion CL_PAR . sentencia ELSE sentencia ENDIF
+    8 sentencia: asignacion OP_ENDLINE .
 
-    WHILE  desplazar e ir al estado 1
-    IF     desplazar e ir al estado 2
-    DIM    desplazar e ir al estado 3
-    FOR    desplazar e ir al estado 4
-    ID     desplazar e ir al estado 5
-
-    sentencia        ir al estado 64
-    declaracion_var  ir al estado 10
-    while            ir al estado 11
-    if               ir al estado 12
-    for              ir al estado 13
-    asignacion       ir al estado 14
+    $default  reduce usando la regla 8 (sentencia)
 
 
 estado 45
 
-   27 condicion_anidada: comparacion OP_OR . comparacion
+   11 sentencia: display OP_ENDLINE .
 
-    OP_PAR      desplazar e ir al estado 24
-    STRING_DEC  desplazar e ir al estado 25
-    INT_NUM     desplazar e ir al estado 26
-    FLOAT_NUM   desplazar e ir al estado 27
-    ID          desplazar e ir al estado 28
-
-    comparacion  ir al estado 65
-    expresion    ir al estado 32
-    termino      ir al estado 33
-    termino_par  ir al estado 34
-    asig_val     ir al estado 35
+    $default  reduce usando la regla 11 (sentencia)
 
 
 estado 46
 
-   26 condicion_anidada: comparacion OP_AND . comparacion
+   12 sentencia: get_action OP_ENDLINE .
 
-    OP_PAR      desplazar e ir al estado 24
-    STRING_DEC  desplazar e ir al estado 25
-    INT_NUM     desplazar e ir al estado 26
-    FLOAT_NUM   desplazar e ir al estado 27
-    ID          desplazar e ir al estado 28
-
-    comparacion  ir al estado 66
-    expresion    ir al estado 32
-    termino      ir al estado 33
-    termino_par  ir al estado 34
-    asig_val     ir al estado 35
+    $default  reduce usando la regla 12 (sentencia)
 
 
 estado 47
 
-   47 op_comparacion: OP_GT .
+   40 termino_par: OP_PAR expresion CL_PAR .
 
-    $default  reduce usando la regla 47 (op_comparacion)
+    $default  reduce usando la regla 40 (termino_par)
 
 
 estado 48
 
-   49 op_comparacion: OP_LT .
+   21 while: WHILE ID IN . exp_while DO sentencia ENDWHILE
 
-    $default  reduce usando la regla 49 (op_comparacion)
+    OP_CORC  desplazar e ir al estado 62
+
+    exp_while  ir al estado 63
 
 
 estado 49
 
-   46 op_comparacion: OP_GE .
+   29 condicion: NOT . comparacion
 
-    $default  reduce usando la regla 46 (op_comparacion)
+    OP_PAR      desplazar e ir al estado 1
+    STRING_DEC  desplazar e ir al estado 6
+    INT_NUM     desplazar e ir al estado 7
+    FLOAT_NUM   desplazar e ir al estado 8
+    ID          desplazar e ir al estado 27
+
+    comparacion  ir al estado 64
+    expresion    ir al estado 53
+    termino      ir al estado 20
+    termino_par  ir al estado 21
+    asig_val     ir al estado 23
 
 
 estado 50
 
-   48 op_comparacion: OP_LE .
+   25 if: IF OP_PAR condicion . CL_PAR sentencia ENDIF
+   26   | IF OP_PAR condicion . CL_PAR sentencia ELSE sentencia ENDIF
 
-    $default  reduce usando la regla 48 (op_comparacion)
+    CL_PAR  desplazar e ir al estado 65
 
 
 estado 51
 
-   45 op_comparacion: OP_EQ .
+   28 condicion: condicion_anidada .
 
-    $default  reduce usando la regla 45 (op_comparacion)
+    $default  reduce usando la regla 28 (condicion)
 
 
 estado 52
 
-   30 expresion: expresion OP_SUM . termino
+   27 condicion: comparacion .
+   30 condicion_anidada: comparacion . OP_AND comparacion
+   31                  | comparacion . OP_OR comparacion
 
-    OP_PAR      desplazar e ir al estado 24
-    STRING_DEC  desplazar e ir al estado 25
-    INT_NUM     desplazar e ir al estado 26
-    FLOAT_NUM   desplazar e ir al estado 27
-    ID          desplazar e ir al estado 28
+    OP_OR   desplazar e ir al estado 66
+    OP_AND  desplazar e ir al estado 67
 
-    termino      ir al estado 67
-    termino_par  ir al estado 34
-    asig_val     ir al estado 35
+    $default  reduce usando la regla 27 (condicion)
 
 
 estado 53
 
-   31 expresion: expresion OP_MEN . termino
+   32 comparacion: expresion . op_comparacion expresion
+   34 expresion: expresion . OP_SUM termino
+   35          | expresion . OP_MEN termino
 
-    OP_PAR      desplazar e ir al estado 24
-    STRING_DEC  desplazar e ir al estado 25
-    INT_NUM     desplazar e ir al estado 26
-    FLOAT_NUM   desplazar e ir al estado 27
-    ID          desplazar e ir al estado 28
+    OP_GT    desplazar e ir al estado 68
+    OP_LT    desplazar e ir al estado 69
+    OP_GE    desplazar e ir al estado 70
+    OP_LE    desplazar e ir al estado 71
+    OP_EQ    desplazar e ir al estado 72
+    OP_SUM   desplazar e ir al estado 39
+    OP_MEN   desplazar e ir al estado 40
+    OP_DIST  desplazar e ir al estado 73
 
-    termino      ir al estado 68
-    termino_par  ir al estado 34
-    asig_val     ir al estado 35
+    op_comparacion  ir al estado 74
 
 
 estado 54
 
-   50 op_comparacion: OP_DIST .
+   14 list_var: ID .
+   15         | ID . OP_COMA list_var
 
-    $default  reduce usando la regla 50 (op_comparacion)
+    OP_COMA  desplazar e ir al estado 75
+
+    $default  reduce usando la regla 14 (list_var)
 
 
 estado 55
 
-   28 comparacion: expresion op_comparacion . expresion
+   13 declaracion_var: DIM OP_CORC list_var . CL_COR AS OP_CORC list_types CL_COR
 
-    OP_PAR      desplazar e ir al estado 24
-    STRING_DEC  desplazar e ir al estado 25
-    INT_NUM     desplazar e ir al estado 26
-    FLOAT_NUM   desplazar e ir al estado 27
-    ID          desplazar e ir al estado 28
-
-    expresion    ir al estado 69
-    termino      ir al estado 33
-    termino_par  ir al estado 34
-    asig_val     ir al estado 35
+    CL_COR  desplazar e ir al estado 76
 
 
 estado 56
 
-   33 termino: termino OP_MULT . termino_par
+   41 for: FOR ID OP_ASIG . asig_val TO asig_val pasos_for sentencia NEXT ID
+   42    | FOR ID OP_ASIG . asig_val TO asig_val sentencia NEXT ID
 
-    OP_PAR      desplazar e ir al estado 24
-    STRING_DEC  desplazar e ir al estado 25
-    INT_NUM     desplazar e ir al estado 26
-    FLOAT_NUM   desplazar e ir al estado 27
-    ID          desplazar e ir al estado 28
+    STRING_DEC  desplazar e ir al estado 6
+    INT_NUM     desplazar e ir al estado 7
+    FLOAT_NUM   desplazar e ir al estado 8
+    ID          desplazar e ir al estado 27
 
-    termino_par  ir al estado 70
-    asig_val     ir al estado 35
+    asig_val  ir al estado 77
 
 
 estado 57
 
-   34 termino: termino OP_DIV . termino_par
+   34 expresion: expresion . OP_SUM termino
+   35          | expresion . OP_MEN termino
+   48 asignacion: ID OP_ASIG expresion .
 
-    OP_PAR      desplazar e ir al estado 24
-    STRING_DEC  desplazar e ir al estado 25
-    INT_NUM     desplazar e ir al estado 26
-    FLOAT_NUM   desplazar e ir al estado 27
-    ID          desplazar e ir al estado 28
+    OP_SUM  desplazar e ir al estado 39
+    OP_MEN  desplazar e ir al estado 40
 
-    termino_par  ir al estado 71
-    asig_val     ir al estado 35
+    $default  reduce usando la regla 48 (asignacion)
 
 
 estado 58
 
-   12 list_var: ID OP_COMA . list_var
+   34 expresion: expresion OP_SUM termino .
+   37 termino: termino . OP_MULT termino_par
+   38        | termino . OP_DIV termino_par
 
-    ID  desplazar e ir al estado 36
+    OP_MULT  desplazar e ir al estado 42
+    OP_DIV   desplazar e ir al estado 43
 
-    list_var  ir al estado 72
+    $default  reduce usando la regla 34 (expresion)
 
 
 estado 59
 
-   10 declaracion_var: DIM OP_CORC list_var CL_COR . AS OP_CORC list_types CL_COR
+   35 expresion: expresion OP_MEN termino .
+   37 termino: termino . OP_MULT termino_par
+   38        | termino . OP_DIV termino_par
 
-    AS  desplazar e ir al estado 73
+    OP_MULT  desplazar e ir al estado 42
+    OP_DIV   desplazar e ir al estado 43
+
+    $default  reduce usando la regla 35 (expresion)
 
 
 estado 60
 
-   37 for: FOR ID OP_ASIG asig_val . TO asig_val pasos_for sentencia NEXT ID
-   38    | FOR ID OP_ASIG asig_val . TO asig_val sentencia NEXT ID
+   37 termino: termino OP_MULT termino_par .
 
-    TO  desplazar e ir al estado 74
+    $default  reduce usando la regla 37 (termino)
 
 
 estado 61
 
-   20 list_exp: list_exp OP_COMA . expresion
+   38 termino: termino OP_DIV termino_par .
 
-    OP_PAR      desplazar e ir al estado 24
-    STRING_DEC  desplazar e ir al estado 25
-    INT_NUM     desplazar e ir al estado 26
-    FLOAT_NUM   desplazar e ir al estado 27
-    ID          desplazar e ir al estado 28
-
-    expresion    ir al estado 75
-    termino      ir al estado 33
-    termino_par  ir al estado 34
-    asig_val     ir al estado 35
+    $default  reduce usando la regla 38 (termino)
 
 
 estado 62
 
-   18 while: WHILE ID IN list_exp DO . sentencia ENDWHILE
+   22 exp_while: OP_CORC . list_exp CL_COR
 
-    WHILE  desplazar e ir al estado 1
-    IF     desplazar e ir al estado 2
-    DIM    desplazar e ir al estado 3
-    FOR    desplazar e ir al estado 4
-    ID     desplazar e ir al estado 5
+    ID  desplazar e ir al estado 78
 
-    sentencia        ir al estado 76
-    declaracion_var  ir al estado 10
-    while            ir al estado 11
-    if               ir al estado 12
-    for              ir al estado 13
-    asignacion       ir al estado 14
+    list_exp  ir al estado 79
 
 
 estado 63
 
-   36 termino_par: OP_PAR expresion CL_PAR .
+   21 while: WHILE ID IN exp_while . DO sentencia ENDWHILE
 
-    $default  reduce usando la regla 36 (termino_par)
+    DO  desplazar e ir al estado 80
 
 
 estado 64
 
-   21 if: IF OP_PAR condicion CL_PAR sentencia . ENDIF
-   22   | IF OP_PAR condicion CL_PAR sentencia . ELSE sentencia ENDIF
+   29 condicion: NOT comparacion .
 
-    ENDIF  desplazar e ir al estado 77
-    ELSE   desplazar e ir al estado 78
+    $default  reduce usando la regla 29 (condicion)
 
 
 estado 65
 
-   27 condicion_anidada: comparacion OP_OR comparacion .
+   25 if: IF OP_PAR condicion CL_PAR . sentencia ENDIF
+   26   | IF OP_PAR condicion CL_PAR . sentencia ELSE sentencia ENDIF
 
-    $default  reduce usando la regla 27 (condicion_anidada)
+    OP_PAR      desplazar e ir al estado 1
+    WHILE       desplazar e ir al estado 2
+    IF          desplazar e ir al estado 3
+    DIM         desplazar e ir al estado 4
+    FOR         desplazar e ir al estado 5
+    STRING_DEC  desplazar e ir al estado 6
+    INT_NUM     desplazar e ir al estado 7
+    FLOAT_NUM   desplazar e ir al estado 8
+    DISPLAY     desplazar e ir al estado 9
+    GET         desplazar e ir al estado 10
+    ID          desplazar e ir al estado 11
+
+    sentencia        ir al estado 81
+    declaracion_var  ir al estado 16
+    while            ir al estado 17
+    if               ir al estado 18
+    expresion        ir al estado 19
+    termino          ir al estado 20
+    termino_par      ir al estado 21
+    for              ir al estado 22
+    asig_val         ir al estado 23
+    asignacion       ir al estado 24
+    display          ir al estado 25
+    get_action       ir al estado 26
 
 
 estado 66
 
-   26 condicion_anidada: comparacion OP_AND comparacion .
+   31 condicion_anidada: comparacion OP_OR . comparacion
 
-    $default  reduce usando la regla 26 (condicion_anidada)
+    OP_PAR      desplazar e ir al estado 1
+    STRING_DEC  desplazar e ir al estado 6
+    INT_NUM     desplazar e ir al estado 7
+    FLOAT_NUM   desplazar e ir al estado 8
+    ID          desplazar e ir al estado 27
+
+    comparacion  ir al estado 82
+    expresion    ir al estado 53
+    termino      ir al estado 20
+    termino_par  ir al estado 21
+    asig_val     ir al estado 23
 
 
 estado 67
 
-   30 expresion: expresion OP_SUM termino .
-   33 termino: termino . OP_MULT termino_par
-   34        | termino . OP_DIV termino_par
+   30 condicion_anidada: comparacion OP_AND . comparacion
 
-    OP_MULT  desplazar e ir al estado 56
-    OP_DIV   desplazar e ir al estado 57
+    OP_PAR      desplazar e ir al estado 1
+    STRING_DEC  desplazar e ir al estado 6
+    INT_NUM     desplazar e ir al estado 7
+    FLOAT_NUM   desplazar e ir al estado 8
+    ID          desplazar e ir al estado 27
 
-    $default  reduce usando la regla 30 (expresion)
+    comparacion  ir al estado 83
+    expresion    ir al estado 53
+    termino      ir al estado 20
+    termino_par  ir al estado 21
+    asig_val     ir al estado 23
 
 
 estado 68
 
-   31 expresion: expresion OP_MEN termino .
-   33 termino: termino . OP_MULT termino_par
-   34        | termino . OP_DIV termino_par
+   53 op_comparacion: OP_GT .
 
-    OP_MULT  desplazar e ir al estado 56
-    OP_DIV   desplazar e ir al estado 57
-
-    $default  reduce usando la regla 31 (expresion)
+    $default  reduce usando la regla 53 (op_comparacion)
 
 
 estado 69
 
-   28 comparacion: expresion op_comparacion expresion .
-   30 expresion: expresion . OP_SUM termino
-   31          | expresion . OP_MEN termino
+   55 op_comparacion: OP_LT .
 
-    OP_SUM  desplazar e ir al estado 52
-    OP_MEN  desplazar e ir al estado 53
-
-    $default  reduce usando la regla 28 (comparacion)
+    $default  reduce usando la regla 55 (op_comparacion)
 
 
 estado 70
 
-   33 termino: termino OP_MULT termino_par .
+   52 op_comparacion: OP_GE .
 
-    $default  reduce usando la regla 33 (termino)
+    $default  reduce usando la regla 52 (op_comparacion)
 
 
 estado 71
 
-   34 termino: termino OP_DIV termino_par .
+   54 op_comparacion: OP_LE .
 
-    $default  reduce usando la regla 34 (termino)
+    $default  reduce usando la regla 54 (op_comparacion)
 
 
 estado 72
 
-   12 list_var: ID OP_COMA list_var .
+   51 op_comparacion: OP_EQ .
 
-    $default  reduce usando la regla 12 (list_var)
+    $default  reduce usando la regla 51 (op_comparacion)
 
 
 estado 73
 
-   10 declaracion_var: DIM OP_CORC list_var CL_COR AS . OP_CORC list_types CL_COR
+   56 op_comparacion: OP_DIST .
 
-    OP_CORC  desplazar e ir al estado 79
+    $default  reduce usando la regla 56 (op_comparacion)
 
 
 estado 74
 
-   37 for: FOR ID OP_ASIG asig_val TO . asig_val pasos_for sentencia NEXT ID
-   38    | FOR ID OP_ASIG asig_val TO . asig_val sentencia NEXT ID
+   32 comparacion: expresion op_comparacion . expresion
 
-    STRING_DEC  desplazar e ir al estado 25
-    INT_NUM     desplazar e ir al estado 26
-    FLOAT_NUM   desplazar e ir al estado 27
-    ID          desplazar e ir al estado 28
+    OP_PAR      desplazar e ir al estado 1
+    STRING_DEC  desplazar e ir al estado 6
+    INT_NUM     desplazar e ir al estado 7
+    FLOAT_NUM   desplazar e ir al estado 8
+    ID          desplazar e ir al estado 27
 
-    asig_val  ir al estado 80
+    expresion    ir al estado 84
+    termino      ir al estado 20
+    termino_par  ir al estado 21
+    asig_val     ir al estado 23
 
 
 estado 75
 
-   20 list_exp: list_exp OP_COMA expresion .
-   30 expresion: expresion . OP_SUM termino
-   31          | expresion . OP_MEN termino
+   15 list_var: ID OP_COMA . list_var
 
-    OP_SUM  desplazar e ir al estado 52
-    OP_MEN  desplazar e ir al estado 53
+    ID  desplazar e ir al estado 54
 
-    $default  reduce usando la regla 20 (list_exp)
+    list_var  ir al estado 85
 
 
 estado 76
 
-   18 while: WHILE ID IN list_exp DO sentencia . ENDWHILE
+   13 declaracion_var: DIM OP_CORC list_var CL_COR . AS OP_CORC list_types CL_COR
 
-    ENDWHILE  desplazar e ir al estado 81
+    AS  desplazar e ir al estado 86
 
 
 estado 77
 
-   21 if: IF OP_PAR condicion CL_PAR sentencia ENDIF .
+   41 for: FOR ID OP_ASIG asig_val . TO asig_val pasos_for sentencia NEXT ID
+   42    | FOR ID OP_ASIG asig_val . TO asig_val sentencia NEXT ID
 
-    $default  reduce usando la regla 21 (if)
+    TO  desplazar e ir al estado 87
 
 
 estado 78
 
-   22 if: IF OP_PAR condicion CL_PAR sentencia ELSE . sentencia ENDIF
+   23 list_exp: ID .
+   24         | ID . OP_COMA list_exp
 
-    WHILE  desplazar e ir al estado 1
-    IF     desplazar e ir al estado 2
-    DIM    desplazar e ir al estado 3
-    FOR    desplazar e ir al estado 4
-    ID     desplazar e ir al estado 5
+    OP_COMA  desplazar e ir al estado 88
 
-    sentencia        ir al estado 82
-    declaracion_var  ir al estado 10
-    while            ir al estado 11
-    if               ir al estado 12
-    for              ir al estado 13
-    asignacion       ir al estado 14
+    $default  reduce usando la regla 23 (list_exp)
 
 
 estado 79
 
-   10 declaracion_var: DIM OP_CORC list_var CL_COR AS OP_CORC . list_types CL_COR
+   22 exp_while: OP_CORC list_exp . CL_COR
 
-    INT_TYPE     desplazar e ir al estado 83
-    REAL_TYPE    desplazar e ir al estado 84
-    STRING_TYPE  desplazar e ir al estado 85
-
-    type_var    ir al estado 86
-    list_types  ir al estado 87
+    CL_COR  desplazar e ir al estado 89
 
 
 estado 80
 
-   37 for: FOR ID OP_ASIG asig_val TO asig_val . pasos_for sentencia NEXT ID
-   38    | FOR ID OP_ASIG asig_val TO asig_val . sentencia NEXT ID
+   21 while: WHILE ID IN exp_while DO . sentencia ENDWHILE
 
-    OP_CORC  desplazar e ir al estado 88
-    WHILE    desplazar e ir al estado 1
-    IF       desplazar e ir al estado 2
-    DIM      desplazar e ir al estado 3
-    FOR      desplazar e ir al estado 4
-    ID       desplazar e ir al estado 5
+    OP_PAR      desplazar e ir al estado 1
+    WHILE       desplazar e ir al estado 2
+    IF          desplazar e ir al estado 3
+    DIM         desplazar e ir al estado 4
+    FOR         desplazar e ir al estado 5
+    STRING_DEC  desplazar e ir al estado 6
+    INT_NUM     desplazar e ir al estado 7
+    FLOAT_NUM   desplazar e ir al estado 8
+    DISPLAY     desplazar e ir al estado 9
+    GET         desplazar e ir al estado 10
+    ID          desplazar e ir al estado 11
 
-    sentencia        ir al estado 89
-    declaracion_var  ir al estado 10
-    while            ir al estado 11
-    if               ir al estado 12
-    for              ir al estado 13
-    pasos_for        ir al estado 90
-    asignacion       ir al estado 14
+    sentencia        ir al estado 90
+    declaracion_var  ir al estado 16
+    while            ir al estado 17
+    if               ir al estado 18
+    expresion        ir al estado 19
+    termino          ir al estado 20
+    termino_par      ir al estado 21
+    for              ir al estado 22
+    asig_val         ir al estado 23
+    asignacion       ir al estado 24
+    display          ir al estado 25
+    get_action       ir al estado 26
 
 
 estado 81
 
-   18 while: WHILE ID IN list_exp DO sentencia ENDWHILE .
+   25 if: IF OP_PAR condicion CL_PAR sentencia . ENDIF
+   26   | IF OP_PAR condicion CL_PAR sentencia . ELSE sentencia ENDIF
 
-    $default  reduce usando la regla 18 (while)
+    ENDIF  desplazar e ir al estado 91
+    ELSE   desplazar e ir al estado 92
 
 
 estado 82
 
-   22 if: IF OP_PAR condicion CL_PAR sentencia ELSE sentencia . ENDIF
+   31 condicion_anidada: comparacion OP_OR comparacion .
 
-    ENDIF  desplazar e ir al estado 91
+    $default  reduce usando la regla 31 (condicion_anidada)
 
 
 estado 83
 
-   13 type_var: INT_TYPE .
+   30 condicion_anidada: comparacion OP_AND comparacion .
 
-    $default  reduce usando la regla 13 (type_var)
+    $default  reduce usando la regla 30 (condicion_anidada)
 
 
 estado 84
 
-   14 type_var: REAL_TYPE .
+   32 comparacion: expresion op_comparacion expresion .
+   34 expresion: expresion . OP_SUM termino
+   35          | expresion . OP_MEN termino
 
-    $default  reduce usando la regla 14 (type_var)
+    OP_SUM  desplazar e ir al estado 39
+    OP_MEN  desplazar e ir al estado 40
+
+    $default  reduce usando la regla 32 (comparacion)
 
 
 estado 85
 
-   15 type_var: STRING_TYPE .
+   15 list_var: ID OP_COMA list_var .
 
-    $default  reduce usando la regla 15 (type_var)
+    $default  reduce usando la regla 15 (list_var)
 
 
 estado 86
 
-   16 list_types: type_var .
+   13 declaracion_var: DIM OP_CORC list_var CL_COR AS . OP_CORC list_types CL_COR
 
-    $default  reduce usando la regla 16 (list_types)
+    OP_CORC  desplazar e ir al estado 93
 
 
 estado 87
 
-   10 declaracion_var: DIM OP_CORC list_var CL_COR AS OP_CORC list_types . CL_COR
-   17 list_types: list_types . OP_COMA type_var
+   41 for: FOR ID OP_ASIG asig_val TO . asig_val pasos_for sentencia NEXT ID
+   42    | FOR ID OP_ASIG asig_val TO . asig_val sentencia NEXT ID
 
-    OP_COMA  desplazar e ir al estado 92
-    CL_COR   desplazar e ir al estado 93
+    STRING_DEC  desplazar e ir al estado 6
+    INT_NUM     desplazar e ir al estado 7
+    FLOAT_NUM   desplazar e ir al estado 8
+    ID          desplazar e ir al estado 27
+
+    asig_val  ir al estado 94
 
 
 estado 88
 
-   39 pasos_for: OP_CORC . expresion CL_COR
+   24 list_exp: ID OP_COMA . list_exp
 
-    OP_PAR      desplazar e ir al estado 24
-    STRING_DEC  desplazar e ir al estado 25
-    INT_NUM     desplazar e ir al estado 26
-    FLOAT_NUM   desplazar e ir al estado 27
-    ID          desplazar e ir al estado 28
+    ID  desplazar e ir al estado 78
 
-    expresion    ir al estado 94
-    termino      ir al estado 33
-    termino_par  ir al estado 34
-    asig_val     ir al estado 35
+    list_exp  ir al estado 95
 
 
 estado 89
 
-   38 for: FOR ID OP_ASIG asig_val TO asig_val sentencia . NEXT ID
+   22 exp_while: OP_CORC list_exp CL_COR .
 
-    NEXT  desplazar e ir al estado 95
+    $default  reduce usando la regla 22 (exp_while)
 
 
 estado 90
 
-   37 for: FOR ID OP_ASIG asig_val TO asig_val pasos_for . sentencia NEXT ID
+   21 while: WHILE ID IN exp_while DO sentencia . ENDWHILE
 
-    WHILE  desplazar e ir al estado 1
-    IF     desplazar e ir al estado 2
-    DIM    desplazar e ir al estado 3
-    FOR    desplazar e ir al estado 4
-    ID     desplazar e ir al estado 5
-
-    sentencia        ir al estado 96
-    declaracion_var  ir al estado 10
-    while            ir al estado 11
-    if               ir al estado 12
-    for              ir al estado 13
-    asignacion       ir al estado 14
+    ENDWHILE  desplazar e ir al estado 96
 
 
 estado 91
 
-   22 if: IF OP_PAR condicion CL_PAR sentencia ELSE sentencia ENDIF .
+   25 if: IF OP_PAR condicion CL_PAR sentencia ENDIF .
 
-    $default  reduce usando la regla 22 (if)
+    $default  reduce usando la regla 25 (if)
 
 
 estado 92
 
-   17 list_types: list_types OP_COMA . type_var
+   26 if: IF OP_PAR condicion CL_PAR sentencia ELSE . sentencia ENDIF
 
-    INT_TYPE     desplazar e ir al estado 83
-    REAL_TYPE    desplazar e ir al estado 84
-    STRING_TYPE  desplazar e ir al estado 85
+    OP_PAR      desplazar e ir al estado 1
+    WHILE       desplazar e ir al estado 2
+    IF          desplazar e ir al estado 3
+    DIM         desplazar e ir al estado 4
+    FOR         desplazar e ir al estado 5
+    STRING_DEC  desplazar e ir al estado 6
+    INT_NUM     desplazar e ir al estado 7
+    FLOAT_NUM   desplazar e ir al estado 8
+    DISPLAY     desplazar e ir al estado 9
+    GET         desplazar e ir al estado 10
+    ID          desplazar e ir al estado 11
 
-    type_var  ir al estado 97
+    sentencia        ir al estado 97
+    declaracion_var  ir al estado 16
+    while            ir al estado 17
+    if               ir al estado 18
+    expresion        ir al estado 19
+    termino          ir al estado 20
+    termino_par      ir al estado 21
+    for              ir al estado 22
+    asig_val         ir al estado 23
+    asignacion       ir al estado 24
+    display          ir al estado 25
+    get_action       ir al estado 26
 
 
 estado 93
 
-   10 declaracion_var: DIM OP_CORC list_var CL_COR AS OP_CORC list_types CL_COR .
+   13 declaracion_var: DIM OP_CORC list_var CL_COR AS OP_CORC . list_types CL_COR
 
-    $default  reduce usando la regla 10 (declaracion_var)
+    INT_TYPE     desplazar e ir al estado 98
+    REAL_TYPE    desplazar e ir al estado 99
+    STRING_TYPE  desplazar e ir al estado 100
+
+    type_var    ir al estado 101
+    list_types  ir al estado 102
 
 
 estado 94
 
-   30 expresion: expresion . OP_SUM termino
-   31          | expresion . OP_MEN termino
-   39 pasos_for: OP_CORC expresion . CL_COR
+   41 for: FOR ID OP_ASIG asig_val TO asig_val . pasos_for sentencia NEXT ID
+   42    | FOR ID OP_ASIG asig_val TO asig_val . sentencia NEXT ID
 
-    OP_SUM  desplazar e ir al estado 52
-    OP_MEN  desplazar e ir al estado 53
-    CL_COR  desplazar e ir al estado 98
+    OP_PAR      desplazar e ir al estado 1
+    OP_CORC     desplazar e ir al estado 103
+    WHILE       desplazar e ir al estado 2
+    IF          desplazar e ir al estado 3
+    DIM         desplazar e ir al estado 4
+    FOR         desplazar e ir al estado 5
+    STRING_DEC  desplazar e ir al estado 6
+    INT_NUM     desplazar e ir al estado 7
+    FLOAT_NUM   desplazar e ir al estado 8
+    DISPLAY     desplazar e ir al estado 9
+    GET         desplazar e ir al estado 10
+    ID          desplazar e ir al estado 11
+
+    sentencia        ir al estado 104
+    declaracion_var  ir al estado 16
+    while            ir al estado 17
+    if               ir al estado 18
+    expresion        ir al estado 19
+    termino          ir al estado 20
+    termino_par      ir al estado 21
+    for              ir al estado 22
+    pasos_for        ir al estado 105
+    asig_val         ir al estado 23
+    asignacion       ir al estado 24
+    display          ir al estado 25
+    get_action       ir al estado 26
 
 
 estado 95
 
-   38 for: FOR ID OP_ASIG asig_val TO asig_val sentencia NEXT . ID
+   24 list_exp: ID OP_COMA list_exp .
 
-    ID  desplazar e ir al estado 99
+    $default  reduce usando la regla 24 (list_exp)
 
 
 estado 96
 
-   37 for: FOR ID OP_ASIG asig_val TO asig_val pasos_for sentencia . NEXT ID
+   21 while: WHILE ID IN exp_while DO sentencia ENDWHILE .
 
-    NEXT  desplazar e ir al estado 100
+    $default  reduce usando la regla 21 (while)
 
 
 estado 97
 
-   17 list_types: list_types OP_COMA type_var .
+   26 if: IF OP_PAR condicion CL_PAR sentencia ELSE sentencia . ENDIF
 
-    $default  reduce usando la regla 17 (list_types)
+    ENDIF  desplazar e ir al estado 106
 
 
 estado 98
 
-   39 pasos_for: OP_CORC expresion CL_COR .
+   16 type_var: INT_TYPE .
 
-    $default  reduce usando la regla 39 (pasos_for)
+    $default  reduce usando la regla 16 (type_var)
 
 
 estado 99
 
-   38 for: FOR ID OP_ASIG asig_val TO asig_val sentencia NEXT ID .
+   17 type_var: REAL_TYPE .
 
-    $default  reduce usando la regla 38 (for)
+    $default  reduce usando la regla 17 (type_var)
 
 
 estado 100
 
-   37 for: FOR ID OP_ASIG asig_val TO asig_val pasos_for sentencia NEXT . ID
+   18 type_var: STRING_TYPE .
 
-    ID  desplazar e ir al estado 101
+    $default  reduce usando la regla 18 (type_var)
 
 
 estado 101
 
-   37 for: FOR ID OP_ASIG asig_val TO asig_val pasos_for sentencia NEXT ID .
+   19 list_types: type_var .
 
-    $default  reduce usando la regla 37 (for)
+    $default  reduce usando la regla 19 (list_types)
+
+
+estado 102
+
+   13 declaracion_var: DIM OP_CORC list_var CL_COR AS OP_CORC list_types . CL_COR
+   20 list_types: list_types . OP_COMA type_var
+
+    OP_COMA  desplazar e ir al estado 107
+    CL_COR   desplazar e ir al estado 108
+
+
+estado 103
+
+   43 pasos_for: OP_CORC . expresion CL_COR
+
+    OP_PAR      desplazar e ir al estado 1
+    STRING_DEC  desplazar e ir al estado 6
+    INT_NUM     desplazar e ir al estado 7
+    FLOAT_NUM   desplazar e ir al estado 8
+    ID          desplazar e ir al estado 27
+
+    expresion    ir al estado 109
+    termino      ir al estado 20
+    termino_par  ir al estado 21
+    asig_val     ir al estado 23
+
+
+estado 104
+
+   42 for: FOR ID OP_ASIG asig_val TO asig_val sentencia . NEXT ID
+
+    NEXT  desplazar e ir al estado 110
+
+
+estado 105
+
+   41 for: FOR ID OP_ASIG asig_val TO asig_val pasos_for . sentencia NEXT ID
+
+    OP_PAR      desplazar e ir al estado 1
+    WHILE       desplazar e ir al estado 2
+    IF          desplazar e ir al estado 3
+    DIM         desplazar e ir al estado 4
+    FOR         desplazar e ir al estado 5
+    STRING_DEC  desplazar e ir al estado 6
+    INT_NUM     desplazar e ir al estado 7
+    FLOAT_NUM   desplazar e ir al estado 8
+    DISPLAY     desplazar e ir al estado 9
+    GET         desplazar e ir al estado 10
+    ID          desplazar e ir al estado 11
+
+    sentencia        ir al estado 111
+    declaracion_var  ir al estado 16
+    while            ir al estado 17
+    if               ir al estado 18
+    expresion        ir al estado 19
+    termino          ir al estado 20
+    termino_par      ir al estado 21
+    for              ir al estado 22
+    asig_val         ir al estado 23
+    asignacion       ir al estado 24
+    display          ir al estado 25
+    get_action       ir al estado 26
+
+
+estado 106
+
+   26 if: IF OP_PAR condicion CL_PAR sentencia ELSE sentencia ENDIF .
+
+    $default  reduce usando la regla 26 (if)
+
+
+estado 107
+
+   20 list_types: list_types OP_COMA . type_var
+
+    INT_TYPE     desplazar e ir al estado 98
+    REAL_TYPE    desplazar e ir al estado 99
+    STRING_TYPE  desplazar e ir al estado 100
+
+    type_var  ir al estado 112
+
+
+estado 108
+
+   13 declaracion_var: DIM OP_CORC list_var CL_COR AS OP_CORC list_types CL_COR .
+
+    $default  reduce usando la regla 13 (declaracion_var)
+
+
+estado 109
+
+   34 expresion: expresion . OP_SUM termino
+   35          | expresion . OP_MEN termino
+   43 pasos_for: OP_CORC expresion . CL_COR
+
+    OP_SUM  desplazar e ir al estado 39
+    OP_MEN  desplazar e ir al estado 40
+    CL_COR  desplazar e ir al estado 113
+
+
+estado 110
+
+   42 for: FOR ID OP_ASIG asig_val TO asig_val sentencia NEXT . ID
+
+    ID  desplazar e ir al estado 114
+
+
+estado 111
+
+   41 for: FOR ID OP_ASIG asig_val TO asig_val pasos_for sentencia . NEXT ID
+
+    NEXT  desplazar e ir al estado 115
+
+
+estado 112
+
+   20 list_types: list_types OP_COMA type_var .
+
+    $default  reduce usando la regla 20 (list_types)
+
+
+estado 113
+
+   43 pasos_for: OP_CORC expresion CL_COR .
+
+    $default  reduce usando la regla 43 (pasos_for)
+
+
+estado 114
+
+   42 for: FOR ID OP_ASIG asig_val TO asig_val sentencia NEXT ID .
+
+    $default  reduce usando la regla 42 (for)
+
+
+estado 115
+
+   41 for: FOR ID OP_ASIG asig_val TO asig_val pasos_for sentencia NEXT . ID
+
+    ID  desplazar e ir al estado 116
+
+
+estado 116
+
+   41 for: FOR ID OP_ASIG asig_val TO asig_val pasos_for sentencia NEXT ID .
+
+    $default  reduce usando la regla 41 (for)

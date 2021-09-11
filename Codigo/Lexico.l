@@ -2,8 +2,22 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "y.tab.h"
+
+#define MIN_INT -32768
+#define MAX_INT 32767
+#define MAX_LEN_STRING 30
+#define MIN_FLOAT -100000
+#define MAX_FLOAT 100000
+
 FILE *yyin;
+
+void procesarID();
+void procesarInt();
+void procesarFloat();
+void procesarString();
+void agregarSimbolo(char* lexema, char* tipoDato, char* valor, int longitud, char* token);
 
 %}
 
@@ -115,12 +129,12 @@ SALTO_LINEA [\t\r\f]
 {REAL_TYPE} {printf("\nREAL_TYPE: %s", yytext); return REAL_TYPE;}
 {STRING_TYPE} {printf("\nSTRING_TYPE: %s", yytext); return STRING_TYPE;}
 
-{ID}    {printf("\nID: %s", yytext); return ID;}
-{STRING_DEC}  {printf("\nSTRING_DEC: %s", yytext); return STRING_DEC;}
-{INT_NUM} {printf("\nINT_NUM: %s", yytext); return INT_NUM;}
-{FLOAT_NUM} {printf("\nFLOAT_NUM: %s", yytext); return FLOAT_NUM;}
+{ID}    {procesarID(); return ID;}
+{STRING_DEC}  {procesarString(); return STRING_DEC;}
+{INT_NUM} {procesarInt(); return INT_NUM;}
+{FLOAT_NUM} {procesarFloat(); return FLOAT_NUM;}
 
-{SALTO_LINEA} {printf("\nSALTO_LINEA: %s", yytext)};
+{SALTO_LINEA} {printf("\nSALTO_LINEA: %s", yytext);};
 
 %%
 
@@ -148,3 +162,40 @@ SALTO_LINEA [\t\r\f]
 //     exit (1);
 // }
 
+void procesarID(){
+    printf("\nID: %s", yytext);
+    agregarSimbolo(yytext, "Entero", yytext, strlen(yytext), "ID");
+}
+
+void procesarInt(){
+    int num_int = atoi(yytext);
+    if(num_int > MAX_INT || num_int < MIN_INT){
+        printf("\nError, el numero %s excede el rango entero", yytext);
+        exit(-1);
+    }else{
+        printf("\nINT_NUM: %s", yytext);
+        agregarSimbolo(yytext, "Entero", yytext, strlen(yytext), "INT_NUM");
+    }
+}
+
+void procesarFloat(){
+    int num_float = atof(yytext);
+    if(num_float > MAX_FLOAT || num_float < MIN_FLOAT){
+        printf("\nError, el numero %s excede el rango float", yytext);
+        exit(-1);
+    }else{
+        printf("\nFLOAT_NUM: %s", yytext);
+        agregarSimbolo(yytext, "Float", yytext, strlen(yytext), "FLOAT_NUM");
+    }
+}
+
+void procesarString(){
+    int long_string = strlen(yytext);
+    if(long_string > MAX_LEN_STRING){
+        printf("\nError, el string %s excede el tamanio maximo de %d caracteres", yytext, MAX_LEN_STRING);
+        exit(-1);
+    }else{
+        printf("\nSTRING_TYPE: %s", yytext);
+        agregarSimbolo(yytext, "String", yytext, strlen(yytext), "STRING_DEC");
+    }
+}
