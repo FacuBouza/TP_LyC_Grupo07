@@ -86,7 +86,7 @@ sentencia: while {printf("\nwhile:");}
 
 declaracion_var: DIM OP_CORC list_var CL_COR AS OP_CORC list_types CL_COR {printf("\nDIM OP_CORC list_var CL_COR AS OP_CORC list_types CL_COR ");};
 list_var: ID {printf("\nID");}
-        | ID OP_COMA list_var {printf("\nlist_var OP_COMA ID ");}; 
+        | list_var OP_COMA ID {printf("\nlist_var OP_COMA ID ");}; 
 type_var: INT_TYPE {printf("\nINT_TYPE:");}
         | REAL_TYPE {printf("\nREAL_TYPE");} 
         | STRING_TYPE {printf("\nSTRING_TYPE");};
@@ -95,8 +95,8 @@ list_types: type_var {printf("\ntype_var");}
 
 while: WHILE ID IN exp_while DO sentencia ENDWHILE {printf("\nWHILE ID IN list_exp DO sentencia ENDWHILE");};
 exp_while: OP_CORC list_exp CL_COR {printf("\nOP_CORC list_exp CL_CO");};
-list_exp: ID {printf("\nID");} 
-          | ID OP_COMA list_exp {printf("\nlist_exp OP_COMA ID");};
+list_exp: expresion {printf("\nID");}
+          | list_exp OP_COMA expresion {printf("\nlist_exp OP_COMA ID");};
 
 if: IF OP_PAR condicion CL_PAR sentencia ENDIF {printf("\nIF OP_PAR condicion CL_PAR sentencia ENDIF");} 
     | IF OP_PAR condicion CL_PAR sentencia ELSE sentencia ENDIF {printf("\nIF OP_PAR condicion CL_PAR sentencia ELSE sentencia ENDIF");};
@@ -161,19 +161,19 @@ int main(int argc,char **argv)
 }
 
 void inicializarTabla(){
-  simbolos[0].lexema = (char*) malloc(30);
-  strcpy(simbolos[0].lexema, "Lexema");
+  simbolos[0].nombre = (char*) malloc(31);
+  strcpy(simbolos[0].nombre, "Nombre");
 
-  simbolos[0].tipoDato = (char*) malloc(30);
+  simbolos[0].tipoDato = (char*) malloc(31);
   strcpy(simbolos[0].tipoDato, "Tipo");
 
-  simbolos[0].valor = (char*) malloc(30);
+  simbolos[0].valor = (char*) malloc(31);
   strcpy(simbolos[0].valor, "Valor");
 
-  simbolos[0].longitud = (char*) malloc(30);
+  simbolos[0].longitud = (char*) malloc(31);
   strcpy(simbolos[0].longitud, "Longitud");
 
-  simbolos[0].token = (char*) malloc(30);
+  simbolos[0].token = (char*) malloc(31);
   strcpy(simbolos[0].token, "Token");
 }
 
@@ -183,7 +183,8 @@ void crearTabla(){
   pf = fopen("ts.txt", "wt");
   printf("\nLargo de la tabla de simbolos: %d\n", cantActual);
   for(i = 0; i < cantActual; i++){
-    fprintf(pf, "%-20s%-20s%-20s%-20s%-20s\n", simbolos[i].lexema, simbolos[i].tipoDato, simbolos[i].valor, simbolos[i].longitud, simbolos[i].token);
+    printf("%d\n", i);
+    fprintf(pf, "%-20s%-20s%-20s%-20s%-20s\n", simbolos[i].nombre, simbolos[i].tipoDato, simbolos[i].valor, simbolos[i].longitud, simbolos[i].token);
   }
   fclose(pf);
 }

@@ -30,7 +30,7 @@ Gramática
    13 declaracion_var: DIM OP_CORC list_var CL_COR AS OP_CORC list_types CL_COR
 
    14 list_var: ID
-   15         | ID OP_COMA list_var
+   15         | list_var OP_COMA ID
 
    16 type_var: INT_TYPE
    17         | REAL_TYPE
@@ -43,8 +43,8 @@ Gramática
 
    22 exp_while: OP_CORC list_exp CL_COR
 
-   23 list_exp: ID
-   24         | ID OP_COMA list_exp
+   23 list_exp: expresion
+   24         | list_exp OP_COMA expresion
 
    25 if: IF OP_PAR condicion CL_PAR sentencia ENDIF
    26   | IF OP_PAR condicion CL_PAR sentencia ELSE sentencia ENDIF
@@ -142,7 +142,7 @@ INT_NUM (299) 45
 FLOAT_NUM (300) 46
 DISPLAY (301) 49
 GET (302) 50
-ID (303) 14 15 21 23 24 41 42 44 48 50
+ID (303) 14 15 21 41 42 44 48 50
 
 
 No terminales con las reglas donde aparecen
@@ -181,7 +181,8 @@ condicion_anidada (63)
 comparacion (64)
     en la izquierda: 32, en la derecha: 27 29 30 31
 expresion (65)
-    en la izquierda: 33 34 35, en la derecha: 10 32 34 35 40 43 48
+    en la izquierda: 33 34 35, en la derecha: 10 23 24 32 34 35 40
+    43 48
 termino (66)
     en la izquierda: 36 37 38, en la derecha: 33 34 35 37 38
 termino_par (67)
@@ -752,9 +753,6 @@ estado 53
 estado 54
 
    14 list_var: ID .
-   15         | ID . OP_COMA list_var
-
-    OP_COMA  desplazar e ir al estado 75
 
     $default  reduce usando la regla 14 (list_var)
 
@@ -762,8 +760,10 @@ estado 54
 estado 55
 
    13 declaracion_var: DIM OP_CORC list_var . CL_COR AS OP_CORC list_types CL_COR
+   15 list_var: list_var . OP_COMA ID
 
-    CL_COR  desplazar e ir al estado 76
+    OP_COMA  desplazar e ir al estado 75
+    CL_COR   desplazar e ir al estado 76
 
 
 estado 56
@@ -833,9 +833,17 @@ estado 62
 
    22 exp_while: OP_CORC . list_exp CL_COR
 
-    ID  desplazar e ir al estado 78
+    OP_PAR      desplazar e ir al estado 1
+    STRING_DEC  desplazar e ir al estado 6
+    INT_NUM     desplazar e ir al estado 7
+    FLOAT_NUM   desplazar e ir al estado 8
+    ID          desplazar e ir al estado 27
 
-    list_exp  ir al estado 79
+    list_exp     ir al estado 78
+    expresion    ir al estado 79
+    termino      ir al estado 20
+    termino_par  ir al estado 21
+    asig_val     ir al estado 23
 
 
 estado 63
@@ -977,11 +985,9 @@ estado 74
 
 estado 75
 
-   15 list_var: ID OP_COMA . list_var
+   15 list_var: list_var OP_COMA . ID
 
-    ID  desplazar e ir al estado 54
-
-    list_var  ir al estado 85
+    ID  desplazar e ir al estado 85
 
 
 estado 76
@@ -1001,19 +1007,23 @@ estado 77
 
 estado 78
 
-   23 list_exp: ID .
-   24         | ID . OP_COMA list_exp
+   22 exp_while: OP_CORC list_exp . CL_COR
+   24 list_exp: list_exp . OP_COMA expresion
 
     OP_COMA  desplazar e ir al estado 88
-
-    $default  reduce usando la regla 23 (list_exp)
+    CL_COR   desplazar e ir al estado 89
 
 
 estado 79
 
-   22 exp_while: OP_CORC list_exp . CL_COR
+   23 list_exp: expresion .
+   34 expresion: expresion . OP_SUM termino
+   35          | expresion . OP_MEN termino
 
-    CL_COR  desplazar e ir al estado 89
+    OP_SUM  desplazar e ir al estado 39
+    OP_MEN  desplazar e ir al estado 40
+
+    $default  reduce usando la regla 23 (list_exp)
 
 
 estado 80
@@ -1083,7 +1093,7 @@ estado 84
 
 estado 85
 
-   15 list_var: ID OP_COMA list_var .
+   15 list_var: list_var OP_COMA ID .
 
     $default  reduce usando la regla 15 (list_var)
 
@@ -1110,11 +1120,18 @@ estado 87
 
 estado 88
 
-   24 list_exp: ID OP_COMA . list_exp
+   24 list_exp: list_exp OP_COMA . expresion
 
-    ID  desplazar e ir al estado 78
+    OP_PAR      desplazar e ir al estado 1
+    STRING_DEC  desplazar e ir al estado 6
+    INT_NUM     desplazar e ir al estado 7
+    FLOAT_NUM   desplazar e ir al estado 8
+    ID          desplazar e ir al estado 27
 
-    list_exp  ir al estado 95
+    expresion    ir al estado 95
+    termino      ir al estado 20
+    termino_par  ir al estado 21
+    asig_val     ir al estado 23
 
 
 estado 89
@@ -1215,7 +1232,12 @@ estado 94
 
 estado 95
 
-   24 list_exp: ID OP_COMA list_exp .
+   24 list_exp: list_exp OP_COMA expresion .
+   34 expresion: expresion . OP_SUM termino
+   35          | expresion . OP_MEN termino
+
+    OP_SUM  desplazar e ir al estado 39
+    OP_MEN  desplazar e ir al estado 40
 
     $default  reduce usando la regla 24 (list_exp)
 

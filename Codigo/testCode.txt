@@ -10,7 +10,7 @@ d := -8999.9999;
 /* Esto es    un coo men ta rioo */
 
 WHILE
-a IN [a, b, c]
+a IN [a+b, b + 8 - 5 * 8 * 8888, a+b*c*d*r/f/e/e/r*w*d*f/e/e, b]
 DO
 	a;
 ENDWHILE

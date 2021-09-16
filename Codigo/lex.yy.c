@@ -559,7 +559,7 @@ void procesarID();
 void procesarInt();
 void procesarFloat();
 void procesarString();
-void agregarSimbolo(char* lexema, char* tipoDato, char* valor, int longitud, char* token);
+void agregarSimbolo(char* nombre, char* tipoDato, char* valor, int longitud, char* token);
 
 #line 565 "lex.yy.c"
 
@@ -1980,7 +1980,7 @@ void procesarString(){
         printf("\nError, el string %s excede el tamanio maximo de %d caracteres", yytext, MAX_LEN_STRING);
         exit(-1);
     }else{
-        printf("\nSTRING_TYPE: %s", yytext);
+        printf("\nSTRING_DEC: %s", yytext);
         agregarSimbolo(yytext, "String", yytext, strlen(yytext), "STRING_DEC");
     }
 }
