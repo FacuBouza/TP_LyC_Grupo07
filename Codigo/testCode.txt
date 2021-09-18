@@ -4,20 +4,26 @@ DIM [ c ] AS [ real];
 e := -6546;
 b := 10.55;
 beta := "String de prueba";
-string1 := "String de prueba";
+string1 := "String de prueba dos";
 c := -89999.9999;
 d := -8999.9999;
 /* Esto es    un coo men ta rioo */
 
+/* c := 80 := 10 */
+
 WHILE
-a IN [a+b, b + 8 - 5 * 8 * 8888, a+b*c*d*r/f/e/e/r*w*d*f/e/e, b]
+a IN [a+b, b + 8 - 5 * 8 * 8888, a+b*c, b]
 DO
-	a;
+	FOR a := 1 TO 6
+		b := b + 1;
+	NEXT a
 ENDWHILE
 
-FOR a := 1 TO 6
+FOR a := 1 TO 6 [2]
 	b := b + 1;
 NEXT a
+
+c := c * a - 10000 * 5;
 
 IF (b >= 5)
 	c:=b;

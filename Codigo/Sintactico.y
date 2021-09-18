@@ -3,7 +3,7 @@
   #include <stdlib.h>
   #include <math.h>
   #include <string.h>
-  #include "simbolos.h"
+  #include "Simbolos.h"
   extern int yylex(void);
   extern char *yytext;
   extern int linea;
@@ -156,7 +156,6 @@ int main(int argc,char **argv)
                 yyin=stdin;
   yyparse();
   crearTabla();
-  system("Pause");
   return 0;
 }
 
@@ -181,8 +180,8 @@ void crearTabla(){
   int i;
   FILE* pf;
   pf = fopen("ts.txt", "wt");
-  printf("\nLargo de la tabla de simbolos: %d\n", cantActual);
-  for(i = 0; i < cantActual; i++){
+  // printf("\nLargo de la tabla de simbolos: %d\n", getCantActual());
+  for(i = 0; i < getCantActual(); i++){
     printf("%d\n", i);
     fprintf(pf, "%-20s%-20s%-20s%-20s%-20s\n", simbolos[i].nombre, simbolos[i].tipoDato, simbolos[i].valor, simbolos[i].longitud, simbolos[i].token);
   }

@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "y.tab.h"
+#include "Simbolos.h"
 
 #define MIN_INT -32768
 #define MAX_INT 32767
@@ -17,7 +18,8 @@ void procesarID();
 void procesarInt();
 void procesarFloat();
 void procesarString();
-void agregarSimbolo(char* nombre, char* tipoDato, char* valor, int longitud, char* token);
+int existeID(char* yytext);
+char nombreSimbolo[50];
 
 %}
 
@@ -74,7 +76,7 @@ COMMENT [/][*].*[*][/]
 
 ID {CARACTER}({DIGITO}|{CARACTER})*
 
-STRING_DEC  ["].*["]
+STRING_DEC  ["][[.]*[^"]*]*["]
 
 INT_NUM -?{DIGITO}*
 FLOAT_NUM -?[1-9]?.([0-9]*{5}).[.].([0-9]*{6})
@@ -164,7 +166,8 @@ SALTO_LINEA [\t\r\f]
 
 void procesarID(){
     printf("\nID: %s", yytext);
-    agregarSimbolo(yytext, "Entero", yytext, strlen(yytext), "ID");
+    if(existeID(yytext) == 0)
+        agregarSimbolo(yytext, "Entero", "", strlen(yytext), "ID");
 }
 
 void procesarInt(){
@@ -174,7 +177,9 @@ void procesarInt(){
         exit(-1);
     }else{
         printf("\nINT_NUM: %s", yytext);
-        agregarSimbolo(yytext, "Entero", yytext, strlen(yytext), "INT_NUM");
+        strcpy(nombreSimbolo, "_");
+        strcat(nombreSimbolo,yytext);
+        agregarSimbolo(nombreSimbolo, "Entero", yytext, strlen(yytext), "INT_NUM");
     }
 }
 
@@ -185,7 +190,9 @@ void procesarFloat(){
         exit(-1);
     }else{
         printf("\nFLOAT_NUM: %s", yytext);
-        agregarSimbolo(yytext, "Float", yytext, strlen(yytext), "FLOAT_NUM");
+        strcpy(nombreSimbolo, "_");
+        strcat(nombreSimbolo,yytext);
+        agregarSimbolo(nombreSimbolo, "Float", yytext, strlen(yytext), "FLOAT_NUM");
     }
 }
 
@@ -196,6 +203,16 @@ void procesarString(){
         exit(-1);
     }else{
         printf("\nSTRING_DEC: %s", yytext);
-        agregarSimbolo(yytext, "String", yytext, strlen(yytext), "STRING_DEC");
+        strcpy(nombreSimbolo, "_");
+        strcat(nombreSimbolo,yytext);
+        agregarSimbolo(nombreSimbolo, "String", yytext, strlen(yytext), "STRING_DEC");
     }
+}
+
+int existeID(char* yytext){
+    for(int i = 0; i < getCantActual(); i++){
+        if(strcmp(simbolos[i].nombre, yytext) == 0)
+            return 1;
+    }
+    return 0;
 }
