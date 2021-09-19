@@ -1,5 +1,7 @@
 flex Lexico.l
-gcc lex.yy.c -o programa
-programa testcode.txt
-rem programa.exe
-rem lex.yy.c
+
+bison -dyv Sintactico.y
+
+gcc lex.yy.c y.tab.c Simbolos.c -o Primera.exe
+
+Primera.exe Prueba.txt

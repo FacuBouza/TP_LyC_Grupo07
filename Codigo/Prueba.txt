@@ -1,0 +1,83 @@
+DIM [ a, b, beta] AS [ integer, real, string];
+DIM [ c ] AS [ real];
+/*a := 3276466;*/
+e := -6546;
+b := 10.55;
+beta := "String de prueba";
+string1 := "String de prueba dos";
+c := -89999.9999;
+d := -8999.9999;
+/* Esto es    un coo men ta rioo */
+
+/* c := b := 10 -> No se permiten asignaciones múltiples*/ 
+
+/* IF (b >= 5 AND c > 5 AND a >= 5) -> No se permiten más de dos comparaciones en un condicional*/
+/* c:=b; */
+/* ENDIF */
+
+/*WHILE*/
+/*a IN [] -> No se permite un while con expresiones vacías*/
+/*DO*/
+/*	a := 5*/
+/*ENDWHILE*/
+
+/* IF (NOT b >= 5 AND c > 5) -> No se permiten condiciones múltiples con NOT*/
+/* c:=b; */
+/* ENDIF */
+
+WHILE
+a IN [a+b, b + 8 - 5 * 8 * 8888, a+b*c, b]
+DO
+	FOR a := 1 TO 6
+		b := b + 1;
+	NEXT a
+ENDWHILE
+
+
+
+FOR a := 1 TO 6
+	FOR a := 1 TO 6 [2]
+		FOR a := 1 TO 6
+			b := b + 1;
+		NEXT a
+	NEXT a
+	FOR a := 1 TO 6 [2]
+		WHILE
+		a IN [a+b, b + 8 - 5 * 8 * 8888, a+b*c, b]
+		DO
+			FOR a := 1 TO 6
+				b := b + 1;
+			NEXT a
+		ENDWHILE
+	NEXT a 
+NEXT a
+
+FOR a := 1 TO 6 [2]
+	b := b + 1;
+NEXT a
+
+c := c * a - 10000 * 5;
+
+IF (b >= 5 AND c > 5)
+	c:=b;
+	IF(a > 5 OR b > 5)
+		FOR a := 1 TO 6
+			b := b + 1;
+		NEXT a
+	ENDIF
+	IF(NOT c < c)
+		WHILE
+		a IN [a+b]
+		DO
+			FOR a := 1 TO 6
+				b := b + 1;
+			NEXT a
+		ENDWHILE
+	ENDIF
+ELSE
+	c:=a;
+ENDIF
+
+DISPLAY "hola";
+DISPLAY beta;
+GET b;

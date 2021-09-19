@@ -84,8 +84,6 @@ FLOAT_NUM -?[1-9]?.([0-9]*{5}).[.].([0-9]*{6})
 DISPLAY "DISPLAY"
 GET "GET"
 
-SALTO_LINEA [\t\r\f]
-
 
 %%
 
@@ -135,8 +133,6 @@ SALTO_LINEA [\t\r\f]
 {STRING_DEC}  {procesarString(); return STRING_DEC;}
 {INT_NUM} {procesarInt(); return INT_NUM;}
 {FLOAT_NUM} {procesarFloat(); return FLOAT_NUM;}
-
-{SALTO_LINEA} {printf("\nSALTO_LINEA: %s", yytext);};
 
 %%
 

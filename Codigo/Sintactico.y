@@ -71,9 +71,9 @@
 
 %%
 programa: main {printf("\nmain");};
-main: resto_programa {printf("\nresto_programa");};
-resto_programa: sentencia {printf("\nsentencia");} 
-                | resto_programa sentencia {printf("\nresto_programa sentencia");};
+main: bloque {printf("\nbloque");};
+bloque: sentencia {printf("\nsentencia");} 
+                | bloque sentencia {printf("\nbloque sentencia");};
 
 sentencia: while {printf("\nwhile:");} 
             | if {printf("\nif:");} 
@@ -93,16 +93,16 @@ type_var: INT_TYPE {printf("\nINT_TYPE:");}
 list_types: type_var {printf("\ntype_var");} 
             | list_types OP_COMA type_var {printf("\nlist_types OP_COMA type_var");};
 
-while: WHILE ID IN exp_while DO sentencia ENDWHILE {printf("\nWHILE ID IN list_exp DO sentencia ENDWHILE");};
+while: WHILE ID IN exp_while DO bloque ENDWHILE {printf("\nWHILE ID IN list_exp DO bloque ENDWHILE");};
 exp_while: OP_CORC list_exp CL_COR {printf("\nOP_CORC list_exp CL_CO");};
 list_exp: expresion {printf("\nID");}
           | list_exp OP_COMA expresion {printf("\nlist_exp OP_COMA ID");};
 
-if: IF OP_PAR condicion CL_PAR sentencia ENDIF {printf("\nIF OP_PAR condicion CL_PAR sentencia ENDIF");} 
-    | IF OP_PAR condicion CL_PAR sentencia ELSE sentencia ENDIF {printf("\nIF OP_PAR condicion CL_PAR sentencia ELSE sentencia ENDIF");};
-condicion: comparacion {printf("\nexpresion");} 
-            | condicion_anidada {printf("\nexpresion");} 
-            | NOT comparacion {printf("\nexpresion");};
+if: IF OP_PAR condicion CL_PAR bloque ENDIF {printf("\nIF OP_PAR condicion CL_PAR bloque ENDIF");} 
+    | IF OP_PAR condicion CL_PAR bloque ELSE bloque ENDIF {printf("\nIF OP_PAR condicion CL_PAR bloque ELSE bloque ENDIF");};
+condicion: comparacion {printf("\ncomparacion");} 
+            | condicion_anidada {printf("\ncondicion_anidada");} 
+            | NOT comparacion {printf("\nNOT comparacion");};
 condicion_anidada: comparacion OP_AND comparacion {printf("\ncomparacion OP_AND comparacion");} 
                   | comparacion OP_OR comparacion {printf("\ncomparacion OP_OR comparacion");}; 
 comparacion: expresion op_comparacion expresion {printf("\nexpresion op_comparacion expresion");};
@@ -116,8 +116,8 @@ termino: termino_par {printf("\ntermino_par");}
 termino_par: asig_val {printf("\nasig_val");} 
             | OP_PAR expresion CL_PAR {printf("\nOP_PAR expresion CL_PAR");};
 
-for: FOR ID OP_ASIG asig_val TO asig_val pasos_for sentencia NEXT ID {printf("\nFOR ID OP_ASIG asig_val TO asig_val pasos_for sentencia NEXT ID");} 
-    | FOR ID OP_ASIG asig_val TO asig_val sentencia NEXT ID {printf("\nFOR ID OP_ASIG asig_val TO asig_val sentencia NEXT ID");};
+for: FOR ID OP_ASIG asig_val TO asig_val pasos_for bloque NEXT ID {printf("\nFOR ID OP_ASIG asig_val TO asig_val pasos_for bloque NEXT ID");} 
+    | FOR ID OP_ASIG asig_val TO asig_val bloque NEXT ID {printf("\nFOR ID OP_ASIG asig_val TO asig_val bloque NEXT ID");};
 pasos_for: OP_CORC expresion CL_COR {printf("\nOP_CORC expresion CL_COR");};
 
 asig_val: ID {printf("\nID");}
