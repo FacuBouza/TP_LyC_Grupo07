@@ -115,13 +115,13 @@ sentencia: while {printf("\nwhile:");}
             | get_action OP_ENDLINE {printf("\ndeclaracion_var");};
 
 declaracion_var: DIM OP_CORC list_var CL_COR AS OP_CORC list_types CL_COR {printf("\nDIM OP_CORC list_var CL_COR AS OP_CORC list_types CL_COR ");};
-list_var: ID {printf("\nID");}
-        | list_var OP_COMA ID {printf("\nlist_var OP_COMA ID ");}; 
-type_var: INT_TYPE {printf("\nINT_TYPE:");}
-        | REAL_TYPE {printf("\nREAL_TYPE");} 
-        | STRING_TYPE {printf("\nSTRING_TYPE");};
-list_types: type_var {printf("\ntype_var");} 
-            | list_types OP_COMA type_var {printf("\nlist_types OP_COMA type_var");};
+list_var: ID {printf("\nID");crearHoja("ID");}
+        | list_var OP_COMA ID {printf("\nlist_var OP_COMA ID "); crearNodo(OP_COMA, list_varPtr, ID);}; 
+type_var: INT_TYPE {printf("\nINT_TYPE:");crearHoja("INT_TYPE");}
+        | REAL_TYPE {printf("\nREAL_TYPE");crearHoja("REAL_TYPE");} 
+        | STRING_TYPE {printf("\nSTRING_TYPE");crearHoja("STRING_TYPE");};
+list_types: type_var {printf("\ntype_var");list_typesPtr = type_varPtr;} 
+            | list_types OP_COMA type_var {printf("\nlist_types OP_COMA type_var");crearNodo(OP_COMA, list_typesPtr, type_varPtr);};
 
 while: WHILE condicion DO bloque ENDWHILE {printf("\nWHILE condicion DO bloque ENDWHILE");};
 
@@ -139,13 +139,13 @@ condicion_anidada: comparacion OP_AND comparacion {printf("\ncomparacion OP_AND 
                   | comparacion OP_OR comparacion {printf("\ncomparacion OP_OR comparacion");}; 
 comparacion: expresion op_comparacion expresion {printf("\nexpresion op_comparacion expresion");};
 
-expresion: termino {printf("\ntermino");} 
-            | expresion OP_SUM termino {printf("\nexpresion OP_SUM termino");} 
-            | expresion OP_MEN termino {printf("\nexpresion OP_MEN termino");};
+expresion: termino {printf("\ntermino"); expresionPtr = terminoPtr;} 
+            | expresion OP_SUM termino {printf("\nexpresion OP_SUM termino"); crearNodo(OP_SUM, expresionPtr, terminoPtr);} 
+            | expresion OP_MEN termino {printf("\nexpresion OP_MEN termino"); crearNodo(OP_MEN, expresionPtr, terminoPtr);};
 termino: termino_par {printf("\ntermino_par"); terminoPtr = termino_parPtr} 
           | termino OP_MULT termino_par {printf("\ntermino OP_MULT termino_par"); terminoPtr = crearNodo(OP_MULT, terminoPtr, termino_parPtr);} 
           | termino OP_DIV termino_par {printf("\ntermino OP_DIV termino_par"); terminoPtr = crearNodo(OP_DIV, terminoPtr, termino_parPtr);};
-termino_par: asig_val {printf("\nasig_val"); termino_parPtr = asig_valPtr} 
+termino_par: asig_val {printf("\nasig_val"); termino_parPtr = asig_valPtr;} 
             | OP_PAR expresion CL_PAR {printf("\nOP_PAR expresion CL_PAR");};
 
 for: FOR ID OP_ASIG asig_val TO asig_val pasos_for bloque NEXT ID {printf("\nFOR ID OP_ASIG asig_val TO asig_val pasos_for bloque NEXT ID");} 
@@ -157,7 +157,7 @@ asig_val: ID {printf("\nID"); asig_valPtr = crearHoja("ID");}
           | FLOAT_NUM {printf("\nFLOAT_NUM");asig_valPtr = crearHoja("FLOAT_NUM");}
           | STRING_DEC {printf("\nSTRING_DEC");asig_valPtr = crearHoja("STRING_DEC");};
 
-asignacion: ID OP_ASIG expresion {printf("\nID OP_ASIG expresion");};
+asignacion: ID OP_ASIG expresion {printf("\nID OP_ASIG expresion");crearNodo(OP_ASIG, ID, expresionPtr);};
 
 display: DISPLAY asig_val {printf("\nDISPLAY asig_val");};
 get_action: GET ID {printf("\nGET ID"); get_actionPtr = crearHoja("GET ID");};
