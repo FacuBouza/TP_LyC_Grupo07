@@ -1,0 +1,55 @@
+Nombre              Tipo                Valor               Longitud            Token               
+a                   integer                                                     ID                  
+b                   real                                                        ID                  
+beta                string                                                      ID                  
+c                   real                                                        ID                  
+_-6546              CTE_INTEGER         -6546               5                   INT_NUM             
+_ 10.55             CTE_FLOAT            10.55              6                   FLOAT_NUM           
+_"String de prueba" CTE_STRING          "String de prueba"  18                  STRING_DEC          
+_"String de prueba dos"CTE_STRING          "String de prueba dos"22                  STRING_DEC          
+_-89999.9999        CTE_FLOAT           -89999.9999         11                  FLOAT_NUM           
+_-8999.9999         CTE_FLOAT           -8999.9999          10                  FLOAT_NUM           
+_8                  CTE_INTEGER         8                   1                   INT_NUM             
+_5                  CTE_INTEGER         5                   1                   INT_NUM             
+_8                  CTE_INTEGER         8                   1                   INT_NUM             
+_8888               CTE_INTEGER         8888                4                   INT_NUM             
+_1                  CTE_INTEGER         1                   1                   INT_NUM             
+_6                  CTE_INTEGER         6                   1                   INT_NUM             
+_1                  CTE_INTEGER         1                   1                   INT_NUM             
+_5                  CTE_INTEGER         5                   1                   INT_NUM             
+_1                  CTE_INTEGER         1                   1                   INT_NUM             
+_1                  CTE_INTEGER         1                   1                   INT_NUM             
+_6                  CTE_INTEGER         6                   1                   INT_NUM             
+_1                  CTE_INTEGER         1                   1                   INT_NUM             
+_6                  CTE_INTEGER         6                   1                   INT_NUM             
+_2                  CTE_INTEGER         2                   1                   INT_NUM             
+_1                  CTE_INTEGER         1                   1                   INT_NUM             
+_6                  CTE_INTEGER         6                   1                   INT_NUM             
+_1                  CTE_INTEGER         1                   1                   INT_NUM             
+_1                  CTE_INTEGER         1                   1                   INT_NUM             
+_6                  CTE_INTEGER         6                   1                   INT_NUM             
+_2                  CTE_INTEGER         2                   1                   INT_NUM             
+_8                  CTE_INTEGER         8                   1                   INT_NUM             
+_5                  CTE_INTEGER         5                   1                   INT_NUM             
+_8                  CTE_INTEGER         8                   1                   INT_NUM             
+_8888               CTE_INTEGER         8888                4                   INT_NUM             
+_1                  CTE_INTEGER         1                   1                   INT_NUM             
+_6                  CTE_INTEGER         6                   1                   INT_NUM             
+_1                  CTE_INTEGER         1                   1                   INT_NUM             
+_1                  CTE_INTEGER         1                   1                   INT_NUM             
+_6                  CTE_INTEGER         6                   1                   INT_NUM             
+_2                  CTE_INTEGER         2                   1                   INT_NUM             
+_1                  CTE_INTEGER         1                   1                   INT_NUM             
+_10000              CTE_INTEGER         10000               5                   INT_NUM             
+_5                  CTE_INTEGER         5                   1                   INT_NUM             
+_5                  CTE_INTEGER         5                   1                   INT_NUM             
+_5                  CTE_INTEGER         5                   1                   INT_NUM             
+_5                  CTE_INTEGER         5                   1                   INT_NUM             
+_5                  CTE_INTEGER         5                   1                   INT_NUM             
+_1                  CTE_INTEGER         1                   1                   INT_NUM             
+_6                  CTE_INTEGER         6                   1                   INT_NUM             
+_1                  CTE_INTEGER         1                   1                   INT_NUM             
+_1                  CTE_INTEGER         1                   1                   INT_NUM             
+_6                  CTE_INTEGER         6                   1                   INT_NUM             
+_1                  CTE_INTEGER         1                   1                   INT_NUM             
+_"hola"             CTE_STRING          "hola"              6                   STRING_DEC          

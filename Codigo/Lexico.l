@@ -18,6 +18,7 @@ void procesarID();
 void procesarInt();
 void procesarFloat();
 void procesarString();
+void procesarTipoVariable();
 int existeID(char* yytext);
 char nombreSimbolo[50];
 
@@ -125,9 +126,9 @@ GET "GET"
 {ELSE} {printf("\nELSE: %s", yytext); return ELSE;}
 {DIM} {printf("\nDIM: %s", yytext); return DIM;}
 {AS} {printf("\nAS: %s", yytext); return AS;}
-{INT_TYPE} {printf("\nINT_TYPE: %s", yytext); return INT_TYPE;}
-{REAL_TYPE} {printf("\nREAL_TYPE: %s", yytext); return REAL_TYPE;}
-{STRING_TYPE} {printf("\nSTRING_TYPE: %s", yytext); return STRING_TYPE;}
+{INT_TYPE} {printf("\nINT_TYPE: %s", yytext); procesarTipoVariable(); return INT_TYPE;}
+{REAL_TYPE} {printf("\nREAL_TYPE: %s", yytext); procesarTipoVariable(); return REAL_TYPE;}
+{STRING_TYPE} {printf("\nSTRING_TYPE: %s", yytext); procesarTipoVariable(); return STRING_TYPE;}
 
 {ID}    {procesarID(); return ID;}
 {STRING_DEC}  {procesarString(); return STRING_DEC;}
@@ -163,7 +164,7 @@ GET "GET"
 void procesarID(){
     printf("\nID: %s", yytext);
     if(existeID(yytext) == 0)
-        agregarSimbolo(yytext, "Entero", "", strlen(yytext), "ID");
+        agregarVariable(yytext);
 }
 
 void procesarInt(){
@@ -175,7 +176,7 @@ void procesarInt(){
         printf("\nINT_NUM: %s", yytext);
         strcpy(nombreSimbolo, "_");
         strcat(nombreSimbolo,yytext);
-        agregarSimbolo(nombreSimbolo, "Entero", yytext, strlen(yytext), "INT_NUM");
+        agregarSimbolo(nombreSimbolo, "CTE_INTEGER", yytext, strlen(yytext), "INT_NUM");
     }
 }
 
@@ -188,7 +189,7 @@ void procesarFloat(){
         printf("\nFLOAT_NUM: %s", yytext);
         strcpy(nombreSimbolo, "_");
         strcat(nombreSimbolo,yytext);
-        agregarSimbolo(nombreSimbolo, "Float", yytext, strlen(yytext), "FLOAT_NUM");
+        agregarSimbolo(nombreSimbolo, "CTE_FLOAT", yytext, strlen(yytext), "FLOAT_NUM");
     }
 }
 
@@ -201,8 +202,14 @@ void procesarString(){
         printf("\nSTRING_DEC: %s", yytext);
         strcpy(nombreSimbolo, "_");
         strcat(nombreSimbolo,yytext);
-        agregarSimbolo(nombreSimbolo, "String", yytext, strlen(yytext), "STRING_DEC");
+        agregarSimbolo(nombreSimbolo, "CTE_STRING", yytext, strlen(yytext), "STRING_DEC");
     }
+}
+
+void procesarTipoVariable(){
+    char nombreID[50];
+    getNextNombreID(nombreID);
+    agregarSimbolo(nombreID, yytext, "", 0, "ID");
 }
 
 int existeID(char* yytext){

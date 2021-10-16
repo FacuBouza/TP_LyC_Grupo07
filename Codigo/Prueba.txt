@@ -33,6 +33,10 @@ DO
 	NEXT a
 ENDWHILE
 
+WHILE a >= 5 DO
+a := a + 1;
+ENDWHILE
+
 
 
 FOR a := 1 TO 6

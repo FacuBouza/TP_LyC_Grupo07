@@ -4,6 +4,7 @@
   #include <math.h>
   #include <string.h>
   #include "Simbolos.h"
+  #include "Arbol.h"
   extern int yylex(void);
   extern char *yytext;
   extern int linea;
@@ -11,6 +12,34 @@
   void yyerror(char *s);
   void inicializarTabla();
   void crearTabla();
+
+  //Punteros para arbol sintáctico
+  structNodo* programaPtr;
+  structNodo* mainPtr;
+  structNodo* bloquePtr;
+  structNodo* sentenciaPtr;
+  structNodo* declaracion_varPtr;
+  structNodo* list_varPtr;
+  structNodo* type_varPtr;
+  structNodo* list_typesPtr;
+  structNodo* whilePtr;
+  structNodo* while_especialPtr;
+  structNodo* exp_whilePtr;
+  structNodo* list_expPtr;
+  structNodo* ifPtr;
+  structNodo* condicionPtr;
+  structNodo* condicion_anidadaPtr;
+  structNodo* comparacionPtr;
+  structNodo* expresionPtr;
+  structNodo* terminoPtr;
+  structNodo* termino_parPtr;
+  structNodo* forPtr;
+  structNodo* asig_valPtr;
+  structNodo* asignacionPtr;
+  structNodo* displayPtr;
+  structNodo* get_actionPtr;
+  structNodo* op_comparacionPtr;
+
 %}
 
 %token OP_ASIG 
@@ -75,7 +104,8 @@ main: bloque {printf("\nbloque");};
 bloque: sentencia {printf("\nsentencia");} 
                 | bloque sentencia {printf("\nbloque sentencia");};
 
-sentencia: while {printf("\nwhile:");} 
+sentencia: while {printf("\nwhile:");}
+            | while_especial {printf("\nwhile_especial:");} 
             | if {printf("\nif:");} 
             | for {printf("\nfor");} 
             | asignacion OP_ENDLINE {printf("\nasginacion");} 
@@ -93,15 +123,17 @@ type_var: INT_TYPE {printf("\nINT_TYPE:");}
 list_types: type_var {printf("\ntype_var");} 
             | list_types OP_COMA type_var {printf("\nlist_types OP_COMA type_var");};
 
-while: WHILE ID IN exp_while DO bloque ENDWHILE {printf("\nWHILE ID IN list_exp DO bloque ENDWHILE");};
+while: WHILE condicion DO bloque ENDWHILE {printf("\nWHILE condicion DO bloque ENDWHILE");};
+
+while_especial: WHILE ID IN exp_while DO bloque ENDWHILE {printf("\nWHILE ID IN list_exp DO bloque ENDWHILE");};
 exp_while: OP_CORC list_exp CL_COR {printf("\nOP_CORC list_exp CL_CO");};
 list_exp: expresion {printf("\nID");}
           | list_exp OP_COMA expresion {printf("\nlist_exp OP_COMA ID");};
 
 if: IF OP_PAR condicion CL_PAR bloque ENDIF {printf("\nIF OP_PAR condicion CL_PAR bloque ENDIF");} 
     | IF OP_PAR condicion CL_PAR bloque ELSE bloque ENDIF {printf("\nIF OP_PAR condicion CL_PAR bloque ELSE bloque ENDIF");};
-condicion: comparacion {printf("\ncomparacion");} 
-            | condicion_anidada {printf("\ncondicion_anidada");} 
+condicion: comparacion {printf("\ncomparacion"); condicionPtr = comparacionPtr;} 
+            | condicion_anidada {printf("\ncondicion_anidada"); condicionPtr = condicion_anidadaPtr;} 
             | NOT comparacion {printf("\nNOT comparacion");};
 condicion_anidada: comparacion OP_AND comparacion {printf("\ncomparacion OP_AND comparacion");} 
                   | comparacion OP_OR comparacion {printf("\ncomparacion OP_OR comparacion");}; 
@@ -110,32 +142,32 @@ comparacion: expresion op_comparacion expresion {printf("\nexpresion op_comparac
 expresion: termino {printf("\ntermino");} 
             | expresion OP_SUM termino {printf("\nexpresion OP_SUM termino");} 
             | expresion OP_MEN termino {printf("\nexpresion OP_MEN termino");};
-termino: termino_par {printf("\ntermino_par");} 
-          | termino OP_MULT termino_par {printf("\ntermino OP_MULT termino_par");} 
-          | termino OP_DIV termino_par {printf("\ntermino OP_DIV termino_par");};
-termino_par: asig_val {printf("\nasig_val");} 
+termino: termino_par {printf("\ntermino_par"); terminoPtr = termino_parPtr} 
+          | termino OP_MULT termino_par {printf("\ntermino OP_MULT termino_par"); terminoPtr = crearNodo(OP_MULT, terminoPtr, termino_parPtr);} 
+          | termino OP_DIV termino_par {printf("\ntermino OP_DIV termino_par"); terminoPtr = crearNodo(OP_DIV, terminoPtr, termino_parPtr);};
+termino_par: asig_val {printf("\nasig_val"); termino_parPtr = asig_valPtr} 
             | OP_PAR expresion CL_PAR {printf("\nOP_PAR expresion CL_PAR");};
 
 for: FOR ID OP_ASIG asig_val TO asig_val pasos_for bloque NEXT ID {printf("\nFOR ID OP_ASIG asig_val TO asig_val pasos_for bloque NEXT ID");} 
     | FOR ID OP_ASIG asig_val TO asig_val bloque NEXT ID {printf("\nFOR ID OP_ASIG asig_val TO asig_val bloque NEXT ID");};
 pasos_for: OP_CORC expresion CL_COR {printf("\nOP_CORC expresion CL_COR");};
 
-asig_val: ID {printf("\nID");}
-          | INT_NUM {printf("\nINT_NUM");}
-          | FLOAT_NUM {printf("\nFLOAT_NUM");}
-          | STRING_DEC {printf("\nSTRING_DEC");};
+asig_val: ID {printf("\nID"); asig_valPtr = crearHoja("ID");}
+          | INT_NUM {printf("\nINT_NUM"); asig_valPtr = crearHoja("INT_NUM");}
+          | FLOAT_NUM {printf("\nFLOAT_NUM");asig_valPtr = crearHoja("FLOAT_NUM");}
+          | STRING_DEC {printf("\nSTRING_DEC");asig_valPtr = crearHoja("STRING_DEC");};
 
 asignacion: ID OP_ASIG expresion {printf("\nID OP_ASIG expresion");};
 
 display: DISPLAY asig_val {printf("\nDISPLAY asig_val");};
-get_action: GET ID {printf("\nGET ID");};
+get_action: GET ID {printf("\nGET ID"); get_actionPtr = crearHoja("GET ID");};
 
-op_comparacion: OP_EQ {printf("\nOP_EQ");} 
-              | OP_GE {printf("\nOP_GE");} 
-              | OP_GT {printf("\nOP_GT");} 
-              | OP_LE {printf("\nOP_LE");} 
-              | OP_LT {printf("\nOP_LT");} 
-              | OP_DIST {printf("\nOP_DIST");}; 
+op_comparacion: OP_EQ {printf("\nOP_EQ"); op_comparacionPtr = crearHoja("OP_EQ");} 
+              | OP_GE {printf("\nOP_GE"); op_comparacionPtr = crearHoja("OP_GE");} 
+              | OP_GT {printf("\nOP_GT"); op_comparacionPtr = crearHoja("OP_GT");} 
+              | OP_LE {printf("\nOP_LE"); op_comparacionPtr = crearHoja("OP_LE");} 
+              | OP_LT {printf("\nOP_LT"); op_comparacionPtr = crearHoja("OP_LT");} 
+              | OP_DIST {printf("\nOP_DIST"); op_comparacionPtr = crearHoja("OP_DIST");}; 
 
 %%
 
