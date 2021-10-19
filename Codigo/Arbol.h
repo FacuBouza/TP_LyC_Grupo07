@@ -8,5 +8,15 @@ typedef struct nodo{
     struct nodo* hijoIzq;
 }structNodo;
 
-structNodo* crearHoja(char elemento[]);
-structNodo* crearNodo(char raiz[], structNodo* nodoIzq, structNodo* nodoDer);
+structNodo* crearHoja(const char* elemento);
+structNodo* crearNodo(const char* raiz, structNodo* nodoIzq, structNodo* nodoDer);
+structNodo* crearNodo2(structNodo* nodoRaiz, structNodo* nodoIzq, structNodo* nodoDer);
+
+void preorden(structNodo *nodo);
+void inorden(structNodo *nodo);
+void postorden(structNodo *nodo);
+
+void liberarMemoria(structNodo* );
+void llenarGragh(structNodo* , FILE*, int );
+void escribirGragh(structNodo*);
+int esHoja(structNodo *hoja);

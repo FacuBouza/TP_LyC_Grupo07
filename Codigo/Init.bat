@@ -2,6 +2,6 @@ flex Lexico.l
 
 bison -dyv Sintactico.y
 
-gcc lex.yy.c y.tab.c Simbolos.c -o Primera.exe
+gcc lex.yy.c y.tab.c Simbolos.c Arbol.c -o Primera.exe
 
-Primera.exe Prueba.txt
+Primera.exe Prueba2.txt
