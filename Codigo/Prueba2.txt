@@ -1,7 +1,1 @@
-DIM [ a, b, beta] AS [ integer, real, string];
-DIM [ c ] AS [ real];
-IF (b == 5 AND c > 5)
-	c:=b;
-ELSE
-	c:=a;
-ENDIF
+c:=b;

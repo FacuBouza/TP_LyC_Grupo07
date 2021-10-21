@@ -1959,12 +1959,14 @@ int main()
 
 void procesarID(){
     printf("\nID: %s", yytext);
+    yylval.str_val = strdup(yytext);
     if(existeID(yytext) == 0)
         agregarVariable(yytext);
 }
 
 void procesarInt(){
     int num_int = atoi(yytext);
+    yylval.str_val = yytext;
     if(num_int > MAX_INT || num_int < MIN_INT){
         printf("\nError, el numero %s excede el rango entero", yytext);
         exit(-1);
@@ -1978,6 +1980,7 @@ void procesarInt(){
 
 void procesarFloat(){
     int num_float = atof(yytext);
+    yylval.str_val = yytext;
     if(num_float > MAX_FLOAT || num_float < MIN_FLOAT){
         printf("\nError, el numero %s excede el rango float", yytext);
         exit(-1);
@@ -1991,6 +1994,7 @@ void procesarFloat(){
 
 void procesarString(){
     int long_string = strlen(yytext);
+    yylval.str_val = strdup(yytext);
     if(long_string > MAX_LEN_STRING){
         printf("\nError, el string %s excede el tamanio maximo de %d caracteres", yytext, MAX_LEN_STRING);
         exit(-1);
