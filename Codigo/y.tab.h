@@ -143,7 +143,7 @@ typedef union YYSTYPE
 {
 
 /* Line 1676 of yacc.c  */
-#line 55 "Sintactico.y"
+#line 60 "Sintactico.y"
 
     int intval;
     float val;
