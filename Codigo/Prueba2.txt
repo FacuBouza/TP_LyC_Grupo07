@@ -1,5 +1,5 @@
-IF (b >= 5)
-	c:=b;
-ELSE
-	c:=a;
-ENDIF
+FOR a := 8 TO 20
+	FOR b := 5 TO 6
+		a:=b;
+	NEXT b
+NEXT a
