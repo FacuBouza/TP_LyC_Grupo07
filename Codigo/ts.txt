@@ -1,3 +1,2 @@
 Nombre              Tipo                Valor               Longitud            Token               
-_1                  CTE_INTEGER         1                   1                   INT_NUM             
-_6                  CTE_INTEGER         6                   1                   INT_NUM             
+_5                  CTE_INTEGER         5                   1                   INT_NUM             

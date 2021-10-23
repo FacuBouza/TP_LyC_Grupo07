@@ -55,6 +55,8 @@
 
   structNodo* iniVar, *stepNodo, *condicionFor, *cuerpo2, *ini;
 
+  const char* idIni;
+
 %}
 
 %union {
@@ -170,9 +172,11 @@ termino: termino_par {printf("\ntermino_par"); terminoPtr = termino_parPtr;}
 termino_par: asig_val {printf("\nasig_val"); termino_parPtr = asig_valPtr;} 
             | OP_PAR expresion CL_PAR {printf("\nOP_PAR expresion CL_PAR"); termino_parPtr = expresionPtr;};
 
-for: FOR ID OP_ASIG asig_val { iniVar = crearNodo(":=", crearHoja($2), asig_valPtr); } TO asig_val { condicionFor = crearNodo("<", crearHoja($2), asig_valPtr); } pasos_for { stepNodo = crearNodo(":=", crearHoja($2), pasos_forPtr); cuerpo2 = crearNodo("CUERPO", stepNodo, condicionFor); ini = crearNodo("INI", iniVar, cuerpo2); } bloque NEXT ID 
+inicializacion_for: FOR ID OP_ASIG asig_val { idIni = $2;  iniVar = crearNodo(":=", crearHoja($2), asig_valPtr); } TO asig_val { condicionFor = crearNodo("<", crearHoja($2), asig_valPtr); };
+
+for: inicializacion_for  pasos_for { stepNodo = crearNodo(":=", crearHoja(idIni), crearNodo("+", crearHoja(idIni), pasos_forPtr)); cuerpo2 = crearNodo("CUERPO", condicionFor, stepNodo); ini = crearNodo("INI", iniVar, cuerpo2); } bloque NEXT ID 
     {printf("\nFOR ID OP_ASIG asig_val TO asig_val pasos_for bloque NEXT ID");  forPtr = crearNodo("FOR", ini, bloquePtr);} 
-    | FOR ID OP_ASIG asig_val { iniVar = crearNodo(":=", crearHoja($2), asig_valPtr); printf("\nInicializa iniVar"); } TO asig_val { condicionFor = crearNodo("<", crearHoja($2), asig_valPtr); printf("\nInicializa condicionFor"); } bloque { stepNodo = crearNodo(":=", crearHoja($2), crearHoja("1")); printf("\nInicializa stepNodo"); cuerpo2 = crearNodo("CUERPO", stepNodo, condicionFor); printf("\nInicializa cuerpo2"); ini = crearNodo("INI", iniVar, cuerpo2); printf("\nInicializa ini"); } NEXT ID {printf("\nFOR ID OP_ASIG asig_val TO asig_val bloque NEXT ID");  forPtr = crearNodo("FOR", ini, bloquePtr); printf("\nInicializa forPtr");};
+    | inicializacion_for bloque { stepNodo = crearNodo(":=", crearHoja(idIni), crearNodo("+", crearHoja(idIni), crearHoja("1"))); printf("\nInicializa stepNodo"); cuerpo2 = crearNodo("CUERPO", condicionFor, stepNodo); printf("\nInicializa cuerpo2"); ini = crearNodo("INI", iniVar, cuerpo2); printf("\nInicializa ini"); } NEXT ID {printf("\nFOR ID OP_ASIG asig_val TO asig_val bloque NEXT ID");  forPtr = crearNodo("FOR", ini, bloquePtr); printf("\nInicializa forPtr");};
 pasos_for: OP_CORC expresion CL_COR {printf("\nOP_CORC expresion CL_COR"); pasos_forPtr = expresionPtr; };
 
 asig_val: ID {printf("\nID"); asig_valPtr = crearHoja($1);}

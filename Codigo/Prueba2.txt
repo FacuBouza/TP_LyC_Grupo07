@@ -1,3 +1,5 @@
-FOR a := 1 TO 6
-	b := b + 1;
-NEXT a
+IF (b >= 5)
+	c:=b;
+ELSE
+	c:=a;
+ENDIF
