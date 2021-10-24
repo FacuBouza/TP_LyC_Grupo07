@@ -30,11 +30,11 @@ int apilar(struct pila *p, structNodo* nodoPtr){
 	p->frente = nuevo;
 	p->tamano++;
 
-    printf("Inicio apilar... \n");
+    printf("\nInicio apilar...");
 
-    printf("Valor: %s, Hijo izq: %s, Hijo der: %s \n", nodoPtr->valor, nodoPtr->hijoIzq, nodoPtr-> hijoDer);
+    printf("\nValor: %s, Hijo izq: %s, Hijo der: %s ", nodoPtr->valor, nodoPtr->hijoIzq, nodoPtr-> hijoDer);
 
-    printf("Fin apilar... \n");
+    printf("\nFin apilar... \n");
 
 
 	return 1;

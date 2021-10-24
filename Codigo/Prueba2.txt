@@ -1,5 +1,16 @@
-FOR a := 8 TO 20
-	FOR b := 5 TO 6
-		a:=b;
-	NEXT b
-NEXT a
+IF (a==5)
+    b:=7;
+ENDIF
+IF (NOT c==7 AND b<8)
+    z:=2;
+ENDIF
+WHILE b > 7 DO
+    FOR a := 1 TO 6
+        b:=7;
+    NEXT a
+    WHILE a IN [a + 8, c - 5] DO
+        IF (c==7)
+            z:=2;
+        ENDIF
+    ENDWHILE
+ENDWHILE
