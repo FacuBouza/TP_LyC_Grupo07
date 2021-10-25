@@ -198,7 +198,7 @@ asig_val: ID {printf("\nID"); asig_valPtr = crearHoja($1);}
 
 asignacion: ID OP_ASIG expresion {printf("\nID OP_ASIG expresion");asignacionPtr = crearNodo(":=", crearHoja($1), expresionPtr);};
 
-display: DISPLAY asig_val {printf("\nDISPLAY asig_val");crearNodo("display", crearHoja("DISPLAY"), asig_valPtr);};
+display: DISPLAY asig_val {printf("\nDISPLAY asig_val"); displayPtr = crearNodo("display", crearHoja("DISPLAY"), asig_valPtr);};
 get_action: GET ID {printf("\nGET ID"); get_actionPtr = crearNodo("get_action", crearHoja("GET"), crearHoja($2));};
 
 op_comparacion: OP_EQ {printf("\nOP_EQ"); op_comparacionPtr = crearHoja("==");} 

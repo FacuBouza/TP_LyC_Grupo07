@@ -2061,7 +2061,7 @@ if(_cant_types != _cant_var) return 1; _cant_types = _cant_var = 0;}
 
 /* Line 1455 of yacc.c  */
 #line 201 "Sintactico.y"
-    {printf("\nDISPLAY asig_val");crearNodo("display", crearHoja("DISPLAY"), asig_valPtr);}
+    {printf("\nDISPLAY asig_val"); displayPtr = crearNodo("display", crearHoja("DISPLAY"), asig_valPtr);}
     break;
 
   case 66:
