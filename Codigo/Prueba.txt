@@ -82,6 +82,6 @@ ELSE
 	c:=a;
 ENDIF
 
-DISPLAY "hola";
+DISPLAY hola;
 DISPLAY beta;
 GET b;

@@ -1619,7 +1619,7 @@ yyreduce:
 
 /* Line 1455 of yacc.c  */
 #line 129 "Sintactico.y"
-    {printf("\nmain"); programaPtr = mainPtr; escribirGragh(programaPtr);}
+    {printf("\nmain"); programaPtr = mainPtr; escribirGragh(programaPtr); generarIntermedia(programaPtr);}
     break;
 
   case 3:

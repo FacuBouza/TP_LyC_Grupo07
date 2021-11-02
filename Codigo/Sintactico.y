@@ -126,7 +126,7 @@
 %token <str_val> ID
 
 %%
-programa: main {printf("\nmain"); programaPtr = mainPtr; escribirGragh(programaPtr);};
+programa: main {printf("\nmain"); programaPtr = mainPtr; escribirGragh(programaPtr); generarIntermedia(programaPtr);};
 main: bloque {printf("\nbloque"); mainPtr = bloquePtr;};
 bloque: sentencia {printf("\nsentencia"); bloquePtr = sentenciaPtr; apilar(&pilaPtr, bloquePtr); printf("\nLo que vos quieras");}
         | bloque sentencia {printf("\nbloque sentencia"); bloquePtr = crearNodo("bloque", desapilar(&pilaPtr), sentenciaPtr); apilar(&pilaPtr, bloquePtr); printf("\nGenera bloque");};

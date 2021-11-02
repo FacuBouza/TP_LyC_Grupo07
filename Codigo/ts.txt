@@ -52,4 +52,3 @@ _1                  CTE_INTEGER         1                   1                   
 _1                  CTE_INTEGER         1                   1                   INT_NUM             
 _6                  CTE_INTEGER         6                   1                   INT_NUM             
 _1                  CTE_INTEGER         1                   1                   INT_NUM             
-_"hola"             CTE_STRING          "hola"              6                   STRING_DEC          

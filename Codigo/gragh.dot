@@ -84,7 +84,7 @@ digraph G {
 	"nodo_70 \n:=" -> "nodo_141 \nc"
 	"nodo_70 \n:=" -> "nodo_142 \na"
 	"nodo_8 \ndisplay" -> "nodo_17 \nDISPLAY"
-	"nodo_8 \ndisplay" -> "nodo_18 \n"hola""
+	"nodo_8 \ndisplay" -> "nodo_18 \nhola"
 	"nodo_4 \ndisplay" -> "nodo_9 \nDISPLAY"
 	"nodo_4 \ndisplay" -> "nodo_10 \nbeta"
 	"nodo_2 \nget_action" -> "nodo_5 \nGET"

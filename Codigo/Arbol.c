@@ -1,4 +1,4 @@
-#include "Arbol.h"
+#include "Arbol.h"  
 
 structNodo* crearHoja(const char* elemento){
     structNodo* nodo = (structNodo*) malloc(sizeof(struct nodo));
@@ -95,6 +95,21 @@ void escribirGragh(structNodo* padre) {
     
     fclose(archivo);
     return;
+}
+
+void generarIntermedia(structNodo* padre){
+    FILE* file = fopen("intermedia.txt", "wt");
+    escribirIntermedia(file, padre);
+    fclose(file);
+}
+
+void escribirIntermedia(FILE* file, structNodo* nodo){
+    if (nodo != NULL) {
+        escribirIntermedia(file, nodo->hijoIzq);
+        fprintf(file, "%s\n", nodo->valor);
+        // printf("%s,", nodo->valor);
+        escribirIntermedia(file, nodo->hijoDer);
+    }
 }
 
 int esHoja(structNodo *hoja) {

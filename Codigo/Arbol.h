@@ -20,3 +20,5 @@ void liberarMemoria(structNodo* );
 void llenarGragh(structNodo* , FILE*, int );
 void escribirGragh(structNodo*);
 int esHoja(structNodo *hoja);
+void generarIntermedia(structNodo* padre);
+void escribirIntermedia(FILE* file, structNodo* nodo);
