@@ -23,7 +23,7 @@ void agregarSimbolo(char* nombre, char* tipoDato, char* valor, int longitud, cha
     cantActual++;
 }
 
-int getCantActual(){
+int getCantSimbolos(){
     return cantActual;
 }
 

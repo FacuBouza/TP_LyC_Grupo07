@@ -74,8 +74,8 @@
   #include <stdlib.h>
   #include <math.h>
   #include <string.h>
-  #include "Simbolos.h"
-  #include "Pila.h"
+  #include "Assembler.h"
+  
   extern int yylex(void);
   extern char *yytext;
   extern int linea;
@@ -1619,7 +1619,7 @@ yyreduce:
 
 /* Line 1455 of yacc.c  */
 #line 129 "Sintactico.y"
-    {printf("\nmain"); programaPtr = mainPtr; escribirGragh(programaPtr); generarIntermedia(programaPtr);}
+    {printf("\nmain"); programaPtr = mainPtr; escribirGragh(programaPtr); generarIntermedia(programaPtr); generarAssembler(programaPtr);}
     break;
 
   case 3:
@@ -1774,7 +1774,7 @@ if(_cant_types != _cant_var) return 1; _cant_types = _cant_var = 0;}
 
 /* Line 1455 of yacc.c  */
 #line 158 "Sintactico.y"
-    {printf("\nlist_types OP_COMA type_var");crearNodo(",", list_typesPtr, type_varPtr); _cant_types++;}
+    {printf("\nlist_types OP_COMA type_var");list_typesPtr = crearNodo(",", list_typesPtr, type_varPtr); _cant_types++;}
     break;
 
   case 25:
@@ -1851,7 +1851,7 @@ if(_cant_types != _cant_var) return 1; _cant_types = _cant_var = 0;}
 
 /* Line 1455 of yacc.c  */
 #line 168 "Sintactico.y"
-    {ifCuerpoPtr = crearNodo("Cuerpo", desapilar(&pilaPtr), bloquePtr); ifPtr = crearNodo("IF", desapilar(&pilaPtr), ifCuerpoPtr);}
+    {ifCuerpoPtr = crearNodo("Cuerpo", desapilar(&pilaPtr), desapilar(&pilaPtr)); ifPtr = crearNodo("IF", desapilar(&pilaPtr), ifCuerpoPtr);}
     break;
 
   case 36:
@@ -2373,9 +2373,9 @@ void crearTabla(){
   int i;
   FILE* pf;
   pf = fopen("ts.txt", "wt");
-  // printf("\nLargo de la tabla de simbolos: %d\n", getCantActual());
-  for(i = 0; i < getCantActual(); i++){
-    printf("%d\n", i);
+  printf("Creando tabla de simbolos...\n");
+  for(i = 0; i < getCantSimbolos(); i++){
+    printf("Nombre simbolo: %s\n", simbolos[i].nombre);
     fprintf(pf, "%-20s%-20s%-20s%-20s%-20s\n", simbolos[i].nombre, simbolos[i].tipoDato, simbolos[i].valor, simbolos[i].longitud, simbolos[i].token);
   }
   fclose(pf);

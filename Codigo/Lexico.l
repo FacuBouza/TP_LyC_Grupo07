@@ -162,8 +162,8 @@ GET "GET"
 // }
 
 void procesarID(){
-    printf("\nID: %s", yytext);
     yylval.str_val = strdup(yytext);
+    printf("\nID: %s", yytext);
     if(existeID(yytext) == 0)
         agregarVariable(yytext);
 }
@@ -178,6 +178,7 @@ void procesarInt(){
         printf("\nINT_NUM: %s", yytext);
         strcpy(nombreSimbolo, "_");
         strcat(nombreSimbolo,yytext);
+        printf("Constante a escribir: %s", nombreSimbolo);
         agregarSimbolo(nombreSimbolo, "CTE_INTEGER", yytext, strlen(yytext), "INT_NUM");
     }
 }
@@ -217,7 +218,7 @@ void procesarTipoVariable(){
 }
 
 int existeID(char* yytext){
-    for(int i = 0; i < getCantActual(); i++){
+    for(int i = 0; i < getCantSimbolos(); i++){
         if(strcmp(simbolos[i].nombre, yytext) == 0)
             return 1;
     }

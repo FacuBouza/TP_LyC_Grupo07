@@ -2,8 +2,8 @@ flex Lexico.l
 
 bison -dyv Sintactico.y
 
-gcc lex.yy.c y.tab.c Simbolos.c Arbol.c Pila.c -o Segunda.exe
+gcc lex.yy.c y.tab.c Simbolos.c Arbol.c Pila.c Assembler.c -o Segunda.exe
 
-Segunda.exe Prueba.txt
+Segunda.exe Prueba3.txt
 
-"C:\Program Files\Graphviz\bin\dot" -Tpng gragh.dot -o intermedia.png
+dot -Tpng gragh.dot -o intermedia.png

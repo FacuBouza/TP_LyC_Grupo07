@@ -3,8 +3,8 @@
   #include <stdlib.h>
   #include <math.h>
   #include <string.h>
-  #include "Simbolos.h"
-  #include "Pila.h"
+  #include "Assembler.h"
+  
   extern int yylex(void);
   extern char *yytext;
   extern int linea;
@@ -126,7 +126,7 @@
 %token <str_val> ID
 
 %%
-programa: main {printf("\nmain"); programaPtr = mainPtr; escribirGragh(programaPtr); generarIntermedia(programaPtr);};
+programa: main {printf("\nmain"); programaPtr = mainPtr; escribirGragh(programaPtr); generarIntermedia(programaPtr); generarAssembler(programaPtr);};
 main: bloque {printf("\nbloque"); mainPtr = bloquePtr;};
 bloque: sentencia {printf("\nsentencia"); bloquePtr = sentenciaPtr; apilar(&pilaPtr, bloquePtr); printf("\nLo que vos quieras");}
         | bloque sentencia {printf("\nbloque sentencia"); bloquePtr = crearNodo("bloque", desapilar(&pilaPtr), sentenciaPtr); apilar(&pilaPtr, bloquePtr); printf("\nGenera bloque");};
@@ -155,7 +155,7 @@ type_var: INT_TYPE {printf("\nINT_TYPE:");type_varPtr = crearHoja("INT_TYPE");}
         | REAL_TYPE {printf("\nREAL_TYPE");type_varPtr = crearHoja("REAL_TYPE");} 
         | STRING_TYPE {printf("\nSTRING_TYPE");type_varPtr = crearHoja("STRING_TYPE");};
 list_types: type_var {printf("\ntype_var");list_typesPtr = type_varPtr; _cant_types = 1; } 
-            | list_types OP_COMA type_var {printf("\nlist_types OP_COMA type_var");crearNodo(",", list_typesPtr, type_varPtr); _cant_types++;};
+            | list_types OP_COMA type_var {printf("\nlist_types OP_COMA type_var");list_typesPtr = crearNodo(",", list_typesPtr, type_varPtr); _cant_types++;};
 
 while: WHILE condicion_prima DO bloque {whilePtr = crearNodo("WHILE", desapilar(&pilaPtr), desapilar(&pilaPtr));}ENDWHILE {printf("\nWHILE condicion DO bloque ENDWHILE");};
 
@@ -165,7 +165,7 @@ list_exp: expresion {printf("\nLIST_EXP: ID"); list_expPtr = crearNodo("COND", c
           | list_exp OP_COMA expresion {printf("\nLIST_EXP: list_exp OP_COMA ID"); list_expPtr = crearNodo("COND", crearNodo("==", idPtr, expresionPtr), list_expPtr);};
 
 if: IF OP_PAR condicion_prima CL_PAR bloque {bloquePtr = desapilar(&pilaPtr); ifPtr = crearNodo("IF", desapilar(&pilaPtr), bloquePtr);} ENDIF {printf("\nIF OP_PAR condicion CL_PAR bloque ENDIF");} 
-    | IF OP_PAR condicion_prima CL_PAR bloque ELSE bloque {ifCuerpoPtr = crearNodo("Cuerpo", desapilar(&pilaPtr), bloquePtr); ifPtr = crearNodo("IF", desapilar(&pilaPtr), ifCuerpoPtr);} ENDIF {printf("\nIF OP_PAR condicion CL_PAR bloque ELSE bloque ENDIF");};
+    | IF OP_PAR condicion_prima CL_PAR bloque ELSE bloque {ifCuerpoPtr = crearNodo("Cuerpo", desapilar(&pilaPtr), desapilar(&pilaPtr)); ifPtr = crearNodo("IF", desapilar(&pilaPtr), ifCuerpoPtr);} ENDIF {printf("\nIF OP_PAR condicion CL_PAR bloque ELSE bloque ENDIF");};
 
 condicion_prima: condicion {printf("\ncondicion_prima"); condicion_primaPtr = condicionPtr; apilar(&pilaPtr, condicion_primaPtr);};
 condicion: comparacion_simple {printf("\ncomparacion_simple"); condicionPtr = comparacion_simplePtr; } 
@@ -252,9 +252,9 @@ void crearTabla(){
   int i;
   FILE* pf;
   pf = fopen("ts.txt", "wt");
-  // printf("\nLargo de la tabla de simbolos: %d\n", getCantActual());
-  for(i = 0; i < getCantActual(); i++){
-    printf("%d\n", i);
+  printf("Creando tabla de simbolos...\n");
+  for(i = 0; i < getCantSimbolos(); i++){
+    printf("Nombre simbolo: %s\n", simbolos[i].nombre);
     fprintf(pf, "%-20s%-20s%-20s%-20s%-20s\n", simbolos[i].nombre, simbolos[i].tipoDato, simbolos[i].valor, simbolos[i].longitud, simbolos[i].token);
   }
   fclose(pf);

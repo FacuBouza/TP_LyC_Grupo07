@@ -29,4 +29,4 @@ void agregarTipoVariable(char tipoID[]);
 void getNextNombreID(char* nombreID);
 
 void modificarTipoID(char* nombre, char* tipoDato, char* valor, int longitud, char* token);
-int getCantActual();
+int getCantSimbolos();
