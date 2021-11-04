@@ -164,6 +164,7 @@ GET "GET"
 void procesarID(){
     yylval.str_val = strdup(yytext);
     printf("\nID: %s", yytext);
+    printf("\nExiste ID?: %d", existeID(yytext));
     if(existeID(yytext) == 0)
         agregarVariable(yytext);
 }

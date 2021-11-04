@@ -1,7 +1,11 @@
 #include "Assembler.h"
+int conElse = 0;
+int cantAux = 0;
 
 int generarAssembler(structNodo* startPtr){
     FILE* pf;
+    struct pila pilaIf;
+    struct pila pilaWhile;
 
     pf = fopen("Final.asm", "w+");
 
@@ -54,17 +58,35 @@ int copiarVariablesAssembler(FILE* pf){
 
 int generarBodyAssembler(FILE* pf, structNodo* nodo){
     // fprintf(pf, "\nACA VA A IR EL BODY CUANDO SE HAGA\n");
-    if(nodo->hijoIzq != NULL){
-        if(!esHoja(nodo->hijoIzq)){
-            generarBodyAssembler(pf, nodo->hijoIzq);
-        } else if(!esHoja(nodo->hijoDer)){
-            generarBodyAssembler(pf, nodo->hijoDer);
+    int nodoIf = 0;
+    int nodoWhile = 0;
+
+    if(nodo != NULL){
+
+        if(strcmp(nodo->valor, "IF") == 0){
+            nodoIf = 1;
+            if(strcmp(nodo->valor, "Cuerpo") == 0){
+                conElse = 1;
+            }
         }
-        generarBodyAssembler(pf, nodo->hijoDer);
+
+        //Voy hacia la izquierda
         generarBodyAssembler(pf, nodo->hijoIzq);
+
+        //Voy hacia la derecha
+        generarBodyAssembler(pf, nodo->hijoDer);
+
+        if(esHoja(nodo->hijoIzq) && esHoja(nodo->hijoDer)){
+            //Hago la operación del arbol y lo reduzco
+            realizarOperacion(pf, nodo);
+            nodo->hijoIzq = NULL;
+            nodo->hijoDer = NULL;
+        }
+
+        fprintf(pf, "\n%-20s", nodo->valor);
+
     }
 
-    fprintf(pf, "\n%-20s", nodo->valor);
 
 
 // typedef struct nodo{
@@ -73,4 +95,49 @@ int generarBodyAssembler(FILE* pf, structNodo* nodo){
 //     struct nodo* hijoIzq;
 // }structNodo;
     return 1;
+}
+
+void realizarOperacion(FILE* pf,structNodo* nodo){
+    if(esOperacionAritmetica(nodo->valor)){
+        if(esAsignacion(nodo->valor)){
+            fprintf(pf, "\nMOV R1, %s", nodo->hijoDer->valor);
+            fprintf(pf, "\nMOV %s, R1", nodo->hijoIzq->valor);
+        }else{
+            fprintf(pf, "\nMOV R1, %s", nodo->hijoIzq->valor);
+            fprintf(pf, "\n%s R1, %s", getOperacion(nodo->valor), nodo->hijoDer->valor);
+            fprintf(pf, "\nMOV @aux%d, R1", getNumAux());
+            sprintf(nodo->valor, "@aux%d", cantAux);
+        }
+    }
+}
+
+int esOperacionAritmetica(char* operador){
+    return strcmp(operador, "+") == 0 ||
+        strcmp(operador, "/") == 0 ||
+        strcmp(operador, "*") == 0 || 
+        strcmp(operador, "-") == 0 ||
+        strcmp(operador, ":=") == 0;
+}
+
+int esAsignacion(char* operador){
+    return strcmp(operador, ":=") == 0;
+}
+
+char* getOperacion(char* operador){
+    if(strcmp(operador, "+") == 0)
+        return "ADD";
+    if(strcmp(operador, "-") == 0)
+        return "SUB";
+    if(strcmp(operador, "*") == 0)
+        return "MUL";
+    if(strcmp(operador, "/") == 0)
+        return "DIV";
+}
+
+int getNumAux(){
+    cantAux++;
+    char* cadAux = (char*) malloc(sizeof(char)*20);
+    sprintf(cadAux, "@aux%d", cantAux );
+    agregarSimbolo(cadAux, "FLOAT", "", strlen(cadAux), "ID");
+    return cantAux;
 }

@@ -1,7 +1,4 @@
-DIM [a, b, c] AS [ integer, string, integer];
-a := 3;
-b := 8;
-c := a + b * 8;
+DIM [ a, b, c, d, e] AS [ integer, integer, integer, integer, integer];
 IF(c > a + 8 * 8)
 	c := 10;
 	IF(b > 20)
@@ -9,4 +6,6 @@ IF(c > a + 8 * 8)
 	ELSE
 		e := 8;
 	ENDIF
+ELSE
+	c:=20;
 ENDIF

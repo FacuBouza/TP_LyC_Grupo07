@@ -30,11 +30,11 @@ int apilar(struct pila *p, structNodo* nodoPtr){
 	p->frente = nuevo;
 	p->tamano++;
 
-    printf("\nInicio apilar...");
+    // printf("\nInicio apilar...");
 
-    printf("\nValor: %s, Hijo izq: %s, Hijo der: %s ", nodoPtr->valor, nodoPtr->hijoIzq, nodoPtr-> hijoDer);
+    // printf("\nValor: %s, Hijo izq: %s, Hijo der: %s ", nodoPtr->valor, nodoPtr->hijoIzq, nodoPtr-> hijoDer);
 
-    printf("\nFin apilar... \n");
+    // printf("\nFin apilar... \n");
 
 
 	return 1;
@@ -49,11 +49,11 @@ structNodo* desapilar(struct pila *p){
 	p->tamano--;
 	p->frente = p->frente->next;
 
-    printf("\nInicio desapilar... ");
+    // printf("\nInicio desapilar... ");
 
-    printf("\nValor: %s, Hijo izq: %s, Hijo der: %s", aux->valor, aux->hijoIzq, aux-> hijoDer);
+    // printf("\nValor: %s, Hijo izq: %s, Hijo der: %s", aux->valor, aux->hijoIzq, aux-> hijoDer);
 
-    printf("\nFin desapilar... ");
+    // printf("\nFin desapilar... ");
     return aux;
 }
 
