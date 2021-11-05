@@ -7,9 +7,9 @@ e                   integer                                                     
 _8                  CTE_INTEGER         8                   1                   INT_NUM             
 _8                  CTE_INTEGER         8                   1                   INT_NUM             
 _10                 CTE_INTEGER         10                  2                   INT_NUM             
-_20                 CTE_INTEGER         20                  2                   INT_NUM             
-_9                  CTE_INTEGER         9                   1                   INT_NUM             
-_8                  CTE_INTEGER         8                   1                   INT_NUM             
+_3                  CTE_INTEGER         3                   1                   INT_NUM             
+_30                 CTE_INTEGER         30                  2                   INT_NUM             
+_40                 CTE_INTEGER         40                  2                   INT_NUM             
 _20                 CTE_INTEGER         20                  2                   INT_NUM             
 @aux1               FLOAT                                   5                   ID                  
 @aux2               FLOAT                                   5                   ID                  

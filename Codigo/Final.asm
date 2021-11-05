@@ -12,78 +12,55 @@ e                   dd                  ?
 _8                  dd                  8                   
 _8                  dd                  8                   
 _10                 dd                  10                  
+_3                  dd                  3                   
+_30                 dd                  30                  
+_40                 dd                  40                  
 _20                 dd                  20                  
-_9                  dd                  9                   
-_8                  dd                  8                   
-_20                 dd                  20                  
+@aux1               dd                  ?                   
+@aux2               dd                  ?                   
 
 .CODE
 
 mov AX,@DATA
 mov DS,AX
 mov es,ax
-
-a                   
-b                   
-,                   
-c                   
-,                   
-d                   
-,                   
-e                   
-,                   
-INT_TYPE            
-INT_TYPE            
-,                   
-INT_TYPE            
-,                   
-INT_TYPE            
-,                   
-INT_TYPE            
-,                   
-DEC_VAR             
-c                   
-a                   
-8                   
-8                   
-MOV R1, 8
-MUL R1, 8
-MOV @aux1, R1
-@aux1               
-MOV R1, a
-ADD R1, @aux1
-MOV @aux2, R1
-@aux2               
->                   
-c                   
-10                  
-MOV R1, 10
-MOV c, R1
-:=                  
-b                   
-20                  
->                   
-d                   
-9                   
-MOV R1, 9
-MOV d, R1
-:=                  
-e                   
-8                   
-MOV R1, 8
-MOV e, R1
-:=                  
-Cuerpo              
-IF                  
-bloque              
-c                   
-20                  
-MOV R1, 20
-MOV c, R1
-:=                  
-Cuerpo              
-IF                  
-bloque              mov ax,4c00h
+fild 8
+fild 8
+FMUL
+fistp @aux1
+ffree
+fild a
+fild @aux1
+FADD
+fistp @aux2
+ffree
+fild c
+fcomp @aux2
+fstsw ax
+sahf
+JBE else_part1
+then_part:
+fild 10
+fstp c
+fild b
+fcomp 3
+fstsw ax
+sahf
+JBE else_part2
+then_part:
+fild 30
+fstp d
+jmp end_if2:
+else_part2:
+fild 40
+fstp e
+end_if2:
+jmp end_if2:
+else_part1:
+fild 20
+fstp c
+end_if1:
+mov ax,4c00h
 Int 21h
 
 End

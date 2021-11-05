@@ -66,3 +66,10 @@ int estaVacia(struct pila p){
 int tamano(struct pila p){
 	return p.tamano;
 }
+
+structNodo* verTopePila(struct pila *p){
+	structNodo* aux;
+	if(estaVacia(*p)){ return NULL; }
+	aux = p->frente->dato;
+	return aux;
+}

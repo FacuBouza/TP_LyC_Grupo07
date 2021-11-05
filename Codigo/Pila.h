@@ -16,3 +16,4 @@ int crear(struct pila *);
 int apilar(struct pila *p, structNodo* nodoPtr);
 structNodo* desapilar(struct pila *p);
 int estaVacia(struct pila);
+structNodo* verTopePila(struct pila *p);
