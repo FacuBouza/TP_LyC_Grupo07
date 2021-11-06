@@ -1,36 +1,34 @@
-fild 8
-fild 8
-FMUL
+while_esp1:
+fild z
+fild h
+FADD
 fistp @aux1
 ffree
-fild a
-fild @aux1
+fild b
+fcomp @aux1
+fstsw ax
+sahf
+JE start_while_esp2
+JMP endwhile_esp1:
+start_while_esp1:
+fild b
+fild 7
 FADD
 fistp @aux2
 ffree
+fild @aux2
+fstp b
+while_esp2:
+JMP endwhile_esp2:
+start_while_esp2:
 fild c
-fcomp @aux2
-fstsw ax
-sahf
-JBE else_part1
-then_part:
-fild 10
+fild 8
+FSUB
+fistp @aux3
+ffree
+fild @aux3
 fstp c
-fild b
-fcomp 3
-fstsw ax
-sahf
-JBE else_part2
-then_part:
-fild 30
-fstp d
-jmp end_if2:
-else_part2:
-fild 40
-fstp e
-end_if2:
-jmp end_if2:
-else_part1:
-fild 20
-fstp c
-end_if1:
+JMP while_esp2
+endwhile_esp2:
+JMP while_esp1
+endwhile_esp1:

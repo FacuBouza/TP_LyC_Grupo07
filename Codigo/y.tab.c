@@ -609,8 +609,8 @@ static const yytype_uint8 yyrline[] =
      163,   164,   165,   167,   167,   168,   168,   170,   171,   172,
      173,   174,   175,   176,   176,   178,   179,   180,   181,   182,
      183,   184,   185,   187,   187,   189,   189,   191,   191,   192,
-     194,   195,   196,   197,   199,   201,   202,   204,   205,   206,
-     207,   208,   209
+     196,   197,   198,   199,   201,   203,   204,   206,   207,   208,
+     209,   210,   211
 };
 #endif
 
@@ -1851,7 +1851,7 @@ if(_cant_types != _cant_var) return 1; _cant_types = _cant_var = 0;}
 
 /* Line 1455 of yacc.c  */
 #line 168 "Sintactico.y"
-    {ifCuerpoPtr = crearNodo("Cuerpo", desapilar(&pilaPtr), desapilar(&pilaPtr)); ifPtr = crearNodo("IF", desapilar(&pilaPtr), ifCuerpoPtr);}
+    {ifCuerpoPtr = crearNodo("CuerpoIf", desapilar(&pilaPtr), desapilar(&pilaPtr)); ifPtr = crearNodo("IF", desapilar(&pilaPtr), ifCuerpoPtr);}
     break;
 
   case 36:
@@ -1991,7 +1991,7 @@ if(_cant_types != _cant_var) return 1; _cant_types = _cant_var = 0;}
 
 /* Line 1455 of yacc.c  */
 #line 189 "Sintactico.y"
-    { stepNodo = crearNodo(":=", crearHoja(idIni), crearNodo("+", crearHoja(idIni), pasos_forPtr)); cuerpo2 = crearNodo("CUERPO", condicionFor, stepNodo); ini = crearNodo("INI", iniVar, cuerpo2); }
+    { stepNodo = crearNodo(":=", crearHoja(idIni), crearNodo("+", crearHoja(idIni), pasos_forPtr)); cuerpo2 = crearNodo("CuerpoFor", condicionFor, stepNodo); ini = crearNodo("INI", iniVar, cuerpo2); }
     break;
 
   case 56:
@@ -2005,7 +2005,7 @@ if(_cant_types != _cant_var) return 1; _cant_types = _cant_var = 0;}
 
 /* Line 1455 of yacc.c  */
 #line 191 "Sintactico.y"
-    { stepNodo = crearNodo(":=", crearHoja(idIni), crearNodo("+", crearHoja(idIni), crearHoja("1"))); printf("\nInicializa stepNodo"); cuerpo2 = crearNodo("CUERPO", condicionFor, stepNodo); printf("\nInicializa cuerpo2"); ini = crearNodo("INI", iniVar, cuerpo2); printf("\nInicializa ini"); }
+    { stepNodo = crearNodo(":=", crearHoja(idIni), crearNodo("+", crearHoja(idIni), crearHoja("1"))); printf("\nInicializa stepNodo"); cuerpo2 = crearNodo("CuerpoFor", condicionFor, stepNodo); printf("\nInicializa cuerpo2"); ini = crearNodo("INI", iniVar, cuerpo2); printf("\nInicializa ini"); }
     break;
 
   case 58:
@@ -2025,91 +2025,91 @@ if(_cant_types != _cant_var) return 1; _cant_types = _cant_var = 0;}
   case 60:
 
 /* Line 1455 of yacc.c  */
-#line 194 "Sintactico.y"
+#line 196 "Sintactico.y"
     {printf("\nID"); asig_valPtr = crearHoja((yyvsp[(1) - (1)].str_val));}
     break;
 
   case 61:
 
 /* Line 1455 of yacc.c  */
-#line 195 "Sintactico.y"
+#line 197 "Sintactico.y"
     {printf("\nINT_NUM"); asig_valPtr = crearHoja((yyvsp[(1) - (1)].str_val));}
     break;
 
   case 62:
 
 /* Line 1455 of yacc.c  */
-#line 196 "Sintactico.y"
+#line 198 "Sintactico.y"
     {printf("\nFLOAT_NUM");asig_valPtr = crearHoja((yyvsp[(1) - (1)].str_val));}
     break;
 
   case 63:
 
 /* Line 1455 of yacc.c  */
-#line 197 "Sintactico.y"
+#line 199 "Sintactico.y"
     {printf("\nSTRING_DEC");asig_valPtr = crearHoja((yyvsp[(1) - (1)].str_val));}
     break;
 
   case 64:
 
 /* Line 1455 of yacc.c  */
-#line 199 "Sintactico.y"
+#line 201 "Sintactico.y"
     {printf("\nID OP_ASIG expresion");asignacionPtr = crearNodo(":=", crearHoja((yyvsp[(1) - (3)].str_val)), expresionPtr);}
     break;
 
   case 65:
 
 /* Line 1455 of yacc.c  */
-#line 201 "Sintactico.y"
+#line 203 "Sintactico.y"
     {printf("\nDISPLAY asig_val"); displayPtr = crearNodo("display", crearHoja("DISPLAY"), asig_valPtr);}
     break;
 
   case 66:
 
 /* Line 1455 of yacc.c  */
-#line 202 "Sintactico.y"
+#line 204 "Sintactico.y"
     {printf("\nGET ID"); get_actionPtr = crearNodo("get_action", crearHoja("GET"), crearHoja((yyvsp[(2) - (2)].str_val)));}
     break;
 
   case 67:
 
 /* Line 1455 of yacc.c  */
-#line 204 "Sintactico.y"
+#line 206 "Sintactico.y"
     {printf("\nOP_EQ"); op_comparacionPtr = crearHoja("==");}
     break;
 
   case 68:
 
 /* Line 1455 of yacc.c  */
-#line 205 "Sintactico.y"
+#line 207 "Sintactico.y"
     {printf("\nOP_GE"); op_comparacionPtr = crearHoja(">=");}
     break;
 
   case 69:
 
 /* Line 1455 of yacc.c  */
-#line 206 "Sintactico.y"
+#line 208 "Sintactico.y"
     {printf("\nOP_GT"); op_comparacionPtr = crearHoja(">");}
     break;
 
   case 70:
 
 /* Line 1455 of yacc.c  */
-#line 207 "Sintactico.y"
+#line 209 "Sintactico.y"
     {printf("\nOP_LE"); op_comparacionPtr = crearHoja("<=");}
     break;
 
   case 71:
 
 /* Line 1455 of yacc.c  */
-#line 208 "Sintactico.y"
+#line 210 "Sintactico.y"
     {printf("\nOP_LT"); op_comparacionPtr = crearHoja("<");}
     break;
 
   case 72:
 
 /* Line 1455 of yacc.c  */
-#line 209 "Sintactico.y"
+#line 211 "Sintactico.y"
     {printf("\nOP_DIST"); op_comparacionPtr = crearHoja("!=");}
     break;
 
@@ -2328,7 +2328,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 211 "Sintactico.y"
+#line 213 "Sintactico.y"
 
 
 void yyerror(char *s)

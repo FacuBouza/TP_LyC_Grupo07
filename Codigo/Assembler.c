@@ -1,15 +1,24 @@
 #include "Assembler.h"
 int tieneElse = 0;
 int cantAux = 0;
+int cantThen = 0;
 int cantElse = 0;
 int cantEndif = 0;
+int cantWhile = 0;
+int cantEndWhile = 0;
+int cantFor = 0;
+int cantWhileEsp = 0;
+int cantEndWhileEsp = 0;
+
 structNodo* nodoAux = NULL;
 struct pila pilaEstructura;
+struct pila pilaExpresion;
 
 int generarAssembler(structNodo* startPtr){
     FILE* pf;
     nodoAux = (structNodo*) malloc(sizeof(struct nodo));
     crear(&pilaEstructura);
+    crear(&pilaExpresion);
 
     pf = fopen("Final.asm", "w+");
 
@@ -93,14 +102,21 @@ int generarBodyAssembler(structNodo* nodo){
 int recorrerArbolAssembler(FILE* pf, structNodo* nodo){
     int nodoIf = 0;
     int nodoWhile = 0;
+    int nodoFor = 0;
+    int nodoWhileEsp = 0;
+
     int numElse = cantElse;
     int numEndif = cantEndif;
+    int numWhile = cantWhile;
+    int numEndWhile = cantEndWhile + 1;
+    int numFor = cantFor + 1;
+    int numWhileEsp = cantWhileEsp + 1;
 
     if(nodo != NULL){
 
         if(strcmp(nodo->valor, "IF") == 0){
             nodoIf = 1;
-            if(strcmp(nodo->hijoDer->valor, "Cuerpo") == 0){
+            if(strcmp(nodo->hijoDer->valor, "CuerpoIf") == 0){
                 tieneElse = 1;
                 apilar(&pilaEstructura, crearHoja("IF_ELSE"));
             } else {
@@ -108,25 +124,74 @@ int recorrerArbolAssembler(FILE* pf, structNodo* nodo){
             }
         }
 
+        if(strcmp(nodo->valor, "WHILE") == 0){
+            nodoWhile = 1;
+            apilar(&pilaEstructura, crearHoja("WHILE"));
+            cantWhile++;
+            numWhile = cantWhile;
+            fprintf(pf, "while%d:\n", numWhile);
+        }
+
+        if(strcmp(nodo->valor, "FOR") == 0){
+            nodoFor = 1;
+            apilar(&pilaEstructura, crearHoja("FOR"));
+        }
+
+        if(strcmp(nodo->valor, "CuerpoFor") == 0){
+            fprintf(pf, "for%d:\n", numFor);
+
+            apilar(&pilaExpresion, nodo->hijoDer);
+            nodo->hijoDer = NULL;
+        }
+
+        if(strcmp(nodo->valor, "WHILE_ESP") == 0){
+            nodoWhileEsp = 1;
+            cantWhileEsp++;
+            fprintf(pf, "while_esp%d:\n", numWhileEsp);
+            apilar(&pilaEstructura, crearHoja("WHILE_ESP"));
+        }
+
         //Voy hacia la izquierda
         recorrerArbolAssembler(pf, nodo->hijoIzq);
 
         if(nodoIf){
             numElse = cantElse;
-            fprintf(pf, "then_part:\n");
+            cantThen++;
+            fprintf(pf, "then_part%d:\n", cantThen);
         }
 
         //Tiene else, entonces salto incondicionalmente al final del if (falta ponerle el numerito al end_if) y completo el else_part (tambien falta numerito)
-        if(strcmp(nodo->valor, "Cuerpo") == 0){
-            fprintf(pf, "jmp end_if%d:\n", cantEndif);
+        if(strcmp(nodo->valor, "CuerpoIf") == 0){
+            fprintf(pf, "jmp end_if%d:\n", numEndif);
             fprintf(pf, "else_part%d:\n", numElse);
+        }
+
+        if(nodoWhileEsp){
+            fprintf(pf, "JMP endwhile_esp%d:\n", numWhileEsp);
+            fprintf(pf, "start_while_esp%d:\n", numWhileEsp);
         }
 
         //Voy hacia la derecha
         recorrerArbolAssembler(pf, nodo->hijoDer);
 
-        if(strcmp(nodo->valor, "Cuerpo") == 0){
+        if(strcmp(nodo->valor, "CuerpoIf") == 0){
             fprintf(pf, "end_if%d:\n", numEndif);
+        }
+
+        if(nodoWhile){
+            fprintf(pf, "JMP while%d:\n", numWhile);
+            fprintf(pf, "end_while%d:\n", numEndWhile);
+        }
+
+        if(nodoFor){
+            recorrerArbolAssembler(pf, desapilar(&pilaExpresion));
+            fprintf(pf, "JMP for%d:\n", numFor);
+            fprintf(pf, "end_for%d:\n", numFor);
+        }
+
+        if(nodoWhileEsp){
+            fprintf(pf, "JMP while_esp%d\n", numWhileEsp);
+            fprintf(pf, "endwhile_esp%d:\n", numWhileEsp);
         }
 
         if(esHoja(nodo->hijoIzq) && esHoja(nodo->hijoDer)){
@@ -214,18 +279,35 @@ int esComparacion(char* valor){
 }
 
 char* getComparacion(char* comparador){
-    if(strcmp(comparador, "==") == 0)
-        return "JNE";
-    if(strcmp(comparador, "!=") == 0)
-        return "JE";
-    if(strcmp(comparador, ">") == 0)
-        return "JBE";
-    if(strcmp(comparador, ">=") == 0)
-        return "JB";
-    if(strcmp(comparador, "<") == 0)
-        return "JAE";
-    if(strcmp(comparador, "<=") == 0)
-        return "JA";
+    nodoAux = verTopePila(&pilaEstructura);
+    if(strcmp(nodoAux->valor, "WHILE_ESP") == 0){
+        if(strcmp(comparador, "==") == 0)
+            return "JE";
+        if(strcmp(comparador, "!=") == 0)
+            return "JNE";
+        if(strcmp(comparador, ">") == 0)
+            return "JA";
+        if(strcmp(comparador, ">=") == 0)
+            return "JAE";
+        if(strcmp(comparador, "<") == 0)
+            return "JB";
+        if(strcmp(comparador, "<=") == 0)
+            return "JBE";
+    } else {
+
+        if(strcmp(comparador, "==") == 0)
+            return "JNE";
+        if(strcmp(comparador, "!=") == 0)
+            return "JE";
+        if(strcmp(comparador, ">") == 0)
+            return "JBE";
+        if(strcmp(comparador, ">=") == 0)
+            return "JB";
+        if(strcmp(comparador, "<") == 0)
+            return "JAE";
+        if(strcmp(comparador, "<=") == 0)
+            return "JA";
+    }
 }
 
 char* getEtiqueta(){
@@ -238,20 +320,38 @@ char* getEtiqueta(){
         return "endif_part";
     } else if(strcmp(nodoAux->valor, "IF_ELSE") == 0){
         return "else_part";
+    } else if(strcmp(nodoAux->valor, "WHILE") == 0){
+        return "end_while";
+    } else if(strcmp(nodoAux->valor, "FOR") == 0){
+        return "end_for";
+    } else if(strcmp(nodoAux->valor, "WHILE_ESP") == 0){
+        return "start_while_esp";
     }
+    return "nada";
 }
 
 int getNumEtiqueta(){
-    int valor;
+    int valor = 0;
     nodoAux = verTopePila(&pilaEstructura);
+    // nodoAux = desapilar(&pilaEstructura);
 
-    if(strcmp(nodoAux->valor, "IF") == 0){
-        cantEndif++;
-        valor = cantEndif;
-    } else if(strcmp(nodoAux->valor, "IF_ELSE") == 0){
-        cantElse++;
-        cantEndif++;
-        valor = cantElse;
+    if(nodoAux != NULL){
+        if(strcmp(nodoAux->valor, "IF") == 0){
+            cantEndif++;
+            valor = cantEndif;
+        } else if(strcmp(nodoAux->valor, "IF_ELSE") == 0){
+            cantElse++;
+            cantEndif++;
+            valor = cantElse;
+        } else if(strcmp(nodoAux->valor, "WHILE") == 0){
+            cantEndWhile++;
+            valor = cantEndWhile;
+        } else if(strcmp(nodoAux->valor, "FOR") == 0){
+            cantFor++;
+            valor = cantFor;
+        } else if(strcmp(nodoAux->valor, "WHILE_ESP") == 0){
+            valor = cantWhileEsp + 1;
+        }
     }
 
     return valor;

@@ -165,7 +165,7 @@ list_exp: expresion {printf("\nLIST_EXP: ID"); list_expPtr = crearNodo("COND", c
           | list_exp OP_COMA expresion {printf("\nLIST_EXP: list_exp OP_COMA ID"); list_expPtr = crearNodo("COND", crearNodo("==", idPtr, expresionPtr), list_expPtr);};
 
 if: IF OP_PAR condicion_prima CL_PAR bloque {bloquePtr = desapilar(&pilaPtr); ifPtr = crearNodo("IF", desapilar(&pilaPtr), bloquePtr);} ENDIF {printf("\nIF OP_PAR condicion CL_PAR bloque ENDIF");} 
-    | IF OP_PAR condicion_prima CL_PAR bloque ELSE bloque {ifCuerpoPtr = crearNodo("Cuerpo", desapilar(&pilaPtr), desapilar(&pilaPtr)); ifPtr = crearNodo("IF", desapilar(&pilaPtr), ifCuerpoPtr);} ENDIF {printf("\nIF OP_PAR condicion CL_PAR bloque ELSE bloque ENDIF");};
+    | IF OP_PAR condicion_prima CL_PAR bloque ELSE bloque {ifCuerpoPtr = crearNodo("CuerpoIf", desapilar(&pilaPtr), desapilar(&pilaPtr)); ifPtr = crearNodo("IF", desapilar(&pilaPtr), ifCuerpoPtr);} ENDIF {printf("\nIF OP_PAR condicion CL_PAR bloque ELSE bloque ENDIF");};
 
 condicion_prima: condicion {printf("\ncondicion_prima"); condicion_primaPtr = condicionPtr; apilar(&pilaPtr, condicion_primaPtr);};
 condicion: comparacion_simple {printf("\ncomparacion_simple"); condicionPtr = comparacion_simplePtr; } 
@@ -186,10 +186,12 @@ termino_par: asig_val {printf("\nasig_val"); termino_parPtr = asig_valPtr;}
 
 inicializacion_for: FOR ID OP_ASIG asig_val { idIni = $2;  iniVar = crearNodo(":=", crearHoja($2), asig_valPtr); } TO asig_val { condicionFor = crearNodo("!=", crearHoja($2), asig_valPtr); };
 
-for: inicializacion_for pasos_for { stepNodo = crearNodo(":=", crearHoja(idIni), crearNodo("+", crearHoja(idIni), pasos_forPtr)); cuerpo2 = crearNodo("CUERPO", condicionFor, stepNodo); ini = crearNodo("INI", iniVar, cuerpo2); } bloque NEXT ID 
+for: inicializacion_for pasos_for { stepNodo = crearNodo(":=", crearHoja(idIni), crearNodo("+", crearHoja(idIni), pasos_forPtr)); cuerpo2 = crearNodo("CuerpoFor", condicionFor, stepNodo); ini = crearNodo("INI", iniVar, cuerpo2); } bloque NEXT ID 
     {printf("\nFOR ID OP_ASIG asig_val TO asig_val pasos_for bloque NEXT ID");  forPtr = crearNodo("FOR", ini, desapilar(&pilaPtr));} 
-    | inicializacion_for bloque { stepNodo = crearNodo(":=", crearHoja(idIni), crearNodo("+", crearHoja(idIni), crearHoja("1"))); printf("\nInicializa stepNodo"); cuerpo2 = crearNodo("CUERPO", condicionFor, stepNodo); printf("\nInicializa cuerpo2"); ini = crearNodo("INI", iniVar, cuerpo2); printf("\nInicializa ini"); } NEXT ID {printf("\nFOR ID OP_ASIG asig_val TO asig_val bloque NEXT ID");  forPtr = crearNodo("FOR", ini, desapilar(&pilaPtr)); printf("\nInicializa forPtr");};
+    | inicializacion_for bloque { stepNodo = crearNodo(":=", crearHoja(idIni), crearNodo("+", crearHoja(idIni), crearHoja("1"))); printf("\nInicializa stepNodo"); cuerpo2 = crearNodo("CuerpoFor", condicionFor, stepNodo); printf("\nInicializa cuerpo2"); ini = crearNodo("INI", iniVar, cuerpo2); printf("\nInicializa ini"); } NEXT ID {printf("\nFOR ID OP_ASIG asig_val TO asig_val bloque NEXT ID");  forPtr = crearNodo("FOR", ini, desapilar(&pilaPtr)); printf("\nInicializa forPtr");};
 pasos_for: OP_CORC expresion CL_COR {printf("\nOP_CORC expresion CL_COR"); pasos_forPtr = expresionPtr; };
+
+// while: WHILE condicion_prima DO bloque {whilePtr = crearNodo("WHILE", desapilar(&pilaPtr), desapilar(&pilaPtr));}ENDWHILE {printf("\nWHILE condicion DO bloque ENDWHILE");};
 
 asig_val: ID {printf("\nID"); asig_valPtr = crearHoja($1);}
           | INT_NUM {printf("\nINT_NUM"); asig_valPtr = crearHoja($1);}
