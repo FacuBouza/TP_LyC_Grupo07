@@ -1,7 +1,9 @@
-DIM [ a, b, c, d, e] AS [ integer, integer, integer, integer, integer];
-WHILE a IN [8, 7, b*8+5, c - 8] DO
-	b := b + 7;
-	WHILE b IN [z + h] DO
-		c := c - 8;
-	ENDWHILE
-ENDWHILE
+DIM [ a, b, c, d] AS [integer, real, string, real];
+DIM [ e, f] AS [integer, integer];
+
+
+FOR a := 1 TO 9
+    FOR b := 2 TO 10
+        d := 8;
+    NEXT b
+NEXT a

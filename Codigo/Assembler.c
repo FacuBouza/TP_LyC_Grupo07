@@ -1,14 +1,18 @@
 #include "Assembler.h"
 int tieneElse = 0;
+int tieneAnd = 0;
+int tieneOr = 0;
+int tieneNot = 0;
 int cantAux = 0;
 int cantThen = 0;
-int cantElse = 0;
-int cantEndif = 0;
+int cantElse = 1;
+int cantEndif = 1;
 int cantWhile = 0;
-int cantEndWhile = 0;
+int cantEndWhile = 1;
 int cantFor = 0;
 int cantWhileEsp = 0;
 int cantEndWhileEsp = 0;
+char* tipoVariable = NULL;
 
 structNodo* nodoAux = NULL;
 struct pila pilaEstructura;
@@ -16,6 +20,7 @@ struct pila pilaExpresion;
 
 int generarAssembler(structNodo* startPtr){
     FILE* pf;
+    tipoVariable = (char*) malloc(sizeof(char)*2);
     nodoAux = (structNodo*) malloc(sizeof(struct nodo));
     crear(&pilaEstructura);
     crear(&pilaExpresion);
@@ -60,11 +65,17 @@ int copiarVariablesAssembler(FILE* pf){
     //Armo las variables con la tabla de simbolos
     printf("Valor simbolos:");
     for(int i=1; i<getCantSimbolos(); i++){
-        printf("\nNombre: %s, Valor: %s", simbolos[i].nombre, simbolos[i].valor);
+        printf("\nNombre: %s, Valor: %s, Tipo: %s", simbolos[i].nombre, simbolos[i].valor, simbolos[i].tipoDato);
+        if(strcmpi(simbolos[i].tipoDato, "real") == 0)
+            strcpy(tipoVariable, "dq");
+        else if(strcmpi(simbolos[i].tipoDato, "string") == 0)
+            strcpy(tipoVariable, "dt");
+        else
+            strcpy(tipoVariable, "dd");
         if(strcmp(simbolos[i].valor,"") == 0){
-            fprintf(pf, "%-20s%-20s%-20s\n", simbolos[i].nombre, "dd", "?");
+            fprintf(pf, "%-20s%-20s%-20s\n", simbolos[i].nombre, tipoVariable, "?");
         }else{
-            fprintf(pf, "%-20s%-20s%-20s\n", simbolos[i].nombre, "dd", simbolos[i].valor);
+            fprintf(pf, "%-20s%-20s%-20s\n", simbolos[i].nombre, tipoVariable, simbolos[i].valor);
         }
     }
 
@@ -105,28 +116,30 @@ int recorrerArbolAssembler(FILE* pf, structNodo* nodo){
     int nodoFor = 0;
     int nodoWhileEsp = 0;
 
-    int numElse = cantElse;
-    int numEndif = cantEndif;
+    int numElse = cantElse - 1;
+    int numEndif = cantEndif - 1;
     int numWhile = cantWhile;
-    int numEndWhile = cantEndWhile + 1;
+    int numEndWhile = cantEndWhile;
     int numFor = cantFor + 1;
     int numWhileEsp = cantWhileEsp + 1;
 
+
     if(nodo != NULL){
 
+        printf("Nodo: %s\n", nodo->valor);
         if(strcmp(nodo->valor, "IF") == 0){
             nodoIf = 1;
             if(strcmp(nodo->hijoDer->valor, "CuerpoIf") == 0){
                 tieneElse = 1;
-                apilar(&pilaEstructura, crearHoja("IF_ELSE"));
+                apilar(&pilaEstructura, crearHoja("IF_ELSE", NULL));
             } else {
-                apilar(&pilaEstructura, crearHoja("IF"));
+                apilar(&pilaEstructura, crearHoja("IF", NULL));
             }
         }
 
         if(strcmp(nodo->valor, "WHILE") == 0){
             nodoWhile = 1;
-            apilar(&pilaEstructura, crearHoja("WHILE"));
+            apilar(&pilaEstructura, crearHoja("WHILE", NULL));
             cantWhile++;
             numWhile = cantWhile;
             fprintf(pf, "while%d:\n", numWhile);
@@ -134,7 +147,7 @@ int recorrerArbolAssembler(FILE* pf, structNodo* nodo){
 
         if(strcmp(nodo->valor, "FOR") == 0){
             nodoFor = 1;
-            apilar(&pilaEstructura, crearHoja("FOR"));
+            apilar(&pilaEstructura, crearHoja("FOR", NULL));
         }
 
         if(strcmp(nodo->valor, "CuerpoFor") == 0){
@@ -148,12 +161,30 @@ int recorrerArbolAssembler(FILE* pf, structNodo* nodo){
             nodoWhileEsp = 1;
             cantWhileEsp++;
             fprintf(pf, "while_esp%d:\n", numWhileEsp);
-            apilar(&pilaEstructura, crearHoja("WHILE_ESP"));
+            apilar(&pilaEstructura, crearHoja("WHILE_ESP", NULL));
+        }
+
+        if(nodo->hijoIzq != NULL){
+            if(esOperador(nodo->hijoIzq)){
+                if(strcmp(nodo->hijoIzq->valor, "OR") == 0){
+                    tieneOr = 1;
+                } else if (strcmp(nodo->hijoIzq->valor, "AND") == 0){
+                    tieneAnd = 1;
+                } else {
+                    tieneNot = 1;
+                }
+            }
         }
 
         //Voy hacia la izquierda
         recorrerArbolAssembler(pf, nodo->hijoIzq);
 
+        if(esOperador(nodo)){
+            tieneOr = 0;
+            tieneAnd = 0;
+            tieneNot = 0;
+        }
+        
         if(nodoIf){
             numElse = cantElse;
             cantThen++;
@@ -162,8 +193,12 @@ int recorrerArbolAssembler(FILE* pf, structNodo* nodo){
 
         //Tiene else, entonces salto incondicionalmente al final del if (falta ponerle el numerito al end_if) y completo el else_part (tambien falta numerito)
         if(strcmp(nodo->valor, "CuerpoIf") == 0){
-            fprintf(pf, "jmp end_if%d:\n", numEndif);
+            fprintf(pf, "jmp endif_part%d:\n", numEndif);
             fprintf(pf, "else_part%d:\n", numElse);
+        }
+
+        if(nodoWhile){
+            fprintf(pf, "start_while%d:\n", numWhile);
         }
 
         if(nodoWhileEsp){
@@ -174,8 +209,8 @@ int recorrerArbolAssembler(FILE* pf, structNodo* nodo){
         //Voy hacia la derecha
         recorrerArbolAssembler(pf, nodo->hijoDer);
 
-        if(strcmp(nodo->valor, "CuerpoIf") == 0){
-            fprintf(pf, "end_if%d:\n", numEndif);
+        if(nodoIf){
+            fprintf(pf, "endif_part%d:\n", numEndif + 1);
         }
 
         if(nodoWhile){
@@ -212,15 +247,26 @@ void realizarOperacion(FILE* pf,structNodo* nodo){
     if(esOperacionAritmetica(nodo->valor)){
         if(esAsignacion(nodo->valor)){
             //Hay que determinar si es entero (FILD) o no (FLD)
-            fprintf(pf, "fild %s\n", nodo->hijoDer->valor);
+            if(strcmp(nodo->hijoDer->tipo, "integer") == 0)
+                fprintf(pf, "fild %s\n", nodo->hijoDer->valor);
+            else
+                fprintf(pf, "fld %s\n", nodo->hijoDer->valor);
             fprintf(pf, "fstp %s\n", nodo->hijoIzq->valor);
         }else{
             //Hay que determinar si es entero (FILD) o no (FLD)
-            fprintf(pf, "fild %s\n", nodo->hijoIzq->valor);
-            fprintf(pf, "fild %s\n", nodo->hijoDer->valor);
+            if(strcmp(nodo->hijoIzq->tipo, "integer") == 0){
+                fprintf(pf, "fild %s\n", nodo->hijoIzq->valor);
+                fprintf(pf, "fild %s\n", nodo->hijoDer->valor);
+            } else {
+                fprintf(pf, "fld %s\n", nodo->hijoIzq->valor);
+                fprintf(pf, "fld %s\n", nodo->hijoDer->valor);
+            }
             fprintf(pf, "%s\n", getOperacion(nodo->valor));
             //Hay que determinar si es entero (FISTP) o no (FSTP)
-            fprintf(pf, "fistp @aux%d\n", getNumAux());
+            if(strcmp(nodo->hijoIzq->tipo, "integer") == 0)
+                fprintf(pf, "fistp @aux%d\n", getNumAux());
+            else
+                fprintf(pf, "fstp @aux%d\n", getNumAux());
             fprintf(pf, "ffree\n");
 
             sprintf(nodo->valor, "@aux%d", cantAux);
@@ -229,11 +275,20 @@ void realizarOperacion(FILE* pf,structNodo* nodo){
 
     if(esComparacion(nodo->valor)){
         //Hay que determinar si es entero (FILD) o no (FLD)
-        fprintf(pf, "fild %s\n", nodo->hijoIzq->valor);
+        if(strcmp(nodo->hijoIzq->tipo, "integer") == 0)
+            fprintf(pf, "fild %s\n", nodo->hijoIzq->valor);
+        else
+            fprintf(pf, "fld %s\n", nodo->hijoIzq->valor);
         fprintf(pf, "fcomp %s\n", nodo->hijoDer->valor);
         fprintf(pf, "fstsw ax\n");
         fprintf(pf, "sahf\n");
+        printf("Nodo: %s -> %s -> %s\n Tiene Not?? %d \n", nodo->valor, nodo->hijoIzq->valor, nodo->hijoDer->valor, tieneNot);
         fprintf(pf, "%s %s%d\n", getComparacion(nodo->valor), getEtiqueta(), getNumEtiqueta());
+    }
+
+    if(strcmp(nodo->valor, "display") == 0){
+        //Hay que determinar si es string (displayString var) o no (displayFloat val)
+        fprintf(pf, "%s %s\n", getDisplay(nodo->hijoDer), nodo->hijoDer->valor);
     }
 
 }
@@ -280,7 +335,7 @@ int esComparacion(char* valor){
 
 char* getComparacion(char* comparador){
     nodoAux = verTopePila(&pilaEstructura);
-    if(strcmp(nodoAux->valor, "WHILE_ESP") == 0){
+    if(strcmp(nodoAux->valor, "WHILE_ESP") == 0 || tieneOr || tieneNot){
         if(strcmp(comparador, "==") == 0)
             return "JE";
         if(strcmp(comparador, "!=") == 0)
@@ -294,7 +349,6 @@ char* getComparacion(char* comparador){
         if(strcmp(comparador, "<=") == 0)
             return "JBE";
     } else {
-
         if(strcmp(comparador, "==") == 0)
             return "JNE";
         if(strcmp(comparador, "!=") == 0)
@@ -317,10 +371,19 @@ char* getEtiqueta(){
     // structNodo* nodoAux
     nodoAux = verTopePila(&pilaEstructura);
     if(strcmp(nodoAux->valor, "IF") == 0){
+        if(tieneOr){
+            return "then_part";
+        }
         return "endif_part";
     } else if(strcmp(nodoAux->valor, "IF_ELSE") == 0){
+        if(tieneOr){
+            return "then_part";
+        }
         return "else_part";
     } else if(strcmp(nodoAux->valor, "WHILE") == 0){
+        if(tieneOr){
+            return "start_while";
+        }
         return "end_while";
     } else if(strcmp(nodoAux->valor, "FOR") == 0){
         return "end_for";
@@ -334,18 +397,23 @@ int getNumEtiqueta(){
     int valor = 0;
     nodoAux = verTopePila(&pilaEstructura);
     // nodoAux = desapilar(&pilaEstructura);
-
     if(nodoAux != NULL){
         if(strcmp(nodoAux->valor, "IF") == 0){
-            cantEndif++;
             valor = cantEndif;
+            if(!tieneOr && !tieneAnd){
+                cantEndif++;
+            }
         } else if(strcmp(nodoAux->valor, "IF_ELSE") == 0){
-            cantElse++;
-            cantEndif++;
             valor = cantElse;
+            if(!tieneOr && !tieneAnd){
+                cantElse++;
+                cantEndif++;
+            }
         } else if(strcmp(nodoAux->valor, "WHILE") == 0){
-            cantEndWhile++;
             valor = cantEndWhile;
+            if(!tieneOr && !tieneAnd){
+                cantEndWhile++;
+            }
         } else if(strcmp(nodoAux->valor, "FOR") == 0){
             cantFor++;
             valor = cantFor;
@@ -355,4 +423,18 @@ int getNumEtiqueta(){
     }
 
     return valor;
+}
+
+char* getDisplay(structNodo* nodo){
+    //Hay que verificar si es string o no y devolver su instrucción
+    if(strcmp(nodo->hijoIzq->tipo, "string") == 0)
+        return "displayString";
+    else
+        return "displayFloat";
+}
+
+int esOperador(structNodo* nodo){
+    return strcmp(nodo->valor, "OR") == 0 ||
+        strcmp(nodo->valor, "AND") == 0 ||
+        strcmp(nodo->valor, "NOT") == 0;
 }

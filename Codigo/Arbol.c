@@ -1,8 +1,9 @@
 #include "Arbol.h"  
 
-structNodo* crearHoja(const char* elemento){
+structNodo* crearHoja(const char* elemento, char* tipo){
     structNodo* nodo = (structNodo*) malloc(sizeof(struct nodo));
     strcpy(nodo->valor, elemento);
+    nodo->tipo = tipo;
     nodo->hijoIzq = NULL;
     nodo->hijoDer = NULL;
     return nodo;
@@ -18,14 +19,16 @@ structNodo* crearHoja(const char* elemento){
 //     return nodo;
 // }
 
-structNodo* crearNodo(const char* raiz, structNodo* nodoIzq, structNodo* nodoDer){
-    structNodo* nodo = crearHoja(raiz);
+structNodo* crearNodo(const char* raiz, char* tipo, structNodo* nodoIzq, structNodo* nodoDer){
+    structNodo* nodo = crearHoja(raiz, NULL);
+    nodo->tipo = tipo;
     nodo->hijoIzq = nodoIzq;
     nodo->hijoDer = nodoDer;
     return nodo;
 }
 
-structNodo* crearNodo2(structNodo* nodoRaiz, structNodo* nodoIzq, structNodo* nodoDer){
+structNodo* crearNodo2(structNodo* nodoRaiz, char* tipo,structNodo* nodoIzq, structNodo* nodoDer){
+    nodoRaiz->tipo  = tipo;
     nodoRaiz->hijoIzq = nodoIzq;
     nodoRaiz->hijoDer = nodoDer;
     return nodoRaiz;
@@ -64,6 +67,8 @@ void liberarMemoria(structNodo* padre) {
 }
 
 void llenarGragh(structNodo* padre, FILE *arch, int numNodo) {
+    char* string1 = (char*) malloc(sizeof(char) *50);
+    char* string2 = (char*) malloc(sizeof(char) *50);
     if(padre == NULL) {
         return;
     }
@@ -71,10 +76,15 @@ void llenarGragh(structNodo* padre, FILE *arch, int numNodo) {
     int numHD = numNodo*2+2;
     
     if(padre->hijoIzq) {
-        fprintf(arch, "\t\"nodo_%d \\n%s\" -> \"nodo_%d \\n%s\"\n", numNodo, padre->valor, numHI, padre->hijoIzq->valor);
+        sprintf(string1, "%s|%s", padre->valor, padre->tipo);
+        // printf("%s|%s\n", padre->hijoIzq->valor, padre->hijoIzq->tipo);
+        sprintf(string2, "%s|%s", padre->hijoIzq->valor, padre->hijoIzq->tipo);
+        fprintf(arch, "\t\"nodo_%d \\n%s\" -> \"nodo_%d \\n%s\"\n", numNodo, string1, numHI, string2);
     }
     if(padre->hijoDer) {
-        fprintf(arch, "\t\"nodo_%d \\n%s\" -> \"nodo_%d \\n%s\"\n", numNodo, padre->valor ,numHD ,padre->hijoDer->valor);
+        sprintf(string1, "%s|%s", padre->valor, padre->tipo);
+        sprintf(string2, "%s|%s", padre->hijoDer->valor, padre->hijoDer->tipo);
+        fprintf(arch, "\t\"nodo_%d \\n%s\" -> \"nodo_%d \\n%s\"\n", numNodo, string1 ,numHD ,string2);
     }
     llenarGragh(padre->hijoIzq, arch, numHI);
     llenarGragh(padre->hijoDer, arch, numHD);

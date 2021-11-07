@@ -122,21 +122,24 @@
   structNodo* condNodo;
   structNodo* idPtr;
 
+  structNodo* auxNodoValidation;
+
   structNodo* condicion_primaPtr;
 
   int _cant_var = 0;
   int _cant_types = 0;
   int _operador;
-
+  int _cantAsig = 0;
+  char* _varAsignacion;
   structNodo* iniVar, *stepNodo, *condicionFor, *cuerpo2, *ini;
 
   const char* idIni;
 
-  struct pila pilaPtr;
+  struct pila pilaPtr, pilaDeclaracion;
 
 
 /* Line 189 of yacc.c  */
-#line 140 "y.tab.c"
+#line 143 "y.tab.c"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -267,7 +270,7 @@ typedef union YYSTYPE
 {
 
 /* Line 214 of yacc.c  */
-#line 67 "Sintactico.y"
+#line 70 "Sintactico.y"
 
     int intval;
     float val;
@@ -276,7 +279,7 @@ typedef union YYSTYPE
 
 
 /* Line 214 of yacc.c  */
-#line 280 "y.tab.c"
+#line 283 "y.tab.c"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -288,7 +291,7 @@ typedef union YYSTYPE
 
 
 /* Line 264 of yacc.c  */
-#line 292 "y.tab.c"
+#line 295 "y.tab.c"
 
 #ifdef short
 # undef short
@@ -503,16 +506,16 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  46
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   184
+#define YYLAST   192
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  49
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  40
+#define YYNNTS  41
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  72
+#define YYNRULES  73
 /* YYNRULES -- Number of states.  */
-#define YYNSTATES  135
+#define YYNSTATES  136
 
 /* YYTRANSLATE(YYLEX) -- Bison symbol number corresponding to YYLEX.  */
 #define YYUNDEFTOK  2
@@ -568,16 +571,16 @@ static const yytype_uint8 yyprhs[] =
       86,    90,    92,    96,    97,   105,   106,   116,   118,   120,
      122,   125,   129,   133,   134,   139,   141,   145,   149,   151,
      155,   159,   161,   165,   166,   174,   175,   182,   183,   189,
-     193,   195,   197,   199,   201,   205,   208,   211,   213,   215,
-     217,   219,   221
+     193,   195,   197,   199,   201,   202,   207,   210,   213,   215,
+     217,   219,   221,   223
 };
 
 /* YYRHS -- A `-1'-separated list of the rules' RHS.  */
 static const yytype_int8 yyrhs[] =
 {
       50,     0,    -1,    51,    -1,    52,    -1,    53,    -1,    52,
-      53,    -1,    54,    -1,    55,    -1,    85,    17,    -1,    86,
-      17,    -1,    56,    17,    -1,    75,    17,    -1,    87,    17,
+      53,    -1,    54,    -1,    55,    -1,    85,    17,    -1,    87,
+      17,    -1,    56,    17,    -1,    75,    17,    -1,    88,    17,
       -1,    60,    -1,    62,    -1,    67,    -1,    80,    -1,    29,
       23,    57,    24,    30,    23,    59,    24,    -1,    48,    -1,
       57,    18,    48,    -1,    37,    -1,    38,    -1,    39,    -1,
@@ -588,29 +591,29 @@ static const yytype_int8 yyrhs[] =
       20,    52,    68,    27,    -1,    -1,    26,    19,    70,    20,
       52,    28,    52,    69,    27,    -1,    71,    -1,    73,    -1,
       72,    -1,    15,    73,    -1,    71,    14,    73,    -1,    71,
-      13,    73,    -1,    -1,    75,    74,    88,    75,    -1,    76,
+      13,    73,    -1,    -1,    75,    74,    89,    75,    -1,    76,
       -1,    75,     9,    76,    -1,    75,    11,    76,    -1,    77,
       -1,    76,    10,    77,    -1,    76,    12,    77,    -1,    84,
       -1,    19,    75,    20,    -1,    -1,    34,    48,     3,    84,
       79,    35,    84,    -1,    -1,    78,    83,    81,    52,    36,
-      48,    -1,    -1,    78,    52,    82,    36,    48,    -1,    23,
+      48,    -1,    -1,    78,    82,    52,    36,    48,    -1,    23,
       75,    24,    -1,    48,    -1,    44,    -1,    45,    -1,    43,
-      -1,    48,     3,    75,    -1,    46,    84,    -1,    47,    48,
-      -1,     8,    -1,     6,    -1,     4,    -1,     7,    -1,     5,
-      -1,    16,    -1
+      -1,    -1,    48,     3,    86,    75,    -1,    46,    84,    -1,
+      47,    48,    -1,     8,    -1,     6,    -1,     4,    -1,     7,
+      -1,     5,    -1,    16,    -1
 };
 
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,   129,   129,   130,   131,   132,   135,   136,   138,   139,
-     140,   141,   142,   144,   145,   146,   147,   149,   152,   153,
-     154,   155,   156,   157,   158,   160,   160,   162,   162,   162,
-     163,   164,   165,   167,   167,   168,   168,   170,   171,   172,
-     173,   174,   175,   176,   176,   178,   179,   180,   181,   182,
-     183,   184,   185,   187,   187,   189,   189,   191,   191,   192,
-     196,   197,   198,   199,   201,   203,   204,   206,   207,   208,
-     209,   210,   211
+       0,   132,   132,   133,   134,   135,   138,   139,   141,   142,
+     143,   144,   145,   147,   148,   149,   150,   152,   155,   156,
+     157,   158,   159,   160,   161,   163,   163,   165,   165,   165,
+     166,   167,   168,   170,   170,   171,   171,   173,   174,   175,
+     176,   177,   178,   179,   179,   181,   182,   183,   184,   185,
+     186,   187,   188,   190,   190,   193,   193,   195,   195,   196,
+     198,   199,   200,   201,   203,   203,   205,   206,   208,   209,
+     210,   211,   212,   213
 };
 #endif
 
@@ -632,8 +635,8 @@ static const char *const yytname[] =
   "exp_while", "list_exp", "if", "$@4", "$@5", "condicion_prima",
   "condicion", "condicion_anidada", "comparacion_simple", "$@6",
   "expresion", "termino", "termino_par", "inicializacion_for", "$@7",
-  "for", "$@8", "$@9", "pasos_for", "asig_val", "asignacion", "display",
-  "get_action", "op_comparacion", 0
+  "for", "$@8", "$@9", "pasos_for", "asig_val", "asignacion", "$@10",
+  "display", "get_action", "op_comparacion", 0
 };
 #endif
 
@@ -659,8 +662,8 @@ static const yytype_uint8 yyr1[] =
       65,    66,    66,    68,    67,    69,    67,    70,    71,    71,
       71,    72,    72,    74,    73,    75,    75,    75,    76,    76,
       76,    77,    77,    79,    78,    81,    80,    82,    80,    83,
-      84,    84,    84,    84,    85,    86,    87,    88,    88,    88,
-      88,    88,    88
+      84,    84,    84,    84,    86,    85,    87,    88,    89,    89,
+      89,    89,    89,    89
 };
 
 /* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN.  */
@@ -672,8 +675,8 @@ static const yytype_uint8 yyr2[] =
        3,     1,     3,     0,     7,     0,     9,     1,     1,     1,
        2,     3,     3,     0,     4,     1,     3,     3,     1,     3,
        3,     1,     3,     0,     7,     0,     6,     0,     5,     3,
-       1,     1,     1,     1,     3,     2,     2,     1,     1,     1,
-       1,     1,     1
+       1,     1,     1,     1,     0,     4,     2,     2,     1,     1,
+       1,     1,     1,     1
 };
 
 /* YYDEFACT[STATE-NAME] -- Default rule to reduce with in state
@@ -683,57 +686,59 @@ static const yytype_uint8 yydefact[] =
 {
        0,     0,     0,     0,     0,     0,    63,    61,    62,     0,
        0,    60,     0,     2,     3,     4,     6,     7,     0,    13,
-      14,    15,     0,    45,    48,     0,    16,    51,     0,     0,
+      14,    15,     0,    45,    48,    57,    16,    51,     0,     0,
        0,    60,     0,     0,    60,     0,    37,    39,    38,    43,
-       0,     0,     0,    65,    66,     0,     1,     5,    10,     0,
-       0,    11,     0,     0,     0,    57,    55,     8,     9,    12,
+       0,     0,     0,    66,    67,    64,     1,     5,    10,     0,
+       0,    11,     0,     0,     0,     0,    55,     8,     9,    12,
       52,    40,     0,     0,     0,     0,     0,     0,    18,     0,
-       0,    64,    46,    47,    49,    50,     0,     0,     0,     0,
-      25,    42,    41,    69,    71,    68,    70,    67,    72,     0,
-       0,     0,     0,    53,    59,     0,     0,     0,     0,     0,
-      44,    33,    19,     0,     0,    58,     0,     0,    31,     0,
-      26,     0,     0,     0,     0,    56,     0,    30,    28,    35,
-      34,    20,    21,    22,    23,     0,    54,    32,     0,     0,
-       0,    17,    29,    36,    24
+       0,     0,    46,    47,    49,    50,     0,     0,     0,     0,
+      25,    42,    41,    70,    72,    69,    71,    68,    73,     0,
+       0,     0,     0,    53,    65,    59,     0,     0,     0,     0,
+       0,    44,    33,    19,     0,     0,    58,     0,     0,    31,
+       0,    26,     0,     0,     0,     0,    56,     0,    30,    28,
+      35,    34,    20,    21,    22,    23,     0,    54,    32,     0,
+       0,     0,    17,    29,    36,    24
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int16 yydefgoto[] =
 {
-      -1,    12,    13,    14,    15,    16,    17,    18,    69,   124,
-     125,    19,    99,    20,    62,   128,    98,   107,    21,   112,
-     129,    35,    36,    37,    38,    66,    22,    23,    24,    25,
-     104,    26,    78,    77,    56,    27,    28,    29,    30,    89
+      -1,    12,    13,    14,    15,    16,    17,    18,    69,   125,
+     126,    19,   100,    20,    62,   129,    99,   108,    21,   113,
+     130,    35,    36,    37,    38,    66,    22,    23,    24,    25,
+     105,    26,    78,    55,    56,    27,    28,    71,    29,    30,
+      89
 };
 
 /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
    STATE-NUM.  */
-#define YYPACT_NINF -24
+#define YYPACT_NINF -53
 static const yytype_int16 yypact[] =
 {
-     136,    42,   -10,   -16,    -7,    -8,   -24,   -24,   -24,    26,
-       9,    47,    36,   -24,   136,   -24,   -24,   -24,    37,   -24,
-     -24,   -24,    20,    15,   -24,    33,   -24,   -24,    49,    75,
-      77,   -24,     8,    42,    80,    68,    69,   -24,   -24,    64,
-       3,    70,   105,   -24,   -24,    42,   -24,   -24,   -24,    42,
-      42,   -24,    42,    42,    42,   136,   -24,   -24,   -24,   -24,
-     -24,   -24,    85,   136,    42,    42,     7,    97,   -24,     2,
-      26,    64,    15,    15,   -24,   -24,    -3,    90,   136,   104,
-     136,   -24,   -24,   -24,   -24,   -24,   -24,   -24,   -24,    42,
-     136,    81,    98,   -24,   -24,    82,    76,    42,   101,   103,
-      64,   106,   -24,   114,   107,   -24,    91,     6,    64,   136,
-     -24,   136,   111,    60,    26,   -24,    42,   -24,   136,   136,
-     -24,   -24,   -24,   -24,   -24,    31,   -24,    64,   108,   116,
-      60,   -24,   -24,   -24,   -24
+     144,    11,    -3,   -13,    -6,   -38,   -53,   -53,   -53,    35,
+     -28,    21,    29,   -53,   144,   -53,   -53,   -53,    16,   -53,
+     -53,   -53,    10,    40,   -53,    34,   -53,   -53,    27,    52,
+      64,   -53,    14,    11,    55,    57,    58,   -53,   -53,    -2,
+       3,    39,    98,   -53,   -53,   -53,   -53,   -53,   -53,    11,
+      11,   -53,    11,    11,    11,   144,   -53,   -53,   -53,   -53,
+     -53,   -53,    71,   144,    11,    11,   118,    85,   -53,   -10,
+      35,    11,    40,    40,   -53,   -53,     4,    48,   144,    81,
+     144,   -53,   -53,   -53,   -53,   -53,   -53,   -53,   -53,    11,
+     144,    66,    76,   -53,    -2,   -53,    67,    84,    11,    80,
+      86,    -2,   114,   -53,    94,   100,   -53,    73,    13,    -2,
+     144,   -53,   144,   109,    61,    35,   -53,    11,   -53,   144,
+     144,   -53,   -53,   -53,   -53,   -53,    25,   -53,    -2,   104,
+     111,    61,   -53,   -53,   -53,   -53
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -24,   -24,   -24,   -18,   -12,   -24,   -24,   -24,   -24,    14,
-     -24,   -24,   -24,   -24,   -24,   -24,   -24,   -24,   -24,   -24,
-     -24,   117,   -24,   -24,   -23,   -24,    -1,    54,    61,   -24,
-     -24,   -24,   -24,   -24,   -24,    -5,   -24,   -24,   -24,   -24
+     -53,   -53,   -53,   -52,   -12,   -53,   -53,   -53,   -53,    15,
+     -53,   -53,   -53,   -53,   -53,   -53,   -53,   -53,   -53,   -53,
+     -53,   101,   -53,   -53,   -29,   -53,    -1,    12,    23,   -53,
+     -53,   -53,   -53,   -53,   -53,    -4,   -53,   -53,   -53,   -53,
+     -53
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
@@ -743,48 +748,50 @@ static const yytype_int8 yypgoto[] =
 #define YYTABLE_NINF -28
 static const yytype_int16 yytable[] =
 {
-      32,    39,    47,    40,    43,    33,    49,    55,    50,     1,
-      61,    83,    84,    85,    86,    87,    41,    49,    33,    50,
-      91,    94,     1,    88,   116,    52,    92,    53,    60,    49,
-     117,    50,    39,     6,     7,     8,    46,    51,    34,    39,
-      42,    81,    82,    47,    71,    80,     6,     7,     8,   130,
-      45,    31,     1,    76,    48,   131,    54,    44,     2,     3,
-      96,     1,     4,    39,    39,    93,    57,     5,    47,     6,
-       7,     8,   101,    49,    31,    50,     6,     7,     8,     9,
-      10,    11,    64,    65,    47,     6,     7,     8,   100,    47,
-      31,   118,    58,   119,    59,     1,   108,   121,   122,   123,
-      63,     2,     3,    72,    73,     4,    47,    47,    70,   126,
-       5,   -27,   106,    74,    75,   127,    79,    90,    68,     6,
-       7,     8,     9,    10,    11,     1,    95,    97,   103,   102,
-     105,     2,     3,   109,   111,     4,   110,   113,   120,   115,
-       5,   132,   114,   133,   134,     0,     0,     0,     0,     6,
-       7,     8,     9,    10,    11,     1,     0,    67,     0,     0,
-       0,     2,     3,     0,     0,     4,     0,     0,     0,     0,
-       5,     0,     0,     0,     0,     0,     0,     0,     0,     6,
-       7,     8,     9,    10,    11
+      32,    39,    47,    77,    61,    43,    40,    49,    91,    50,
+      42,    80,    33,    49,    92,    50,     1,    41,    33,    49,
+      44,    50,     1,    49,    45,    50,    97,    51,    95,    46,
+       1,   117,    39,    48,    60,    81,    82,   118,   102,    39,
+       6,     7,     8,   131,    57,    34,     6,     7,     8,   132,
+      52,    31,    53,    76,     6,     7,     8,    54,   119,    31,
+     120,    72,    73,    39,    39,    47,    93,     1,    47,    58,
+      94,    64,    65,     2,     3,    74,    75,     4,     6,     7,
+       8,    59,     5,    31,    96,    47,   -27,    68,   101,    63,
+      47,     6,     7,     8,     9,    10,    11,   109,   122,   123,
+     124,    70,    79,     1,    98,    90,   104,    47,    47,     2,
+       3,   127,   110,     4,   103,   106,   128,   114,     5,   111,
+     107,   116,    83,    84,    85,    86,    87,     6,     7,     8,
+       9,    10,    11,     1,    88,   115,   121,   133,   134,     2,
+       3,    67,   112,     4,     0,     0,   135,     0,     5,     0,
+       0,     0,     0,     0,     0,     0,     0,     6,     7,     8,
+       9,    10,    11,     1,     0,     0,     0,     0,     0,     2,
+       3,     0,     0,     4,     0,     0,     0,     0,     5,     0,
+       0,     0,     0,     0,     0,     0,     0,     6,     7,     8,
+       9,    10,    11
 };
 
 static const yytype_int16 yycheck[] =
 {
-       1,     2,    14,    19,     9,    15,     9,    25,    11,    19,
-      33,     4,     5,     6,     7,     8,    23,     9,    15,    11,
-      18,    24,    19,    16,    18,    10,    24,    12,    20,     9,
-      24,    11,    33,    43,    44,    45,     0,    17,    48,    40,
-      48,    64,    65,    55,    45,    63,    43,    44,    45,    18,
-       3,    48,    19,    54,    17,    24,    23,    48,    25,    26,
-      78,    19,    29,    64,    65,    70,    17,    34,    80,    43,
-      44,    45,    90,     9,    48,    11,    43,    44,    45,    46,
-      47,    48,    13,    14,    96,    43,    44,    45,    89,   101,
-      48,   109,    17,   111,    17,    19,    97,    37,    38,    39,
-      32,    25,    26,    49,    50,    29,   118,   119,     3,   114,
-      34,    31,    36,    52,    53,   116,    31,    20,    48,    43,
-      44,    45,    46,    47,    48,    19,    36,    23,    30,    48,
-      48,    25,    26,    32,    28,    29,    33,    23,    27,    48,
-      34,    33,    35,    27,   130,    -1,    -1,    -1,    -1,    43,
-      44,    45,    46,    47,    48,    19,    -1,    40,    -1,    -1,
-      -1,    25,    26,    -1,    -1,    29,    -1,    -1,    -1,    -1,
-      34,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    43,
-      44,    45,    46,    47,    48
+       1,     2,    14,    55,    33,     9,    19,     9,    18,    11,
+      48,    63,    15,     9,    24,    11,    19,    23,    15,     9,
+      48,    11,    19,     9,     3,    11,    78,    17,    24,     0,
+      19,    18,    33,    17,    20,    64,    65,    24,    90,    40,
+      43,    44,    45,    18,    17,    48,    43,    44,    45,    24,
+      10,    48,    12,    54,    43,    44,    45,    23,   110,    48,
+     112,    49,    50,    64,    65,    77,    70,    19,    80,    17,
+      71,    13,    14,    25,    26,    52,    53,    29,    43,    44,
+      45,    17,    34,    48,    36,    97,    31,    48,    89,    32,
+     102,    43,    44,    45,    46,    47,    48,    98,    37,    38,
+      39,     3,    31,    19,    23,    20,    30,   119,   120,    25,
+      26,   115,    32,    29,    48,    48,   117,    23,    34,    33,
+      36,    48,     4,     5,     6,     7,     8,    43,    44,    45,
+      46,    47,    48,    19,    16,    35,    27,    33,    27,    25,
+      26,    40,    28,    29,    -1,    -1,   131,    -1,    34,    -1,
+      -1,    -1,    -1,    -1,    -1,    -1,    -1,    43,    44,    45,
+      46,    47,    48,    19,    -1,    -1,    -1,    -1,    -1,    25,
+      26,    -1,    -1,    29,    -1,    -1,    -1,    -1,    34,    -1,
+      -1,    -1,    -1,    -1,    -1,    -1,    -1,    43,    44,    45,
+      46,    47,    48
 };
 
 /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
@@ -793,18 +800,18 @@ static const yytype_uint8 yystos[] =
 {
        0,    19,    25,    26,    29,    34,    43,    44,    45,    46,
       47,    48,    50,    51,    52,    53,    54,    55,    56,    60,
-      62,    67,    75,    76,    77,    78,    80,    84,    85,    86,
-      87,    48,    75,    15,    48,    70,    71,    72,    73,    75,
+      62,    67,    75,    76,    77,    78,    80,    84,    85,    87,
+      88,    48,    75,    15,    48,    70,    71,    72,    73,    75,
       19,    23,    48,    84,    48,     3,     0,    53,    17,     9,
-      11,    17,    10,    12,    23,    52,    83,    17,    17,    17,
+      11,    17,    10,    12,    23,    82,    83,    17,    17,    17,
       20,    73,    63,    32,    13,    14,    74,    70,    48,    57,
-       3,    75,    76,    76,    77,    77,    75,    82,    81,    31,
-      52,    73,    73,     4,     5,     6,     7,     8,    16,    88,
-      20,    18,    24,    84,    24,    36,    52,    23,    65,    61,
-      75,    52,    48,    30,    79,    48,    36,    66,    75,    32,
-      33,    28,    68,    23,    35,    48,    18,    24,    52,    52,
-      27,    37,    38,    39,    58,    59,    84,    75,    64,    69,
-      18,    24,    33,    27,    58
+       3,    86,    76,    76,    77,    77,    75,    52,    81,    31,
+      52,    73,    73,     4,     5,     6,     7,     8,    16,    89,
+      20,    18,    24,    84,    75,    24,    36,    52,    23,    65,
+      61,    75,    52,    48,    30,    79,    48,    36,    66,    75,
+      32,    33,    28,    68,    23,    35,    48,    18,    24,    52,
+      52,    27,    37,    38,    39,    58,    59,    84,    75,    64,
+      69,    18,    24,    33,    27,    58
 };
 
 #define yyerrok		(yyerrstatus = 0)
@@ -1618,505 +1625,512 @@ yyreduce:
         case 2:
 
 /* Line 1455 of yacc.c  */
-#line 129 "Sintactico.y"
+#line 132 "Sintactico.y"
     {printf("\nmain"); programaPtr = mainPtr; escribirGragh(programaPtr); generarIntermedia(programaPtr); generarAssembler(programaPtr);}
     break;
 
   case 3:
 
 /* Line 1455 of yacc.c  */
-#line 130 "Sintactico.y"
+#line 133 "Sintactico.y"
     {printf("\nbloque"); mainPtr = bloquePtr;}
     break;
 
   case 4:
 
 /* Line 1455 of yacc.c  */
-#line 131 "Sintactico.y"
+#line 134 "Sintactico.y"
     {printf("\nsentencia"); bloquePtr = sentenciaPtr; apilar(&pilaPtr, bloquePtr); printf("\nLo que vos quieras");}
     break;
 
   case 5:
 
 /* Line 1455 of yacc.c  */
-#line 132 "Sintactico.y"
-    {printf("\nbloque sentencia"); bloquePtr = crearNodo("bloque", desapilar(&pilaPtr), sentenciaPtr); apilar(&pilaPtr, bloquePtr); printf("\nGenera bloque");}
+#line 135 "Sintactico.y"
+    {printf("\nbloque sentencia"); bloquePtr = crearNodo("bloque", NULL,desapilar(&pilaPtr), sentenciaPtr); apilar(&pilaPtr, bloquePtr); printf("\nGenera bloque");}
     break;
 
   case 6:
 
 /* Line 1455 of yacc.c  */
-#line 135 "Sintactico.y"
+#line 138 "Sintactico.y"
     { sentenciaPtr = sentenciaSimpleptr; }
     break;
 
   case 7:
 
 /* Line 1455 of yacc.c  */
-#line 136 "Sintactico.y"
+#line 139 "Sintactico.y"
     { sentenciaPtr = sentenciaCompuestaptr; }
     break;
 
   case 8:
 
 /* Line 1455 of yacc.c  */
-#line 138 "Sintactico.y"
+#line 141 "Sintactico.y"
     {printf("\nasginacion"); sentenciaSimpleptr = asignacionPtr;}
     break;
 
   case 9:
 
 /* Line 1455 of yacc.c  */
-#line 139 "Sintactico.y"
+#line 142 "Sintactico.y"
     {printf("\ndeclaracion_var");sentenciaSimpleptr = displayPtr;}
     break;
 
   case 10:
 
 /* Line 1455 of yacc.c  */
-#line 140 "Sintactico.y"
+#line 143 "Sintactico.y"
     {printf("\ndeclaracion_var");sentenciaSimpleptr = declaracion_varPtr;}
     break;
 
   case 11:
 
 /* Line 1455 of yacc.c  */
-#line 141 "Sintactico.y"
+#line 144 "Sintactico.y"
     {printf("\ndeclaracion_var");sentenciaSimpleptr = expresionPtr;}
     break;
 
   case 12:
 
 /* Line 1455 of yacc.c  */
-#line 142 "Sintactico.y"
+#line 145 "Sintactico.y"
     {printf("\ndeclaracion_var");sentenciaSimpleptr = get_actionPtr;}
     break;
 
   case 13:
 
 /* Line 1455 of yacc.c  */
-#line 144 "Sintactico.y"
+#line 147 "Sintactico.y"
     {printf("\nwhile:"); sentenciaCompuestaptr = whilePtr;}
     break;
 
   case 14:
 
 /* Line 1455 of yacc.c  */
-#line 145 "Sintactico.y"
+#line 148 "Sintactico.y"
     {printf("\nwhile_especial:"); sentenciaCompuestaptr = while_especialPtr;}
     break;
 
   case 15:
 
 /* Line 1455 of yacc.c  */
-#line 146 "Sintactico.y"
+#line 149 "Sintactico.y"
     {printf("\nif:"); sentenciaCompuestaptr = ifPtr;}
     break;
 
   case 16:
 
 /* Line 1455 of yacc.c  */
-#line 147 "Sintactico.y"
+#line 150 "Sintactico.y"
     {printf("\nfor"); sentenciaCompuestaptr = forPtr;}
     break;
 
   case 17:
 
 /* Line 1455 of yacc.c  */
-#line 149 "Sintactico.y"
-    {printf("\nDIM OP_CORC list_var CL_COR AS OP_CORC list_types CL_COR "); declaracion_varPtr = crearNodo("DEC_VAR", list_varPtr, list_typesPtr); 
+#line 152 "Sintactico.y"
+    {printf("\nDIM OP_CORC list_var CL_COR AS OP_CORC list_types CL_COR "); declaracion_varPtr = crearNodo("DEC_VAR",NULL, list_varPtr, list_typesPtr); procesarDeclaracion(); 
 if(_cant_types != _cant_var) return 1; _cant_types = _cant_var = 0;}
     break;
 
   case 18:
 
 /* Line 1455 of yacc.c  */
-#line 152 "Sintactico.y"
-    {printf("\nID"); list_varPtr = crearHoja((yyvsp[(1) - (1)].str_val)); _cant_var = 1;}
+#line 155 "Sintactico.y"
+    {printf("\nID"); seRepite((yyvsp[(1) - (1)].str_val)); list_varPtr = crearHoja((yyvsp[(1) - (1)].str_val), NULL); apilar(&pilaDeclaracion, list_varPtr);  _cant_var = 1;}
     break;
 
   case 19:
 
 /* Line 1455 of yacc.c  */
-#line 153 "Sintactico.y"
-    {printf("\nlist_var OP_COMA ID "); list_varPtr = crearNodo(",", list_varPtr, crearHoja((yyvsp[(3) - (3)].str_val))); _cant_var++;}
+#line 156 "Sintactico.y"
+    {printf("\nlist_var OP_COMA ID "); seRepite((yyvsp[(3) - (3)].str_val)); list_varPtr = crearNodo(",", NULL,list_varPtr, crearHoja((yyvsp[(3) - (3)].str_val), NULL)); apilar(&pilaDeclaracion, list_varPtr->hijoDer); _cant_var++;}
     break;
 
   case 20:
 
 /* Line 1455 of yacc.c  */
-#line 154 "Sintactico.y"
-    {printf("\nINT_TYPE:");type_varPtr = crearHoja("INT_TYPE");}
+#line 157 "Sintactico.y"
+    {printf("\nINT_TYPE:");type_varPtr = crearHoja("INT_TYPE", "integer");}
     break;
 
   case 21:
 
 /* Line 1455 of yacc.c  */
-#line 155 "Sintactico.y"
-    {printf("\nREAL_TYPE");type_varPtr = crearHoja("REAL_TYPE");}
+#line 158 "Sintactico.y"
+    {printf("\nREAL_TYPE");type_varPtr = crearHoja("REAL_TYPE", "real");}
     break;
 
   case 22:
 
 /* Line 1455 of yacc.c  */
-#line 156 "Sintactico.y"
-    {printf("\nSTRING_TYPE");type_varPtr = crearHoja("STRING_TYPE");}
+#line 159 "Sintactico.y"
+    {printf("\nSTRING_TYPE");type_varPtr = crearHoja("STRING_TYPE", "string");}
     break;
 
   case 23:
 
 /* Line 1455 of yacc.c  */
-#line 157 "Sintactico.y"
+#line 160 "Sintactico.y"
     {printf("\ntype_var");list_typesPtr = type_varPtr; _cant_types = 1; }
     break;
 
   case 24:
 
 /* Line 1455 of yacc.c  */
-#line 158 "Sintactico.y"
-    {printf("\nlist_types OP_COMA type_var");list_typesPtr = crearNodo(",", list_typesPtr, type_varPtr); _cant_types++;}
+#line 161 "Sintactico.y"
+    {printf("\nlist_types OP_COMA type_var"); list_typesPtr = crearNodo(",", NULL,list_typesPtr, type_varPtr); _cant_types++;}
     break;
 
   case 25:
 
 /* Line 1455 of yacc.c  */
-#line 160 "Sintactico.y"
-    {whilePtr = crearNodo("WHILE", desapilar(&pilaPtr), desapilar(&pilaPtr));}
+#line 163 "Sintactico.y"
+    {whilePtr = crearNodo("WHILE", NULL,desapilar(&pilaPtr), desapilar(&pilaPtr)); }
     break;
 
   case 26:
 
 /* Line 1455 of yacc.c  */
-#line 160 "Sintactico.y"
+#line 163 "Sintactico.y"
     {printf("\nWHILE condicion DO bloque ENDWHILE");}
     break;
 
   case 27:
 
 /* Line 1455 of yacc.c  */
-#line 162 "Sintactico.y"
-    {idPtr = crearHoja((yyvsp[(2) - (2)].str_val));}
+#line 165 "Sintactico.y"
+    {fueDeclarada((yyvsp[(2) - (2)].str_val)); idPtr = crearHoja((yyvsp[(2) - (2)].str_val), getTipoByNombre((yyvsp[(2) - (2)].str_val)));}
     break;
 
   case 28:
 
 /* Line 1455 of yacc.c  */
-#line 162 "Sintactico.y"
-    { while_especialPtr = crearNodo("WHILE_ESP", exp_whilePtr, desapilar(&pilaPtr));}
+#line 165 "Sintactico.y"
+    { while_especialPtr = crearNodo("WHILE_ESP", NULL,exp_whilePtr, desapilar(&pilaPtr)); }
     break;
 
   case 29:
 
 /* Line 1455 of yacc.c  */
-#line 162 "Sintactico.y"
+#line 165 "Sintactico.y"
     {printf("\nWHILE ID IN list_exp DO bloque ENDWHILE");}
     break;
 
   case 30:
 
 /* Line 1455 of yacc.c  */
-#line 163 "Sintactico.y"
+#line 166 "Sintactico.y"
     {printf("\nOP_CORC list_exp CL_CO"); exp_whilePtr = list_expPtr;}
     break;
 
   case 31:
 
 /* Line 1455 of yacc.c  */
-#line 164 "Sintactico.y"
-    {printf("\nLIST_EXP: ID"); list_expPtr = crearNodo("COND", crearNodo("==", idPtr, expresionPtr), NULL);}
+#line 167 "Sintactico.y"
+    {printf("\nLIST_EXP: ID"); list_expPtr = crearNodo("COND", NULL,crearNodo("==", NULL,idPtr, expresionPtr), NULL); validOperatorType(list_expPtr); }
     break;
 
   case 32:
 
 /* Line 1455 of yacc.c  */
-#line 165 "Sintactico.y"
-    {printf("\nLIST_EXP: list_exp OP_COMA ID"); list_expPtr = crearNodo("COND", crearNodo("==", idPtr, expresionPtr), list_expPtr);}
+#line 168 "Sintactico.y"
+    {printf("\nLIST_EXP: list_exp OP_COMA ID"); list_expPtr = crearNodo("COND", NULL , crearNodo("==", NULL,idPtr, expresionPtr), list_expPtr); validOperatorType(list_expPtr); }
     break;
 
   case 33:
 
 /* Line 1455 of yacc.c  */
-#line 167 "Sintactico.y"
-    {bloquePtr = desapilar(&pilaPtr); ifPtr = crearNodo("IF", desapilar(&pilaPtr), bloquePtr);}
+#line 170 "Sintactico.y"
+    {bloquePtr = desapilar(&pilaPtr); ifPtr = crearNodo("IF", NULL,desapilar(&pilaPtr), bloquePtr); validOperatorType(ifPtr); }
     break;
 
   case 34:
 
 /* Line 1455 of yacc.c  */
-#line 167 "Sintactico.y"
+#line 170 "Sintactico.y"
     {printf("\nIF OP_PAR condicion CL_PAR bloque ENDIF");}
     break;
 
   case 35:
 
 /* Line 1455 of yacc.c  */
-#line 168 "Sintactico.y"
-    {ifCuerpoPtr = crearNodo("CuerpoIf", desapilar(&pilaPtr), desapilar(&pilaPtr)); ifPtr = crearNodo("IF", desapilar(&pilaPtr), ifCuerpoPtr);}
+#line 171 "Sintactico.y"
+    {ifCuerpoPtr = crearNodo("CuerpoIf", NULL, desapilar(&pilaPtr), desapilar(&pilaPtr)); ifPtr = crearNodo("IF", NULL,desapilar(&pilaPtr), ifCuerpoPtr); validOperatorType(ifPtr); }
     break;
 
   case 36:
 
 /* Line 1455 of yacc.c  */
-#line 168 "Sintactico.y"
+#line 171 "Sintactico.y"
     {printf("\nIF OP_PAR condicion CL_PAR bloque ELSE bloque ENDIF");}
     break;
 
   case 37:
 
 /* Line 1455 of yacc.c  */
-#line 170 "Sintactico.y"
+#line 173 "Sintactico.y"
     {printf("\ncondicion_prima"); condicion_primaPtr = condicionPtr; apilar(&pilaPtr, condicion_primaPtr);}
     break;
 
   case 38:
 
 /* Line 1455 of yacc.c  */
-#line 171 "Sintactico.y"
+#line 174 "Sintactico.y"
     {printf("\ncomparacion_simple"); condicionPtr = comparacion_simplePtr; }
     break;
 
   case 39:
 
 /* Line 1455 of yacc.c  */
-#line 172 "Sintactico.y"
+#line 175 "Sintactico.y"
     {printf("\ncondicion_anidada"); condicionPtr = condicion_anidadaPtr; }
     break;
 
   case 40:
 
 /* Line 1455 of yacc.c  */
-#line 173 "Sintactico.y"
-    {printf("\nNOT comparacion_simple"); condicionPtr = crearNodo("NOT", comparacion_simplePtr, NULL);}
+#line 176 "Sintactico.y"
+    {printf("\nNOT comparacion_simple"); condicionPtr = crearNodo("NOT", NULL,comparacion_simplePtr, NULL); validOperatorType(condicionPtr); }
     break;
 
   case 41:
 
 /* Line 1455 of yacc.c  */
-#line 174 "Sintactico.y"
-    {printf("\ncondicion OP_AND comparacion_simple"); condicion_anidadaPtr = crearNodo("AND", condicionPtr, comparacion_simplePtr);}
+#line 177 "Sintactico.y"
+    {printf("\ncondicion OP_AND comparacion_simple"); condicion_anidadaPtr = crearNodo("AND", NULL,condicionPtr, comparacion_simplePtr); validOperatorType(condicion_anidadaPtr); }
     break;
 
   case 42:
 
 /* Line 1455 of yacc.c  */
-#line 175 "Sintactico.y"
-    {printf("\ncondicion OP_OR comparacion_simple"); condicion_anidadaPtr = crearNodo("OR", condicionPtr, comparacion_simplePtr);}
+#line 178 "Sintactico.y"
+    {printf("\ncondicion OP_OR comparacion_simple"); condicion_anidadaPtr = crearNodo("OR", NULL,condicionPtr, comparacion_simplePtr); validOperatorType(condicion_anidadaPtr); }
     break;
 
   case 43:
 
 /* Line 1455 of yacc.c  */
-#line 176 "Sintactico.y"
+#line 179 "Sintactico.y"
     {expAuxPtr = expresionPtr;}
     break;
 
   case 44:
 
 /* Line 1455 of yacc.c  */
-#line 176 "Sintactico.y"
-    {printf("\nexpresion op_comparacion expresion"); comparacion_simplePtr = crearNodo2(op_comparacionPtr, expAuxPtr, expresionPtr);}
+#line 179 "Sintactico.y"
+    {printf("\nexpresion op_comparacion expresion"); comparacion_simplePtr = crearNodo2(op_comparacionPtr, NULL, expAuxPtr, expresionPtr); validOperatorType(comparacion_simplePtr); }
     break;
 
   case 45:
 
 /* Line 1455 of yacc.c  */
-#line 178 "Sintactico.y"
+#line 181 "Sintactico.y"
     {printf("\ntermino"); expresionPtr = terminoPtr;}
     break;
 
   case 46:
 
 /* Line 1455 of yacc.c  */
-#line 179 "Sintactico.y"
-    {printf("\nexpresion OP_SUM termino"); expresionPtr = crearNodo("+", expresionPtr, terminoPtr);}
+#line 182 "Sintactico.y"
+    {printf("\nexpresion OP_SUM termino"); expresionPtr = crearNodo("+", NULL, expresionPtr, terminoPtr); validOperatorType(expresionPtr); }
     break;
 
   case 47:
 
 /* Line 1455 of yacc.c  */
-#line 180 "Sintactico.y"
-    {printf("\nexpresion OP_MEN termino"); expresionPtr = crearNodo("-", expresionPtr, terminoPtr);}
+#line 183 "Sintactico.y"
+    {printf("\nexpresion OP_MEN termino"); expresionPtr = crearNodo("-", NULL, expresionPtr, terminoPtr); validOperatorType(expresionPtr); }
     break;
 
   case 48:
 
 /* Line 1455 of yacc.c  */
-#line 181 "Sintactico.y"
+#line 184 "Sintactico.y"
     {printf("\ntermino_par"); terminoPtr = termino_parPtr;}
     break;
 
   case 49:
 
 /* Line 1455 of yacc.c  */
-#line 182 "Sintactico.y"
-    {printf("\ntermino OP_MULT termino_par"); terminoPtr = crearNodo("*", terminoPtr, termino_parPtr);}
+#line 185 "Sintactico.y"
+    {printf("\ntermino OP_MULT termino_par"); terminoPtr = crearNodo("*", NULL, terminoPtr, termino_parPtr); validOperatorType(terminoPtr); }
     break;
 
   case 50:
 
 /* Line 1455 of yacc.c  */
-#line 183 "Sintactico.y"
-    {printf("\ntermino OP_DIV termino_par"); terminoPtr = crearNodo("/", terminoPtr, termino_parPtr);}
+#line 186 "Sintactico.y"
+    {printf("\ntermino OP_DIV termino_par"); terminoPtr = crearNodo("/", NULL,terminoPtr, termino_parPtr); validOperatorType(terminoPtr); }
     break;
 
   case 51:
 
 /* Line 1455 of yacc.c  */
-#line 184 "Sintactico.y"
+#line 187 "Sintactico.y"
     {printf("\nasig_val"); termino_parPtr = asig_valPtr;}
     break;
 
   case 52:
 
 /* Line 1455 of yacc.c  */
-#line 185 "Sintactico.y"
+#line 188 "Sintactico.y"
     {printf("\nOP_PAR expresion CL_PAR"); termino_parPtr = expresionPtr;}
     break;
 
   case 53:
 
 /* Line 1455 of yacc.c  */
-#line 187 "Sintactico.y"
-    { idIni = (yyvsp[(2) - (4)].str_val);  iniVar = crearNodo(":=", crearHoja((yyvsp[(2) - (4)].str_val)), asig_valPtr); }
+#line 190 "Sintactico.y"
+    { fueDeclarada((yyvsp[(2) - (4)].str_val)); idIni = (yyvsp[(2) - (4)].str_val);  iniVar = crearNodo(":=", NULL,crearHoja((yyvsp[(2) - (4)].str_val), getTipoByNombre((yyvsp[(2) - (4)].str_val))), asig_valPtr);  validOperatorType(iniVar); }
     break;
 
   case 54:
 
 /* Line 1455 of yacc.c  */
-#line 187 "Sintactico.y"
-    { condicionFor = crearNodo("!=", crearHoja((yyvsp[(2) - (7)].str_val)), asig_valPtr); }
+#line 190 "Sintactico.y"
+    { condicionFor = crearNodo("!=", NULL,crearHoja((yyvsp[(2) - (7)].str_val), getTipoByNombre((yyvsp[(2) - (7)].str_val))), asig_valPtr); validOperatorType(condicionFor); }
     break;
 
   case 55:
 
 /* Line 1455 of yacc.c  */
-#line 189 "Sintactico.y"
-    { stepNodo = crearNodo(":=", crearHoja(idIni), crearNodo("+", crearHoja(idIni), pasos_forPtr)); cuerpo2 = crearNodo("CuerpoFor", condicionFor, stepNodo); ini = crearNodo("INI", iniVar, cuerpo2); }
+#line 193 "Sintactico.y"
+    { auxNodoValidation = crearNodo("+", NULL,crearHoja(idIni, getTipoByNombre(idIni)), pasos_forPtr); validOperatorType(auxNodoValidation); stepNodo = crearNodo(":=", NULL,crearHoja(idIni, getTipoByNombre(idIni)), auxNodoValidation); validOperatorType(stepNodo); cuerpo2 = crearNodo("CuerpoFor", NULL,condicionFor, stepNodo); ini = crearNodo("INI", NULL,iniVar, cuerpo2); apilar(&pilaPtr, ini);}
     break;
 
   case 56:
 
 /* Line 1455 of yacc.c  */
-#line 190 "Sintactico.y"
-    {printf("\nFOR ID OP_ASIG asig_val TO asig_val pasos_for bloque NEXT ID");  forPtr = crearNodo("FOR", ini, desapilar(&pilaPtr));}
+#line 194 "Sintactico.y"
+    {printf("\nFOR ID OP_ASIG asig_val TO asig_val pasos_for bloque NEXT ID");  forPtr = crearNodo("FOR", NULL, desapilar(&pilaPtr), desapilar(&pilaPtr));}
     break;
 
   case 57:
 
 /* Line 1455 of yacc.c  */
-#line 191 "Sintactico.y"
-    { stepNodo = crearNodo(":=", crearHoja(idIni), crearNodo("+", crearHoja(idIni), crearHoja("1"))); printf("\nInicializa stepNodo"); cuerpo2 = crearNodo("CuerpoFor", condicionFor, stepNodo); printf("\nInicializa cuerpo2"); ini = crearNodo("INI", iniVar, cuerpo2); printf("\nInicializa ini"); }
+#line 195 "Sintactico.y"
+    {  auxNodoValidation =  crearNodo("+", NULL, crearHoja(idIni, getTipoByNombre(idIni)),crearHoja("1", "integer")); validOperatorType(auxNodoValidation); stepNodo = crearNodo(":=", NULL,crearHoja(idIni, getTipoByNombre(idIni)), auxNodoValidation); validOperatorType(stepNodo); printf("\nInicializa stepNodo"); cuerpo2 = crearNodo("CuerpoFor", NULL, condicionFor, stepNodo); printf("\nInicializa cuerpo2"); ini = crearNodo("INI", NULL, iniVar, cuerpo2); apilar(&pilaPtr, ini); printf("\nInicializa ini"); }
     break;
 
   case 58:
 
 /* Line 1455 of yacc.c  */
-#line 191 "Sintactico.y"
-    {printf("\nFOR ID OP_ASIG asig_val TO asig_val bloque NEXT ID");  forPtr = crearNodo("FOR", ini, desapilar(&pilaPtr)); printf("\nInicializa forPtr");}
+#line 195 "Sintactico.y"
+    {printf("\nFOR ID OP_ASIG asig_val TO asig_val bloque NEXT ID");  forPtr = crearNodo("FOR", NULL, desapilar(&pilaPtr), desapilar(&pilaPtr)); printf("\nInicializa forPtr");}
     break;
 
   case 59:
 
 /* Line 1455 of yacc.c  */
-#line 192 "Sintactico.y"
+#line 196 "Sintactico.y"
     {printf("\nOP_CORC expresion CL_COR"); pasos_forPtr = expresionPtr; }
     break;
 
   case 60:
 
 /* Line 1455 of yacc.c  */
-#line 196 "Sintactico.y"
-    {printf("\nID"); asig_valPtr = crearHoja((yyvsp[(1) - (1)].str_val));}
+#line 198 "Sintactico.y"
+    {fueDeclarada((yyvsp[(1) - (1)].str_val)); _varAsignacion = (yyvsp[(1) - (1)].str_val); printf("\nID"); asig_valPtr = crearHoja((yyvsp[(1) - (1)].str_val), getTipoByNombre((yyvsp[(1) - (1)].str_val))); _cantAsig++; }
     break;
 
   case 61:
 
 /* Line 1455 of yacc.c  */
-#line 197 "Sintactico.y"
-    {printf("\nINT_NUM"); asig_valPtr = crearHoja((yyvsp[(1) - (1)].str_val));}
+#line 199 "Sintactico.y"
+    {printf("\nINT_NUM"); asig_valPtr = crearHoja((yyvsp[(1) - (1)].str_val), "integer");}
     break;
 
   case 62:
 
 /* Line 1455 of yacc.c  */
-#line 198 "Sintactico.y"
-    {printf("\nFLOAT_NUM");asig_valPtr = crearHoja((yyvsp[(1) - (1)].str_val));}
+#line 200 "Sintactico.y"
+    {printf("\nFLOAT_NUM");asig_valPtr = crearHoja((yyvsp[(1) - (1)].str_val), "real");}
     break;
 
   case 63:
 
 /* Line 1455 of yacc.c  */
-#line 199 "Sintactico.y"
-    {printf("\nSTRING_DEC");asig_valPtr = crearHoja((yyvsp[(1) - (1)].str_val));}
+#line 201 "Sintactico.y"
+    {printf("\nSTRING_DEC");asig_valPtr = crearHoja((yyvsp[(1) - (1)].str_val), "string");}
     break;
 
   case 64:
 
 /* Line 1455 of yacc.c  */
-#line 201 "Sintactico.y"
-    {printf("\nID OP_ASIG expresion");asignacionPtr = crearNodo(":=", crearHoja((yyvsp[(1) - (3)].str_val)), expresionPtr);}
+#line 203 "Sintactico.y"
+    { _cantAsig = 0; }
     break;
 
   case 65:
 
 /* Line 1455 of yacc.c  */
 #line 203 "Sintactico.y"
-    {printf("\nDISPLAY asig_val"); displayPtr = crearNodo("display", crearHoja("DISPLAY"), asig_valPtr);}
+    {if(_cantAsig == 1) {validarTiposAsignacion((yyvsp[(1) - (4)].str_val), _varAsignacion);}  fueDeclarada((yyvsp[(1) - (4)].str_val)); printf("\nID OP_ASIG expresion"); asignacionPtr = crearNodo(":=", NULL,crearHoja((yyvsp[(1) - (4)].str_val), getTipoByNombre((yyvsp[(1) - (4)].str_val))), expresionPtr); validOperatorType(asignacionPtr); }
     break;
 
   case 66:
 
 /* Line 1455 of yacc.c  */
-#line 204 "Sintactico.y"
-    {printf("\nGET ID"); get_actionPtr = crearNodo("get_action", crearHoja("GET"), crearHoja((yyvsp[(2) - (2)].str_val)));}
+#line 205 "Sintactico.y"
+    {printf("\nDISPLAY asig_val"); displayPtr = crearNodo("display", NULL,crearHoja("DISPLAY", NULL), asig_valPtr);}
     break;
 
   case 67:
 
 /* Line 1455 of yacc.c  */
 #line 206 "Sintactico.y"
-    {printf("\nOP_EQ"); op_comparacionPtr = crearHoja("==");}
+    {fueDeclarada((yyvsp[(2) - (2)].str_val)); printf("\nGET ID"); get_actionPtr = crearNodo("get_action", NULL,crearHoja("GET", NULL), crearHoja((yyvsp[(2) - (2)].str_val), getTipoByNombre((yyvsp[(2) - (2)].str_val))));}
     break;
 
   case 68:
 
 /* Line 1455 of yacc.c  */
-#line 207 "Sintactico.y"
-    {printf("\nOP_GE"); op_comparacionPtr = crearHoja(">=");}
+#line 208 "Sintactico.y"
+    {printf("\nOP_EQ"); op_comparacionPtr = crearHoja("==", NULL);}
     break;
 
   case 69:
 
 /* Line 1455 of yacc.c  */
-#line 208 "Sintactico.y"
-    {printf("\nOP_GT"); op_comparacionPtr = crearHoja(">");}
+#line 209 "Sintactico.y"
+    {printf("\nOP_GE"); op_comparacionPtr = crearHoja(">=", NULL);}
     break;
 
   case 70:
 
 /* Line 1455 of yacc.c  */
-#line 209 "Sintactico.y"
-    {printf("\nOP_LE"); op_comparacionPtr = crearHoja("<=");}
+#line 210 "Sintactico.y"
+    {printf("\nOP_GT"); op_comparacionPtr = crearHoja(">", NULL);}
     break;
 
   case 71:
 
 /* Line 1455 of yacc.c  */
-#line 210 "Sintactico.y"
-    {printf("\nOP_LT"); op_comparacionPtr = crearHoja("<");}
+#line 211 "Sintactico.y"
+    {printf("\nOP_LE"); op_comparacionPtr = crearHoja("<=", NULL);}
     break;
 
   case 72:
 
 /* Line 1455 of yacc.c  */
-#line 211 "Sintactico.y"
-    {printf("\nOP_DIST"); op_comparacionPtr = crearHoja("!=");}
+#line 212 "Sintactico.y"
+    {printf("\nOP_LT"); op_comparacionPtr = crearHoja("<", NULL);}
+    break;
+
+  case 73:
+
+/* Line 1455 of yacc.c  */
+#line 213 "Sintactico.y"
+    {printf("\nOP_DIST"); op_comparacionPtr = crearHoja("!=", NULL);}
     break;
 
 
 
 /* Line 1455 of yacc.c  */
-#line 2120 "y.tab.c"
+#line 2134 "y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2328,7 +2342,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 213 "Sintactico.y"
+#line 215 "Sintactico.y"
 
 
 void yyerror(char *s)
@@ -2343,6 +2357,7 @@ int main(int argc,char **argv)
 {
   inicializarTabla();
   crear(&pilaPtr);
+  crear(&pilaDeclaracion);
   if (argc>1)
       yyin=fopen(argv[1],"rt");
   else
@@ -2380,6 +2395,68 @@ void crearTabla(){
   }
   fclose(pf);
 }
+
+int validarTiposIgualacion(const char* tipo1, const char* tipo2){
+
+  if(strcmpi(tipo1, "integer")==0 && strcmpi(tipo2, "real")==0)
+    return 1;
+  if(strcmpi(tipo1, tipo2) != 0)
+    return 0;
+  return 1;
+}
+
+void procesarDeclaracion(){
+  structNodo* nodo = desapilar(&pilaDeclaracion);
+
+  while(nodo){
+    nodo->tipo = getTipoByNombre(nodo->valor);
+    nodo = desapilar(&pilaDeclaracion);
+  }
+}
+
+void validOperatorType(structNodo* nodo){
+  char* tipoHijoIzq = NULL, *tipoHijoDer = NULL;
+  if(nodo->hijoIzq)
+    tipoHijoIzq = nodo->hijoIzq->tipo;
+  
+  if(nodo->hijoDer)
+    tipoHijoDer = nodo->hijoDer->tipo;
+  
+  if(tipoHijoIzq && !tipoHijoDer){
+    nodo->tipo = tipoHijoIzq;
+    return;
+  }
+  
+  if(!tipoHijoIzq && tipoHijoDer){
+    nodo->tipo = tipoHijoDer;
+    return;
+  }
+  printf("Validacion de igualacion: %d %d", strcmp(nodo->valor, ":="), validarTiposIgualacion(tipoHijoDer, tipoHijoIzq));
+  if(strcmp(nodo->valor, ":=") == 0 && !validarTiposIgualacion(tipoHijoDer, tipoHijoIzq)){
+    printf("\nError al asignar tipos");
+    exit(1);
+  } else {
+    if((tipoHijoDer && strcmpi(tipoHijoDer, "real") == 0) || (tipoHijoIzq && strcmpi(tipoHijoIzq, "real") == 0))
+      nodo->tipo = "real";
+    else nodo->tipo = "integer";
+  }
+
+  if(strcmp(nodo->valor, "+") == 0 || strcmp(nodo->valor, "*") == 0 || strcmp(nodo->valor, "-") == 0 || strcmp(nodo->valor, "/") == 0 || strcmp(nodo->valor, "==") == 0)
+  {
+    printf("maxibobo");
+    if((tipoHijoDer && strcmpi(tipoHijoDer, "string") == 0) || (tipoHijoIzq && strcmpi(tipoHijoIzq, "string") == 0)){
+      printf("\nError al asignar tipos");
+    exit(1);
+    }
+
+    if((tipoHijoDer && strcmpi(tipoHijoDer, "real") == 0) || (tipoHijoIzq && strcmpi(tipoHijoIzq, "real") == 0))
+      nodo->tipo = "real";
+    else nodo->tipo = "integer";
+  }
+  
+}
+
+
 
 /* YYPARSE() -> lleva adelante el proceso de analisis sintactico. Invoca a YYLEX() para solicitar un token y este le devuelve
 Los valores de los tokens (lexemas) los guarda en la variable yylval.

@@ -1,34 +1,36 @@
-while_esp1:
-fild z
-fild h
-FADD
-fistp @aux1
-ffree
-fild b
-fcomp @aux1
+fild 1
+fstp a
+for1:
+fild a
+fcomp 9
 fstsw ax
 sahf
-JE start_while_esp2
-JMP endwhile_esp1:
-start_while_esp1:
-fild b
-fild 7
+JE end_for1
+fild 2
+fstp b
+for2:
+fld b
+fcomp 10
+fstsw ax
+sahf
+JE end_for2
+fild 8
+fstp d
+fld b
+fld 1
+FADD
+fstp @aux1
+ffree
+fld @aux1
+fstp b
+JMP for2:
+end_for2:
+fild a
+fild 1
 FADD
 fistp @aux2
 ffree
 fild @aux2
-fstp b
-while_esp2:
-JMP endwhile_esp2:
-start_while_esp2:
-fild c
-fild 8
-FSUB
-fistp @aux3
-ffree
-fild @aux3
-fstp c
-JMP while_esp2
-endwhile_esp2:
-JMP while_esp1
-endwhile_esp1:
+fstp a
+JMP for1:
+end_for1:

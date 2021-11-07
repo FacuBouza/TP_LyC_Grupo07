@@ -18,3 +18,5 @@ int esComparacion(char* valor);
 char* getComparacion(char* comparador);
 char* getEtiqueta();
 int getNumEtiqueta();
+char* getDisplay(structNodo* nodo);
+int esOperador(structNodo* nodo);

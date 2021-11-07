@@ -1976,7 +1976,8 @@ void procesarInt(){
         strcpy(nombreSimbolo, "_");
         strcat(nombreSimbolo,yytext);
         printf("Constante a escribir: %s", nombreSimbolo);
-        agregarSimbolo(nombreSimbolo, "CTE_INTEGER", yytext, strlen(yytext), "INT_NUM");
+        if(!existeConstante(nombreSimbolo))
+            agregarSimbolo(nombreSimbolo, "CTE_INTEGER", yytext, strlen(yytext), "INT_NUM");
     }
 }
 
@@ -1990,7 +1991,8 @@ void procesarFloat(){
         printf("\nFLOAT_NUM: %s", yytext);
         strcpy(nombreSimbolo, "_");
         strcat(nombreSimbolo,yytext);
-        agregarSimbolo(nombreSimbolo, "CTE_FLOAT", yytext, strlen(yytext), "FLOAT_NUM");
+        if(!existeConstante(nombreSimbolo))
+            agregarSimbolo(nombreSimbolo, "CTE_FLOAT", yytext, strlen(yytext), "FLOAT_NUM");
     }
 }
 
@@ -2004,7 +2006,8 @@ void procesarString(){
         printf("\nSTRING_DEC: %s", yytext);
         strcpy(nombreSimbolo, "_");
         strcat(nombreSimbolo,yytext);
-        agregarSimbolo(nombreSimbolo, "CTE_STRING", yytext, strlen(yytext), "STRING_DEC");
+        if(!existeConstante(nombreSimbolo))
+            agregarSimbolo(nombreSimbolo, "CTE_STRING", yytext, strlen(yytext), "STRING_DEC");
     }
 }
 

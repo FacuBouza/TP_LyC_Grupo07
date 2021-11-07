@@ -27,6 +27,12 @@ void agregarSimbolo(char* nombre, char* tipoDato, char* valor, int longitud, cha
 void agregarVariable(char nombreID[]);
 void agregarTipoVariable(char tipoID[]);
 void getNextNombreID(char* nombreID);
-
 void modificarTipoID(char* nombre, char* tipoDato, char* valor, int longitud, char* token);
 int getCantSimbolos();
+
+void fueDeclarada(const char* nombre);
+void seRepite(const char* nombre);
+char* getTipoByNombre(const char* nombre);
+
+int existeConstante(const char* nombre);
+void validarTiposAsignacion(const char* var1, const char* var2);

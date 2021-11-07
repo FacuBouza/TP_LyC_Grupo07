@@ -1,16 +1,14 @@
 Nombre              Tipo                Valor               Longitud            Token               
 a                   integer                                                     ID                  
-b                   integer                                                     ID                  
-c                   integer                                                     ID                  
-d                   integer                                                     ID                  
+b                   real                                                        ID                  
+c                   string                                                      ID                  
+d                   real                                                        ID                  
 e                   integer                                                     ID                  
-_8                  CTE_INTEGER         8                   1                   INT_NUM             
-_7                  CTE_INTEGER         7                   1                   INT_NUM             
-_8                  CTE_INTEGER         8                   1                   INT_NUM             
-_5                  CTE_INTEGER         5                   1                   INT_NUM             
-_8                  CTE_INTEGER         8                   1                   INT_NUM             
-_7                  CTE_INTEGER         7                   1                   INT_NUM             
+f                   integer                                                     ID                  
+_1                  CTE_INTEGER         1                   1                   INT_NUM             
+_9                  CTE_INTEGER         9                   1                   INT_NUM             
+_2                  CTE_INTEGER         2                   1                   INT_NUM             
+_10                 CTE_INTEGER         10                  2                   INT_NUM             
 _8                  CTE_INTEGER         8                   1                   INT_NUM             
 @aux1               FLOAT                                   5                   ID                  
 @aux2               FLOAT                                   5                   ID                  
-@aux3               FLOAT                                   5                   ID                  
