@@ -1,14 +1,36 @@
 Nombre              Tipo                Valor               Longitud            Token               
 a                   integer                                                     ID                  
 b                   real                                                        ID                  
-c                   string                                                      ID                  
-d                   real                                                        ID                  
-e                   integer                                                     ID                  
-f                   integer                                                     ID                  
+beta                string                                                      ID                  
+string1             string                                                      ID                  
+c                   real                                                        ID                  
+_327                CTE_INTEGER         327                 3                   INT_NUM             
+_ 10.55             CTE_FLOAT            10.55              6                   FLOAT_NUM           
+_"String de prueba" CTE_STRING          "String de prueba"  18                  STRING_DEC          
+_"String de prueba dos"CTE_STRING          "String de prueba dos"22                  STRING_DEC          
+_-89999.9999        CTE_FLOAT           -89999.9999         11                  FLOAT_NUM           
+_8                  CTE_INTEGER         8                   1                   INT_NUM             
+_5                  CTE_INTEGER         5                   1                   INT_NUM             
+_8888               CTE_INTEGER         8888                4                   INT_NUM             
 _1                  CTE_INTEGER         1                   1                   INT_NUM             
-_9                  CTE_INTEGER         9                   1                   INT_NUM             
+_6                  CTE_INTEGER         6                   1                   INT_NUM             
 _2                  CTE_INTEGER         2                   1                   INT_NUM             
 _10                 CTE_INTEGER         10                  2                   INT_NUM             
-_8                  CTE_INTEGER         8                   1                   INT_NUM             
+_9                  CTE_INTEGER         9                   1                   INT_NUM             
+_10000              CTE_INTEGER         10000               5                   INT_NUM             
 @aux1               FLOAT                                   5                   ID                  
 @aux2               FLOAT                                   5                   ID                  
+@aux3               FLOAT                                   5                   ID                  
+@aux4               FLOAT                                   5                   ID                  
+@aux5               FLOAT                                   5                   ID                  
+@aux6               FLOAT                                   5                   ID                  
+@aux7               FLOAT                                   5                   ID                  
+@aux8               FLOAT                                   5                   ID                  
+@aux9               FLOAT                                   5                   ID                  
+@aux10              FLOAT                                   6                   ID                  
+@aux11              FLOAT                                   6                   ID                  
+@aux12              FLOAT                                   6                   ID                  
+@aux13              FLOAT                                   6                   ID                  
+@aux14              FLOAT                                   6                   ID                  
+@aux15              FLOAT                                   6                   ID                  
+@aux16              FLOAT                                   6                   ID                  

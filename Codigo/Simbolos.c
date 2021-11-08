@@ -99,11 +99,22 @@ char* getTipoByNombre(const char* nombre){
 }
 
 void validarTiposAsignacion(const char* var1, const char* var2){
-  char* type1 = getTipoByNombre(var1);
-  char* type2 = getTipoByNombre(var2);
-
-  if(strcmpi(type1, type2) != 0){
-    printf("\nError de compilacion: Las variables son de distinto tipo !");
-    exit(1);
-  }
+    char* type1 = getTipoByNombre(var1);
+    char* type2 = getTipoByNombre(var2);
+    printf("variable1: %s, variable2: %s", var1, var2);
+    if(strcmpi(type1, type2) != 0){
+        if(!(strcmpi(type1, "real") == 0 && strcmpi(type2, "string") != 0)){
+            printf("\nError de compilacion: Las variables son de distinto tipo !");
+            exit(1);
+        }
+    }
 }
+
+// int validarTiposIgualacion(const char* tipo1, const char* tipo2){
+
+//   if(strcmpi(tipo1, "integer")==0 && strcmpi(tipo2, "real")==0)
+//     return 1;
+//   if(strcmpi(tipo1, tipo2) != 0)
+//     return 0;
+//   return 1;
+// }

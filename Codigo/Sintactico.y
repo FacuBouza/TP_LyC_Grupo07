@@ -312,7 +312,6 @@ void validOperatorType(structNodo* nodo){
 
   if(strcmp(nodo->valor, "+") == 0 || strcmp(nodo->valor, "*") == 0 || strcmp(nodo->valor, "-") == 0 || strcmp(nodo->valor, "/") == 0 || strcmp(nodo->valor, "==") == 0)
   {
-    printf("maxibobo");
     if((tipoHijoDer && strcmpi(tipoHijoDer, "string") == 0) || (tipoHijoIzq && strcmpi(tipoHijoIzq, "string") == 0)){
       printf("\nError al asignar tipos");
     exit(1);

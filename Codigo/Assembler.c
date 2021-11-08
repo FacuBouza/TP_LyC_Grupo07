@@ -418,7 +418,7 @@ int getNumEtiqueta(){
             cantFor++;
             valor = cantFor;
         } else if(strcmp(nodoAux->valor, "WHILE_ESP") == 0){
-            valor = cantWhileEsp + 1;
+            valor = cantWhileEsp;
         }
     }
 
@@ -427,7 +427,7 @@ int getNumEtiqueta(){
 
 char* getDisplay(structNodo* nodo){
     //Hay que verificar si es string o no y devolver su instrucción
-    if(strcmp(nodo->hijoIzq->tipo, "string") == 0)
+    if(strcmp(nodo->tipo, "string") == 0)
         return "displayString";
     else
         return "displayFloat";
